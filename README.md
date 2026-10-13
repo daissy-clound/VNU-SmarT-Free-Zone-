@@ -1,3 +1,6 @@
+## Cấu trúc thư mục dự án
+
+```text
 VNU-SmarT-Free-Zone/
 ├─ backend/                          A  API Node.js + TypeScript, kèm chương trình nhận MQTT
 │  ├─ src/
@@ -37,17 +40,17 @@ VNU-SmarT-Free-Zone/
 │  │  └─ package.json
 │  └─ admin/                         C  dashboard + màn hình ca trực (PWA)
 │     ├─ src/pages/                     Tổng quan, Sơ đồ tầng, Phiếu, Ca trực
-│     ├─ src/pages/analytics/        E, D  Dự báo, Minh bạch thuật toán (chỉ hiển thị kết quả từ ai/)
+│     ├─ src/pages/analytics/        E, D  Dự báo, Minh bạch thuật toán
 │     ├─ src/sw.ts                      service worker nhận Web Push
 │     └─ package.json
 ├─ scripts/
-│  ├─ simulator/                     D  bộ giả lập 10 cảm biến (chạy cạnh backend trên máy chủ)
+│  ├─ simulator/                     D  bộ giả lập 10 cảm biến
 │  │  ├─ generate.ts                    sinh 6 tuần dữ liệu có nhãn
 │  │  ├─ live.ts                        phát bản tin trực tiếp qua MQTT
 │  │  ├─ scenarios/22h10-B5.ts          kịch bản demo
-│  │  ├─ data/                          dữ liệu giả lập đã sinh (file lớn không đưa lên GitHub)
+│  │  ├─ data/                          dữ liệu giả lập
 │  │  └─ README.md                      giải thích các thông số giả lập
-│  ├─ wokwi-esp32/                   D  sketch.ino, diagram.json (dự án Wokwi)
+│  ├─ wokwi-esp32/                   D  sketch.ino, diagram.json
 │  └─ latency/                       D  công cụ đo độ trễ cảnh báo
 ├─ docs/                             E
 │  ├─ thuyet-minh/                      bản thảo thuyết minh, hình, bảng
@@ -57,5 +60,6 @@ VNU-SmarT-Free-Zone/
 │  └─ assets/                           ảnh chụp màn hình, poster QR
 ├─ .gitignore
 ├─ package.json                         pnpm workspaces cho toàn repo
-├─ pnpm-workspace.yaml                  gồm backend, frontend/*, scripts/simulator, scripts/latency
+├─ pnpm-workspace.yaml                  cấu hình các workspace
 └─ README.md                            cách chạy, link demo, tài khoản cho BGK
+```
