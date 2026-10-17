@@ -1,2 +1,4 @@
 packages:
-  - frontend/admin
+  - 'backend'
+  - 'frontend/admin'
+  - 'frontend/student-app'
