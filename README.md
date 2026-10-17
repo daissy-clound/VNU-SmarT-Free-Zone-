@@ -1,3 +1,21 @@
+## Chạy dashboard C — D2 (16/10/2026)
+
+Yêu cầu Node.js >= 22.12. Từ thư mục gốc:
+
+```sh
+npm ci
+npm run dev
+```
+
+Mở **http://127.0.0.1:5173**, đăng nhập `bql` / `Demo@2026`. Các tài khoản thử khác: `catruc`, `phantich`, `bgk` (cùng mật khẩu). API cục bộ chạy tại cổng 3001, dữ liệu RAM được đặt lại khi khởi động.
+
+Mở trang **Phiếu**, chạy `npm run report:demo -- B5-CTD` trong terminal thứ hai: phiếu từ HTTP API tự xuất hiện trên dashboard. Phạm vi bàn giao hiện tại là localhost theo yêu cầu; có hướng dẫn nối máy chủ A/B khi sẵn sàng.
+
+- [Wireframe 5 trang và sơ đồ 12 tầng](docs/assets/c-d2/index.html).
+- [Bàn giao C cho A/E: hợp đồng API, tài khoản, cách tích hợp và giới hạn D2](docs/ban-giao-C-2026-10-16.md).
+- Kiểm tra: `npm run typecheck`, `npm run build`, `npm test`; kiểm thử trình duyệt: `npx playwright install chromium` rồi `npm run test:e2e`.
+- Toạ độ khu vực hiện là bản đề xuất, chờ A xác nhận. Máy chủ thử nằm riêng tại `scripts/test-server/`.
+
 ## Cấu trúc thư mục dự án
 
 ```text

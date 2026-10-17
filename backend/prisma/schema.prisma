@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Zone {
+  code         String   @id // e.g. "B5-CTD"
+  name         String
+  building     String   // "A" or "B"
+  floor        Int
+  x            Float
+  y            Float
+  qr_id        String
+  sensor_id    String?
+  sensor_state String   @default("unknown") // "normal", "suspected", "offline", "unknown"
+  presence     Boolean?
+  created_at   DateTime @default(now())
+  updated_at   DateTime @updatedAt
+
+  devices      Device[]
+  tickets      Ticket[]
+  events       Event[]
+  reports      Report[]
+}
+
+model Device {
+  node_id      String      @id // e.g. "B5-CTD"
+  zone_code    String
+  zone         Zone        @relation(fields: [zone_code], references: [code])
+  fw           String      @default("0.3.0")
+  status       String      @default("normal") // "online", "offline", "error"
+  last_seen    DateTime?
+  presence     Boolean?
+  presence_age Int?
+  telemetries  Telemetry[]
+}
+
+model Telemetry {
+  id           String   @id @default(uuid())
+  node_id      String
+  device       Device   @relation(fields: [node_id], references: [node_id])
+  ts           DateTime
+  seq          Int
+  pm1          Float
+  pm25         Float
+  pm10         Float
+  nc           Float
+  typ_size     Float
+  temp         Float
+  rh           Float
+  presence     Boolean?
+  presence_age Int?
+  rssi         Int
+  fw           String
+  late         Boolean  @default(false)
+  created_at   DateTime @default(now())
+}
+
+model User {
+  id               String          @id @default(uuid())
+  username         String          @unique
+  password_hash    String
+  name             String
+  role             String          // "manager", "guard", "analyst", "viewer"
+  created_at       DateTime        @default(now())
+
+  assigned_tickets Ticket[]        @relation("AssignedTickets")
+  history_actions  TicketHistory[]
+  infographics     Infographic[]
+}
+
+model Ticket {
+  code          String          @id // e.g. "SF-261016-001"
+  zone_code     String
+  zone          Zone            @relation(fields: [zone_code], references: [code])
+  source        String          // "sensor", "report", "both", "emergency"
+  priority      String          // "low", "normal", "high", "urgent"
+  status        String          @default("received") // "received", "assigned", "verifying", "handled", "responded", "closed"
+  created_at    DateTime        @default(now())
+  updated_at    DateTime        @updatedAt
+  due_at        DateTime?
+  assignee_id   String?
+  assignee      User?           @relation("AssignedTickets", fields: [assignee_id], references: [id])
+  presence      Boolean?
+  feedback_note String?
+
+  events        Event[]
+  history       TicketHistory[]
+  reports       Report[]
+}
+
+model TicketHistory {
+  id              String   @id @default(uuid())
+  ticket_code     String
+  ticket          Ticket   @relation(fields: [ticket_code], references: [code])
+  from_status     String?
+  to_status       String
+  action          String   // "create", "status_change", "assign", "comment"
+  performed_by_id String?
+  performed_by    User?    @relation(fields: [performed_by_id], references: [id])
+  note            String?
+  created_at      DateTime @default(now())
+}
+
+model Event {
+  event_id    String    @id @default(uuid())
+  source      String    // "sensor", "report", "both"
+  zone_code   String
+  zone        Zone      @relation(fields: [zone_code], references: [code])
+  started_at  DateTime  @default(now())
+  ended_at    DateTime?
+  class       String    @default("unclassified") // "unclassified", "cigarette", "vape", "steam", "dust", "spray", "ambient"
+  confidence  Float     @default(0.8)
+  ticket_code String?
+  ticket      Ticket?   @relation(fields: [ticket_code], references: [code])
+  created_at  DateTime  @default(now())
+}
+
+model Report {
+  id            String   @id @default(uuid())
+  tracking_code String   @unique // e.g. "K7Q2-9XMA"
+  zone_code     String
+  zone          Zone     @relation(fields: [zone_code], references: [code])
+  type          String   // "smoke_now", "smell", "vape", "butts", "other"
+  ongoing       Boolean  @default(false)
+  emergency     Boolean  @default(false)
+  note          String   @default("")
+  device_token  String
+  ticket_code   String?
+  ticket        Ticket?  @relation(fields: [ticket_code], references: [code])
+  created_at    DateTime @default(now())
+}
+
+model Infographic {
+  id            String   @id @default(uuid())
+  title         String
+  image_url     String
+  building      String?  // "A", "B", null for all
+  zone_code     String?
+  created_by_id String
+  created_by    User     @relation(fields: [created_by_id], references: [id])
+  is_active     Boolean  @default(true)
+  created_at    DateTime @default(now())
+}
