@@ -1,0 +1,411 @@
+Github,Kế hoạch ,"Phân công nhiệm vụ 
+(Trong quá trình làm dự án, nên cho AI đọc thêm file Kế hoạch)",,,,,,Kiến trúc công nghệ 
+Giai đoạn,Thành viên,Nhiệm vụ chính ,Mô tả chi tiết,Yêu cầu,Deadline,Trạng thái,Ghi chú,
+I. BASE,A,"Dựng nền móng chung cho cả đội: kho code, mẫu dữ liệu, cơ sở dữ liệu và những API đầu tiên","Mục tiêu: dựng ""khung xương"" chung để từ D2 cả đội code song song mà không phải chờ nhau, Mẫu bản tin cảm biến thêm presence/presence_age; CSDL thêm bảng infographic
+Input: mục 4 của tab kế hoạch (cấu trúc thư mục, 3 mẫu dữ liệu, danh sách 20 khu vực).
+Các bước:
+1. Viết 3 mẫu dữ liệu dùng chung (bản tin cảm biến, phản ánh của SV, phiếu xử lý) thành code TypeScript để cả đội dùng chung, không ai hiểu sai định dạng.
+2. Tạo cơ sở dữ liệu với các bảng: khu vực, thiết bị, bản tin, sự kiện, phiếu, lịch sử phiếu, phản ánh, người dùng.
+3. Viết các API đầu tiên: nhận phản ánh và trả về mã tra cứu ngẫu nhiên; tra trạng thái theo mã; đăng nhập cho 4 vai trò (BQL, ca trực, BGK, quản trị).","Output:
+• Kho code trên GitHub, chạy được bằng một lệnh, có file hướng dẫn cách chạy.
+• 3 mẫu dữ liệu dùng chung và danh sách 20 khu vực.
+• API chạy trên máy chủ thử, có đường link.
+Coi là xong khi: 4 bạn còn lại tải code về chạy được trên máy mình, và B gửi được một phản ánh thật qua link chạy thử.
+Hạn: mẫu dữ liệu xong D1 (duyệt ở Họp 1); API xong D2.
+Bàn giao cho: cả đội.",16/10/2026,FALSE,,
+,B,"1. Chốt bộ UI + wireframe;
+2. Form 1 (khảo sát nhu cầu)
+3. Luồng QR → phản ánh
+(Chốt giao diện app sinh viên, phát Form 1 (khảo sát nhu cầu) và làm trang gửi phản ánh)","Mục tiêu: chốt giao diện app SV ngay ngày đầu và phát Form 1 sớm để có số liệu thật về nhu cầu, Màn Hỗ trợ gồm Hỗ trợ cai thuốc; Form 1 thêm câu về cảm biến hiện diện và dạng hỗ trợ cai
+Input: mục 2 (cách dùng bộ giao diện Zalo), mục 8 (5 nhóm câu hỏi khảo sát), API của A.
+Các bước:
+1. Dựng thử 1 trang bằng zmp-ui (bộ giao diện của Zalo Mini App). Nếu báo lỗi vì phải chạy trong Zalo thì chuyển sang Tailwind và làm giao diện giống Zalo.
+2. Vẽ phác 4 màn hình: Phản ánh, Đã gửi, Tra cứu, Hỗ trợ.
+3. Soạn Form 1 trên Google Forms (5–7 phút, ẩn danh, câu đầu tiên hỏi đồng ý tham gia). Nhờ 3 người làm thử rồi mới phát.
+4. Làm trang phản ánh: quét QR là tự biết vị trí; SV chỉ cần bấm chọn loại sự việc, ghi chú ngắn nếu muốn, rồi gửi.
+5. Ghi nhắc ngay dưới ô ghi chú: ""Không ghi tên, số phòng của người khác"".","Output:
+Quyết định dùng zmp-ui hay Tailwind, báo vào nhóm.
+Bản vẽ phác 4 màn hình.
+Link và mã QR của Form 1.
+Trang gửi phản ánh đã nối với API.
+Coi là xong khi: quét QR mẫu bằng điện thoại và gửi xong một phản ánh trong 30 giây.
+Hạn: chốt giao diện D1; phát Form 1 D2.
+Bàn giao cho: E (duyệt form), A (kiểm tra API).",16/10/2026,FALSE,,
+,C,"1. Wireframe + sơ đồ tầng SVG;
+2. Khung dashboard
+(Vẽ phác dashboard và sơ đồ tầng KTX, dựng khung dashboard có đăng nhập)","Mục tiêu: cả đội thống nhất cán bộ quản lý sẽ thấy gì, bấm gì, trước khi bắt tay code dashboard, Wireframe Tổng quan có khung infographic; sơ đồ tầng có biểu tượng hiện diện
+Input: mục 4 (KTX giả lập: 2 toà × 6 tầng, 10 cảm biến, 20 mã QR); danh sách khu vực có toạ độ do A cung cấp.
+Các bước:
+1. Vẽ phác 5 trang: Tổng quan, Sơ đồ tầng, Phiếu, Phân tích, Ca trực (bản điện thoại).
+2. Vẽ sơ đồ tầng bằng SVG. Mỗi cảm biến và mỗi QR là một hình có mã riêng để sau này tô màu theo trạng thái.
+3. Dựng khung dashboard (React + Ant Design, giao diện tiếng Việt) có đăng nhập và menu khác nhau theo vai trò.
+4. Làm trang danh sách phiếu: mã, khu vực, nguồn tin (cảm biến / SV / cả hai / khẩn cấp), mức ưu tiên, trạng thái, thời hạn còn lại. Cho lọc theo trạng thái và khu vực.","Output:
+Bản vẽ phác 5 trang, được duyệt ở Họp 1.
+Dashboard đăng nhập được và hiện danh sách phiếu thật từ máy chủ thử.
+Coi là xong khi: phiếu B gửi thử hiện ngay trên danh sách.
+Hạn: D2.
+Bàn giao cho: A, E.",16/10/2026,FALSE,,
+,D,"1. Broker MQTT + Wokwi ""hello MQTT""; 
+2. Bộ giả lập v0 + firmware đúng hợp đồng
+(Cho ESP32 mô phỏng trên Wokwi gửi dữ liệu lên Internet, viết bộ giả lập dữ liệu bản đầu)","Mục tiêu: chứng minh ngay ngày đầu rằng ESP32 chạy mô phỏng gửi được dữ liệu lên Internet, và tạo dữ liệu mẫu cho E, C dùng, Mạch Wokwi thêm PIR; dữ liệu mẫu kèm tín hiệu hiện diện
+Input: mục 2 (lưu ý khi dùng Wokwi), bảng 6 loại sự kiện ở mục 5, mẫu bản tin cảm biến của A.
+Các bước:
+1. Tạo ""trạm trung chuyển"" MQTT (broker) có mã hoá. Mỗi bên một tài khoản riêng: firmware, bộ giả lập, API.
+2. Trên Wokwi, lắp mạch ESP32 + cảm biến nhiệt ẩm DHT22 + một biến trở đóng vai cảm biến bụi. Cho mạch gửi 1 bản tin mỗi 5 giây.
+3. Dùng một app MQTT (VD: MQTTX) kiểm tra bản tin tới nơi và đúng định dạng.
+4. Viết bộ giả lập bản đầu: 1 ngày dữ liệu cho 10 cảm biến, 5 giây một số đo, ghi rõ thời điểm nào là thuốc lá, hơi nước, bụi…
+5. Không để mật khẩu thật trong dự án Wokwi công khai. Tài khoản dùng ở đó chỉ được gửi vào kênh demo.","Output:
+Thông tin kết nối trạm MQTT, gửi cho A.
+Link dự án Wokwi.
+File dữ liệu mẫu (CSV) kèm giải thích từng cột.
+Coi là xong khi: app MQTT nhận được bản tin từ Wokwi đúng định dạng, và E mở được file dữ liệu mẫu.
+Hạn: trạm MQTT và Wokwi D1; dữ liệu mẫu D2.
+Bàn giao cho: A, E, C.",16/10/2026,FALSE,,
+,E,"1. Điều phối họp
+2. Module packages/detect (đặc trưng + tầng 1 v0)
+(Điều phối đội, chủ trì Họp 1 và viết bộ phát hiện khói đầu tiên)","Mục tiêu: giúp cả đội chạy theo cùng một kế hoạch, và có bộ phát hiện khói đầu tiên trên dữ liệu mẫu.
+Input: tài liệu kế hoạch này; dữ liệu mẫu (file CSV) của D.
+Các bước:
+1. Chủ trì Họp 1 (60 phút): duyệt 3 mẫu dữ liệu, chốt phân công, kênh liên lạc và lịch họp D1, D4, D7, D9.
+2. Tạo bảng việc trên GitHub Projects: mỗi dòng của bảng này là một thẻ việc có tên người làm và hạn.
+3. Tạo khung thuyết minh trên Google Docs theo mục 9, ghi tên người viết từng phần.
+4. Cùng B duyệt Form 1.
+5. Viết bộ phát hiện tầng 1: so số đo hiện tại với mức ""bình thường"" của chính cảm biến đó trong 30 phút trước. Nếu cao vượt hẳn và kéo dài thì gắn cờ nghi vấn. Chạy thử trên dữ liệu mẫu.","Output:
+Biên bản Họp 1.
+Bảng việc trên GitHub Projects.
+Khung thuyết minh trên Google Docs.
+Bộ phát hiện khói bản đầu, có kiểm thử.
+Coi là xong khi: ai cũng thấy việc của mình trên GitHub, và bộ phát hiện bắt được đợt khói thuốc trong dữ liệu mẫu.
+Hạn: điều phối D1; bộ phát hiện D2.
+Bàn giao cho: cả đội; A (gắn bộ phát hiện vào API).",16/10/2026,FALSE,,
+II. BUILD,A,"3. Nhận MQTT + máy trạng thái phiếu;
+4. Gộp nguồn, SLA;
+5. Web Push; 
+6. Tích hợp Mốc 1
+(Nối mọi nguồn tin thành phiếu xử lý, đặt hạn xử lý, gửi cảnh báo tới ca trực và chạy thử toàn hệ thống (Mốc 1))","Mục tiêu: tin từ cảm biến và từ SV cùng thành một phiếu, đi đủ 6 bước xử lý; ca trực nhận cảnh báo trên điện thoại trong vòng 5 giây, Lưu trạng thái hiện diện; Web Push kèm ""Có người tại chỗ / Không còn ai / Không rõ""
+Input: trạm MQTT của D, bộ phát hiện của E, trang phản ánh của B, Mẫu bản tin cảm biến thêm presence/presence_age; CSDL thêm bảng infographic
+Các bước:
+1. Viết chương trình chạy nền nhận bản tin cảm biến, lưu bản tóm tắt mỗi phút, rồi chuyển cho bộ phát hiện của E.
+2. Lập ""luật đi"" của phiếu: tiếp nhận → phân công → xác minh → xử lý → phản hồi → đóng. Không cho nhảy cóc; mỗi bước lưu ai làm, lúc nào.
+3. Gộp tin: cùng khu vực trong vòng 15 phút thì vào cùng một phiếu. Có cả cảm biến lẫn SV thì tăng mức ưu tiên; nút Khẩn cấp luôn ưu tiên cao nhất.
+4. Đặt hạn xử lý: phải có người tới hiện trường trong 15 phút, đóng phiếu trong 48 giờ. Quá hạn thì tự chuyển lên cấp trên kèm lý do.
+5. Gửi thông báo đẩy (Web Push) tới điện thoại ca trực khi có phiếu mới. Thử thêm Zalo Bot; không được thì bỏ.
+6. Ngày D5: chạy kịch bản ""22:10, B5-CTD"" từ đầu đến cuối, quay clip gửi nhóm (Mốc 1).","Output:
+API và chương trình nhận bản tin chạy trên máy chủ thử.
+Kiểm thử cho ""luật đi"" của phiếu.
+Clip Mốc 1 dài tối đa 2 phút.
+Coi là xong khi: kịch bản ""22:10, B5-CTD"" chạy trọn vẹn, từ bản tin cảm biến tới điện thoại ca trực và trang tra cứu của SV.
+Hạn: nhận bản tin và luật đi của phiếu D3; gộp tin, hạn xử lý, thông báo đẩy D4; Mốc 1 cuối D5.
+Bàn giao cho: C; D (thời điểm gửi thông báo, để đo độ trễ); cả đội.",18/10/2022,FALSE,,
+,B,"4. Tra cứu, chống spam, nút Khẩn cấp; 
+5. Lớp Phòng ngừa & Hỗ trợ; 
+6. Cấu hình toà + QR hàng loạt
+Hỗ trợ cai thuốc
+(Làm trang tra cứu, nút Khẩn cấp, góc kiến thức và hỗ trợ bỏ thuốc, công cụ in QR hàng loạt)","Mục tiêu: SV thấy phản ánh của mình được xử lý; app không bị spam; có lối đi riêng cho tình huống nguy hiểm và cho người muốn bỏ thuốc, Hỗ trợ cai thuốc (5 phần) và hiện infographic;
+Input: API tra cứu và danh sách khu vực của A; thông tin tổng đài 1800.6606 và y tế trường.
+Các bước:
+1. Làm trang tra cứu: nhập mã là thấy phiếu đang ở bước nào và lời phản hồi; không hiện tên cán bộ.
+2. Khi ai đó gửi quá nhiều lần, hiện thông báo nhẹ nhàng thay vì báo lỗi.
+3. Thêm nút đỏ ""Khẩn cấp (cháy, có người ngất)"", có bước xác nhận để tránh bấm nhầm, kèm số 114 và 115.
+4. Viết 5–6 thẻ kiến thức ngắn (mỗi thẻ dưới 60 chữ, có nguồn) và trang ""Bạn muốn bỏ thuốc?"" với giọng văn không phán xét, tách hẳn khỏi phần phản ánh.
+5. Làm trang thêm toà nhà, khu vực và nút in hàng loạt poster QR ra PDF.
+6. Ngày D4, nhắc mọi người chia sẻ Form 1 lần nữa.","Output:
+4 màn hình của app SV hoàn chỉnh.
+File PDF 20 poster QR.
+Clip quay cảnh thêm toà mới rồi in QR, có bấm giờ.
+Coi là xong khi: thêm một toà mới và in xong QR trong dưới 5 phút; bấm nút Khẩn cấp tạo ra phiếu ưu tiên cao nhất.
+Hạn: tra cứu và nút Khẩn cấp D3; góc hỗ trợ D4; in QR hàng loạt D5.
+Bàn giao cho: A (cờ khẩn cấp), C (video), E (số lượt mở trang hỗ trợ).",18/10/2023,FALSE,,
+,C,"3. Chi tiết phiếu + bản điện thoại 3 nút; 
+4. Tổng quan KPI, thiết bị, realtime; 
+5.Bản đồ nhiệt + đăng ký Web Push
+(Làm trang xử lý phiếu, bản điện thoại cho ca trực, trang tổng quan và bản đồ nhiệt)","Mục tiêu: cán bộ xử lý trọn một phiếu trên một trang; ca trực thao tác được bằng một tay trên điện thoại, Màn ca trực và sơ đồ tầng hiện trạng thái hiện diện
+Input: API phiếu, số liệu tổng quan và thông báo đẩy của A.
+Các bước:
+1. Làm trang chi tiết phiếu: lịch sử xử lý, nguồn tin, biểu đồ bụi quanh thời điểm sự việc. Chỉ hiện những nút được phép bấm ở bước hiện tại; không có ô ghi tên người vi phạm.
+2. Bản điện thoại cho ca trực: 3 nút to ""Đang đến / Đã đến / Báo nhầm"" và vài câu hỏi xác minh nhanh (còn mùi? có tàn thuốc? thấy người hút?).
+3. Làm trang tổng quan: các con số chính; sơ đồ tầng tô màu bình thường / nghi vấn / mất kết nối; cảnh báo hiện ngay khi có phiếu mới mà không cần tải lại trang.
+4. Làm bản đồ nhiệt ""khu vực × giờ trong ngày"", có công tắc xem riêng nghi vấn hoặc đã xác nhận.
+5. Biến màn hình ca trực thành app cài được trên điện thoại (PWA) để nhận thông báo đẩy; viết hướng dẫn riêng cho iPhone.
+6. Gắn nhãn ""Dữ liệu mô phỏng"" trên mọi trang dùng dữ liệu giả lập.","Output:
+4 trang dashboard.
+Màn hình ca trực cài được trên điện thoại.
+Coi là xong khi: bấm vào thông báo là mở thẳng phiếu, và bấm ""Đã đến"" thì ghi lại được thời gian tới hiện trường.
+Hạn: trang phiếu D3; tổng quan D4; bản đồ nhiệt và thông báo đẩy D5.
+Bàn giao cho: A; D (thời điểm nhận thông báo); B.",18/10/2024,FALSE,,
+,D,"3. Bộ giả lập v1 (6 tuần); 
+4. Kịch bản demo + worker; 
+5. Lưu tạm – gửi bù + client đo độ trễ
+(Sinh 6 tuần dữ liệu giả lập, viết lệnh chạy kịch bản demo, thêm tính năng gửi bù cho firmware)","Mục tiêu: hệ thống lúc nào cũng có dữ liệu ""sống"", và có một kịch bản demo chạy bằng một lệnh, Dữ liệu 6 tuần kèm tín hiệu hiện diện, có cả trường hợp PIR sai
+Input: điểm nóng và khung giờ ở mục 4; mẫu bản tin cảm biến; API của A.
+Các bước:
+1. Sinh 6 tuần dữ liệu cho 10 cảm biến (5 giây một số đo), kèm danh sách sự kiện có nhãn đúng.
+2. Đưa vào cơ sở dữ liệu bản tóm tắt mỗi phút, cùng phản ánh và thời gian xử lý giả lập, để dashboard có số liệu.
+3. Cho bộ giả lập chạy liên tục trên máy chủ: 10 cảm biến gửi bản tin mỗi 5 giây như thật.
+4. Viết lệnh chạy kịch bản ""22:10, B5-CTD"": tạo một đợt khói thuốc ở cầu thang Đông tầng 5 toà B, có thể kèm 1 phản ánh SV sau 60 giây.
+5. Thêm vào firmware: mất WiFi thì lưu tạm, có mạng lại thì gửi bù với đúng giờ gốc.
+6. Viết công cụ đo thời gian từ lúc gắn cờ đến lúc điện thoại ca trực nhận thông báo.","Output:
+File dữ liệu 6 tuần, kèm giải thích các thông số đã dùng.
+Lệnh chạy kịch bản demo.
+Firmware mới trên Wokwi.
+Công cụ đo độ trễ.
+Coi là xong khi: dashboard có đủ 6 tuần dữ liệu; tắt WiFi trên Wokwi rồi bật lại thì dữ liệu được gửi bù đúng giờ gốc.
+Hạn: dữ liệu 6 tuần D3; kịch bản demo D4; gửi bù và đo độ trễ D5.
+Bàn giao cho: A, E, C.",18/10/2025,FALSE,,
+,E,"2. Tầng 1 trên 6 tuần; 
+3. Tầng 1 chạy trong API + tầng 2; 
+4. LLM
+(Hoàn thiện bộ phát hiện khói, gắn vào hệ thống, thêm AI phân loại sự kiện và AI viết báo cáo tuần)","Mục tiêu: cảnh báo sớm nhưng ít báo nhầm, và có AI viết báo cáo tuần cho BQL, Tầng 1 dùng hiện diện để tăng độ tin cậy; tầng 2 thêm đặc trưng hiện diện
+Input: dữ liệu 6 tuần của D; chương trình nhận bản tin của A; khoá Claude API (nếu có).
+Các bước:
+1. Dùng 4 tuần đầu để chỉnh độ nhạy của bộ phát hiện; 2 tuần cuối để dành, chỉ dùng khi đánh giá.
+2. Giảm độ tin cậy trong 3 trường hợp dễ nhầm: độ ẩm tăng vọt (hơi nước nhà tắm), nhiều cảm biến cùng tăng một lúc (ô nhiễm ngoài trời), hạt bụi to (quét dọn).
+3. Gắn bộ phát hiện vào API: cảnh báo phát ngay với nhãn ""chưa phân loại"".
+4. Huấn luyện mô hình phân loại (tầng 2) để khi đợt khói kết thúc thì gắn đúng loại: thuốc lá điếu, thuốc lá điện tử, hơi nước…
+5. Dùng Claude viết báo cáo tuần chỉ từ số liệu tổng hợp, và phân loại ghi chú của SV (spam, bình thường, cần ưu tiên). Không có khoá API thì dùng mẫu soạn sẵn.","Output:
+Bộ phát hiện chạy trong hệ thống.
+Mô hình phân loại có ghi phiên bản và ngày huấn luyện.
+Chức năng viết báo cáo tuần và phân loại ghi chú.
+Coi là xong khi: chạy kịch bản ""22:10"" thì có cảnh báo ""chưa phân loại"", và khi đợt khói kết thúc thì phiếu được gắn ""thuốc lá điếu"".
+Hạn: bộ phát hiện và mô hình phân loại D4; AI viết báo cáo D5.
+Bàn giao cho: A; C (hiển thị loại sự kiện).",18/10/2026,FALSE,,
+III. EXTEND ,A,"7. Sandbox cho BGK, dữ liệu tự lùi ngày, phân quyền; sửa lỗi trước đóng băng
+(Làm khu thử riêng cho Ban Giám khảo, giữ dữ liệu luôn mới và rà lại quyền truy cập)","Mục tiêu: BGK bấm thử lúc nào cũng được mà không làm hỏng dữ liệu demo, và dữ liệu lúc nào cũng ""mới"".Thêm bước làm API đăng infographic (chỉ BQL, ≤ 2 MB, xoá EXIF)
+Input: dữ liệu 6 tuần và lệnh chạy kịch bản của D.
+Các bước:
+1. Tạo ""khu thử"" (sandbox) cho tài khoản BGK: phiếu do BGK tạo không lẫn vào số liệu chính và tự xoá sau 30 phút; có nút ""Đặt lại"".
+2. Mỗi đêm tự dời ngày của dữ liệu giả lập để tuần gần nhất luôn kết thúc đúng hôm nay.
+3. Rà quyền: BGK không sửa được phiếu thật; ca trực chỉ thấy phiếu được giao cho mình.
+4. Đánh dấu riêng các phản ánh đến từ link dùng thử của Form 2, để không lẫn vào số liệu vận hành.
+5. Sửa hết lỗi tồn đọng trước 12:00 D7.","Output:
+Tài khoản BGK và tài khoản ca trực demo trên máy chủ thử.
+Hướng dẫn 3 bước cho BGK, gửi E và C.
+Coi là xong khi: dùng tài khoản BGK chạy kịch bản 3 lần liên tiếp, bấm ""Đặt lại"" thì dữ liệu chính không thay đổi.
+Hạn: D6; sửa lỗi xong trước 12:00 D7.
+Bàn giao cho: C (nút trên giao diện), E, B.
+bàn giao API infographic",20/10/2022,FALSE,,
+,B,"6. Chuẩn bị QR
+7. Soạn Form 2 (dùng thử sản phẩm)
+(In poster QR và soạn Form 2 (SV tự dùng thử app rồi đánh giá))","Mục tiêu: chuẩn bị lần đo thật duy nhất về sản phẩm: SV tự dùng thử app rồi trả lời form.
+Input: file PDF poster QR; app bản chạy thử; link dùng thử do A đánh dấu.
+Các bước:
+1. In 2–3 poster thật để chụp ảnh và quay video.
+2. Soạn Form 2: đầu form có link và QR mở app, rồi giao 3 việc tự làm: gửi một phản ánh thử, tra trạng thái bằng mã, tìm thông tin hỗ trợ bỏ thuốc.
+3. Thêm câu hỏi: có làm được từng việc không; sẵn sàng phản ánh tới mức nào trước và sau khi dùng (thang 1–5); 10 câu SUS (thang đo độ dễ dùng chuẩn quốc tế) bản tiếng Việt; 2 câu góp ý.
+4. Nhờ 2 người trong đội làm thử form. Giữ ẩn danh, không hỏi tên hay mã SV.","Output:
+Link Form 2 sẵn sàng để phát.
+2–3 poster in thật.
+Coi là xong khi: 2 người thử làm hết form trong không quá 10 phút, và app ghi lại được thời gian thao tác.
+Hạn: D6; phát form vào chiều D7, sau giờ đóng băng tính năng.
+Bàn giao cho: E (phân tích), C (dùng poster để quay video).",20/10/2023,FALSE,,
+,C,"6. Màn hình ca trực đầy đủ + trang Dự báo; kiểm thử nội bộ luồng ca trực; kịch bản lời thoại video (Hoàn thiện màn hình ca trực và trang Dự báo, tự thử luồng ca trực, viết lời thoại video)
+Thêm khung infographic vào tên nhiệm vụ","Mục tiêu: hoàn thiện mọi màn hình trước khi đóng băng tính năng lúc 12:00 D7. Thêm bước làm khung infographic; đánh số lại các bước
+Input: dữ liệu dự báo và lịch tuần tra của D; tài khoản ca trực demo của A.
+Các bước:
+1. Hoàn thiện màn hình ca trực: danh sách ""phiếu của tôi"", lịch sử, phiếu xác minh đầy đủ.
+2. Làm trang Dự báo & tuần tra: các khung giờ và khu vực dễ có khói nhất, lịch tuần tra gợi ý; ghi rõ ""dựa trên dữ liệu mô phỏng"".
+3. Sáng D7: 2–3 bạn trong đội tự thử luồng ca trực (kiểm thử nội bộ) từ lúc nhận thông báo đến lúc đóng phiếu; ghi lỗi lên GitHub để sửa.
+4. Viết lời thoại cho video theo kịch bản ở mục 9, chốt với E.","Output:
+Dashboard đủ tất cả các trang.
+Danh sách lỗi đã sửa.
+Lời thoại video.
+Coi là xong khi: trước 12:00 D7 không còn lỗi nào làm hỏng luồng của ca trực.
+Hạn: từ D6 đến 12:00 D7.
+Bàn giao cho: E (duyệt lời thoại), A.",20/10/2024,FALSE,,
+,D,"6. Hiệu chỉnh giả lập theo Form 1; dự báo + lịch tuần tra v1 (Chỉnh bộ giả lập theo kết quả Form 1, dự báo giờ và chỗ dễ có khói, đưa ra lịch tuần tra gợi ý)","Mục tiêu: làm dữ liệu giả lập sát thực tế hơn nhờ Form 1, và đưa ra gợi ý tuần tra cho BQL.
+Input: bảng ""giờ nào, chỗ nào hay gặp khói thuốc"" do E rút ra từ Form 1; dữ liệu sự kiện và phiếu.
+Các bước:
+1. Chỉnh bộ giả lập theo kết quả Form 1 (giờ cao điểm, điểm nóng), sinh lại 6 tuần dữ liệu và ghi lại đã đổi gì.
+2. Tính ""điểm rủi ro"" cho từng khu vực theo từng giờ của tuần tới, dựa trên 4 tuần gần nhất. Sự kiện đã xác nhận tính nặng hơn sự kiện nghi vấn; tuần gần tính nặng hơn tuần xa.
+3. Từ điểm rủi ro, chọn khoảng 6 ca tuần tra (mỗi ca 30 phút) mỗi ngày, phủ được nhiều nguy cơ nhất.
+4. Gửi kết quả cho C hiển thị.","Output:
+Dữ liệu 6 tuần bản mới.
+Dự báo và lịch tuần tra gợi ý, ở dạng dữ liệu để C hiển thị.
+Coi là xong khi: trang Dự báo hiện được 10 khung giờ – khu vực có nguy cơ cao nhất trong 7 ngày tới.
+Hạn: D6.
+Bàn giao cho: C, E.",20/10/2025,FALSE,,
+,E,"5. Trang Minh bạch thuật toán; 
+6. Phân tích đợt 1 Form 1
+(Làm trang Minh bạch thuật toán và phân tích kết quả Form 1 đợt đầu)","Mục tiêu: BGK tự kiểm tra được thuật toán; đội có số liệu nhu cầu thật để chỉnh bộ giả lập. Trang Minh bạch nêu giới hạn của cảm biến hiện diện
+Input: kết quả chạy bộ phát hiện; dữ liệu Form 1.
+Các bước:
+1. Làm trang ""Minh bạch thuật toán"": bắt đúng bao nhiêu, báo nhầm bao nhiêu, hay nhầm loại nào với loại nào, phát hiện mất bao lâu. Luôn ghi rõ ""trên dữ liệu mô phỏng, gồm bao nhiêu sự kiện"".
+2. Phân tích Form 1 đợt đầu: bao nhiêu người trả lời, tỉ lệ SV nội trú, 4–6 biểu đồ chính.
+3. Rút ra bảng ""giờ nào, chỗ nào hay gặp khói thuốc"", gửi D trước trưa D6.
+4. Chỉ kết luận trong phạm vi mẫu, ghi rõ đây là khảo sát tự nguyện.","Output:
+Trang Minh bạch thuật toán.
+Bản phân tích Form 1 đợt đầu: biểu đồ và 3 phát hiện chính.
+Coi là xong khi: D đã nhận bảng ""giờ nào, chỗ nào hay gặp khói thuốc"", và trang Minh bạch hiện số liệu của lần chạy gần nhất.
+Hạn: D6.
+Bàn giao cho: D, C, B.",20/10/2026,FALSE,,
+IV. VALIDATION,A,"8. Triển khai bản công khai + giám sát; 
+9. SOP vận hành + quy chế dữ liệu
+(Đưa sản phẩm lên link chính thức, theo dõi để không bị sập, viết quy trình vận hành và quy chế dữ liệu)","Mục tiêu: đường link chạy ổn định suốt thời gian chấm; chứng minh mô hình vận hành được bởi người thật, đúng thẩm quyền. Quy chế dữ liệu thêm cảm biến hiện diện, Hỗ trợ cai thuốc, infographic
+Input: code đã đóng băng và các bản sửa lỗi; quy trình 6 bước của Vòng 1.
+Các bước:
+1. Đưa bản cuối lên 2 đường link chính thức (app SV, dashboard); bộ giả lập chạy cùng máy chủ; sao lưu dữ liệu.
+2. Cài công cụ báo khi web sập (VD: UptimeRobot). Nếu gói miễn phí hay ""ngủ"" thì giữ cho nó thức, hoặc thuê máy chủ nhỏ.
+3. Đổi toàn bộ mật khẩu và khoá đã dùng khi phát triển.
+4. Mượn máy lạ, dùng 4G và cửa sổ ẩn danh để thử: quét QR, phản ánh, tra cứu, đăng nhập 3 vai trò.
+5. Viết quy trình vận hành (SOP) 1–2 trang: bước nào, ai làm, trong bao lâu; tình huống khẩn cấp xử lý ra sao.
+6. Viết quy chế dữ liệu 1 trang: thu gì, không thu gì, lưu bao lâu, ai được xem.","Output:
+2 link chính thức, ghi kèm tài khoản demo trong file hướng dẫn.
+Quy trình vận hành (SOP).
+Quy chế dữ liệu.
+Coi là xong khi: (Mốc 3) mở được link từ một máy lạ qua mạng 4G, và công cụ theo dõi báo web đang chạy.
+Hạn: cuối D8.
+Bàn giao cho: E (đưa vào hồ sơ), C (dùng cho video).",22/10/2022,FALSE,,
+,B,"7.  Phát Form 2 hai đợt + sửa giao diện giữa hai đợt
+(Phát Form 2 hai đợt và sửa giao diện theo góp ý giữa hai đợt)","Mục tiêu: có số đo thật về độ dễ dùng và mức sẵn sàng phản ánh của SV với sản phẩm đang chạy.
+Input: Form 2; app bản chính thức.
+Các bước:
+1. Chiều D7: phát Form 2 đợt 1 qua nhóm lớp, nhóm KTX, CLB; cả đội cùng chia sẻ.
+2. Tối D7 đến sáng D8: đọc góp ý, chọn 5 điểm cần sửa nhất, sửa giao diện xong trước 12:00 D8.
+3. Chiều D8: phát đợt 2 (cùng form, ghi rõ là đợt 2) để so trước và sau khi sửa.
+4. Không tổ chức buổi thử nghiệm trực tiếp; mọi số đo lấy từ form và nhật ký ẩn danh của app.","Output:
+Ít nhất 30 câu trả lời Form 2 (cộng cả hai đợt).
+Danh sách những chỗ giao diện đã sửa.
+Coi là xong khi: mỗi đợt có từ 15 câu trả lời trở lên. Nếu thiếu, mỗi người nhờ thêm 2 nhóm chia sẻ và giữ form mở tới 9:00 D9.
+Hạn: đợt 1 chiều D7; sửa giao diện trước 12:00 D8; đợt 2 chiều D8.
+Bàn giao cho: E (phân tích), C (giao diện mới để quay video).",22/10/2023,FALSE,,
+,C,8. Quay video demo + ảnh chụp màn hình,"Mục tiêu: quay đủ cảnh cho video trên giao diện cuối cùng.
+Input: lời thoại đã chốt; link chính thức; một điện thoại đã bật thông báo; clip Wokwi của D và clip thêm toà mới của B.
+Các bước:
+1. Chỉ quay sau 12:00 D8, khi giao diện đã chốt.
+2. Quay màn hình máy tính ở độ phân giải 1080p (VD: dùng OBS); dùng máy thứ hai quay điện thoại lúc nhận thông báo.
+3. Mỗi cảnh quay 2 lần để chọn bản đẹp; không quay mặt người.
+4. Chụp 8–10 ảnh màn hình đẹp (cả điện thoại và máy tính) cho thuyết minh.","Output:
+Thư mục cảnh quay, chia theo 8 phân đoạn của kịch bản video ở mục 9 tab kế hoạch.
+Bộ ảnh chụp màn hình.
+Coi là xong khi: có đủ cảnh cho cả 8 phân đoạn.
+Hạn: cuối D8.
+Bàn giao cho: E (ảnh cho thuyết minh).",22/10/2024,FALSE,,
+,D,"7. Đo độ trễ chính thức + mô phỏng độ phủ; 
+8 · Kiểm chứng lùi dự báo + hồ sơ phần cứng
+(Đo độ trễ chính thức, so sánh tuần tra cố định với hệ thống, lập danh sách linh kiện và tính chi phí)","Mục tiêu: có các con số chứng minh hiệu quả và căn cứ chi phí để triển khai thật. Danh sách linh kiện thêm cảm biến hiện diện
+Input: công cụ đo thời gian; dữ liệu 6 tuần; dự toán Vòng 1 (32,8 triệu đồng).
+Các bước:
+1. Đo ít nhất 100 lần: phát hiện mất bao lâu, và thông báo tới điện thoại mất bao lâu. Lấy số ở giữa (trung vị) và số gần xấu nhất (P95).
+2. Mô phỏng so sánh hai cách: chỉ đi tuần tra theo lịch cố định, với dùng cảm biến + QR + tuần tra theo gợi ý. Xem cách nào kịp tới hiện trường trong 15 phút nhiều hơn. Chạy 3 mức giả định (xấu, vừa, tốt) và ghi rõ giả định.
+3. Kiểm tra dự báo: dùng 4 tuần đầu để đoán 2 tuần sau, xem lịch gợi ý có ""trúng"" nhiều sự kiện hơn lịch cố định không.
+4. Lập danh sách linh kiện cho 1 cảm biến (ESP32, SPS30, cảm biến nhiệt ẩm, nguồn, vỏ), lấy giá ở ít nhất 2 nơi bán. Tách chi phí mua một lần với chi phí hằng tháng, tính chi phí cho mỗi toà nhà.","Output:
+Kết quả đo độ trễ, kèm biểu đồ.
+Bảng so sánh tuần tra cố định với hệ thống, và kết quả kiểm tra dự báo.
+Danh sách linh kiện và dự toán đã cập nhật.
+Coi là xong khi: E nhận đủ số liệu để viết phần Kết quả và phần Nguồn lực, kinh phí của thuyết minh.
+Hạn: đo độ trễ và so sánh tuần tra D7; kiểm tra dự báo và dự toán D8.
+Bàn giao cho: E.",22/10/2025,FALSE,,
+,E,"7. Đánh giá chính thức + 3 bộ độ bền; 
+8. Ghép thuyết minh
+(Đánh giá chính thức bộ phát hiện khói và ghép bản thảo thuyết minh)","Mục tiêu: có kết quả AI đáng tin và bản thảo thuyết minh đủ khung. Bộ kiểm tra độ bền thêm trường hợp PIR sai
+Input: bộ phát hiện đã chốt độ nhạy; dữ liệu Form 1 (đóng ngày D7); số liệu của D.
+Các bước:
+1. Đánh giá chính thức trên 2 tuần để dành, cộng 3 bộ dữ liệu ""làm khó"" (thông số lệch đi, sự kiện chồng nhau, tỉ lệ các loại sự kiện khác). Không chỉnh lại độ nhạy ở bước này; báo cả kết quả chưa đạt.
+2. Đưa kết quả lên trang Minh bạch thuật toán.
+3. Đóng Form 1 và phân tích lần cuối.
+4. Ghép bản thảo thuyết minh theo mục 9, điền số liệu, dùng thống nhất các từ ""nghi vấn"", ""đã xác nhận"", ""mô phỏng"".
+5. Kiểm tra kết quả kỳ họp Quốc hội về Luật phòng, chống tác hại của thuốc lá sửa đổi để cập nhật căn cứ pháp lý.","Output:
+Bảng kết quả AI, kèm một đoạn nói rõ giới hạn.
+Bản thảo thuyết minh đủ 13 phần.
+Coi là xong khi: mọi con số trong thuyết minh đều ghi được lấy từ đâu (file kết quả, form hay nhật ký của app).
+Hạn: đánh giá D7; bản thảo cuối D8.
+Bàn giao cho: cả đội (mỗi người viết bổ sung phần của mình).",22/10/2026,FALSE,,
+IV. COMPLETE,A,"Rà kỹ thuật toàn bộ link; viết mục Kiến trúc, Bảo mật & quyền riêng tư, Phương thức triển khai 
+(Kiểm tra lại toàn bộ link và viết phần kỹ thuật của thuyết minh)","Mục tiêu: không có lỗi kỹ thuật khi BGK mở link, và phần kỹ thuật trong thuyết minh viết đúng. Phần quyền riêng tư nhắc cảm biến hiện diện
+Input: link chính thức; SOP và quy chế dữ liệu. 
+Các bước:
+1. Cùng D đi lại từng mục trong danh sách kiểm tra link ở mục 9.
+2. Viết 3 phần thuyết minh: sơ đồ kiến trúc; cách bảo vệ quyền riêng tư (không camera, không định danh, che thông tin, phân quyền); lộ trình 12 tuần triển khai thật và cách chuyển sang Zalo, thiết bị thật.","Output:
+Danh sách kiểm tra link ở mục 9 tab kế hoạch, đã đánh dấu đủ.
+3 phần thuyết minh (khoảng 3 trang).
+Coi là xong khi: E nhận được bài viết trước 12:00 D9.
+Hạn: 12:00 D9.
+Bàn giao cho: E.",24/10/2022,FALSE,,
+,B,"Đóng Form 2, tính SUS; infographic; viết mục Đối tượng & nhu cầu, Trải nghiệm & kết quả Form 2 
+(Tổng hợp kết quả Form 2, làm infographic và viết phần người dùng của thuyết minh)","Mục tiêu: biến phản hồi thật của SV thành bằng chứng trong hồ sơ. Infographic được đăng lên khung infographic của dashboard
+Input: dữ liệu Form 2; phân tích Form 1 của E.
+Các bước:
+1. Đóng Form 2 lúc 9:00.
+2. Tính điểm SUS theo công thức chuẩn: câu lẻ lấy điểm trừ 1, câu chẵn lấy 5 trừ điểm, cộng tất cả rồi nhân 2,5. So đợt 1 với đợt 2.
+3. Lấy thời gian thao tác từ nhật ký của app (các phản ánh có đánh dấu dùng thử).
+4. Làm 1 infographic: khói thuốc thụ động, thuốc lá điện tử, cách quét QR để phản ánh.
+5. Viết 2 phần thuyết minh, mỗi phần tối đa 1 trang, có chân dung 4 nhóm đối tượng.","Output:
+Bảng điểm SUS và biểu đồ so sánh trước và sau khi sửa giao diện.
+1 infographic.
+2 phần thuyết minh.
+Coi là xong khi: E nhận được bài viết trước 12:00 D9.
+Hạn: 12:00 D9.
+Bàn giao cho: E; C (số liệu cho video).",24/10/2023,FALSE,,
+,C,Dựng video demo + video mạng xã hội; viết mục Mô tả sản phẩm + hướng dẫn cho BGK,"Mục tiêu: BGK xem 4 phút là hiểu sản phẩm và tin rằng nó chạy thật.
+Input: cảnh quay ở giai đoạn 4; số liệu Form 2 của B.
+Các bước:
+1. Dựng video theo 8 phân đoạn ở mục 9 (VD: CapCut, DaVinci Resolve); lồng tiếng, thêm phụ đề tiếng Việt, gắn nhãn ""Dữ liệu mô phỏng"" ở cảnh dùng dữ liệu giả lập; dùng nhạc không bản quyền.
+2. Cắt một bản 30–45 giây để đăng mạng xã hội.
+3. Viết phần thuyết minh ""Mô tả sản phẩm"" (mỗi vai trò dùng được gì) và 1 trang hướng dẫn cho BGK.","Output:
+Video demo khoảng 4 phút 20 giây trên YouTube (chế độ không công khai), kèm file gốc trên Drive.
+Video ngắn cho mạng xã hội.
+Phần thuyết minh ""Mô tả sản phẩm"" và hướng dẫn cho BGK.
+Coi là xong khi: cả đội xem và duyệt ở Họp 4.
+Hạn: 16:00 D9.
+Bàn giao cho: E.",24/10/2024,FALSE,,
+,D,"Rà kỹ thuật cùng A; viết mục Kênh cảm biến, Nguồn lực & kinh phí, Khả năng nhân rộng","Mục tiêu: trình bày phần cứng và chi phí đủ rõ để BGK tin là triển khai được.
+Input: danh sách linh kiện, dự toán, kết quả mô phỏng, link Wokwi.
+Các bước:
+1. Cùng A đi lại danh sách kiểm tra link.
+2. Viết 3 phần thuyết minh: kênh cảm biến (firmware, bộ giả lập, kế hoạch hiệu chỉnh khi có thiết bị thật); nhân lực và kinh phí (mua một lần, chi hằng tháng); khả năng nhân rộng (gói triển khai, chi phí mỗi toà, lộ trình KTX → toàn ĐHQGHN → trường khác).","Output: 3 phần thuyết minh (khoảng 3 trang), có bảng linh kiện và bảng dự toán.
+Coi là xong khi: E nhận được bài viết trước 12:00 D9.
+Hạn: 12:00 D9.
+Bàn giao cho: E.",24/10/2025,FALSE,,
+,E,Hoàn thiện thuyết minh; chủ trì Họp 4 chấm thử (Mốc 4),"Mục tiêu: hồ sơ đạt mức cao nhất ở cả 6 tiêu chí chấm.
+Input: toàn bộ các phần thuyết minh; video; các link.
+Các bước:
+1. Ghép các phần, sửa cho cùng một giọng văn, đánh số hình và bảng, ghi nguồn đầy đủ.
+2. 16:00 chủ trì Họp 4: mỗi người tự chấm 6 tiêu chí (thang 10) và ghi một điểm yếu nhất. Tiêu chí nào dưới 9 điểm thì phân công sửa ngay.
+3. Sửa xong trong tối D9; xuất PDF đúng mẫu của Ban Tổ chức.","Output:
+Thuyết minh bản cuối dạng PDF.
+Biên bản buổi chấm thử.
+Coi là xong khi: tiêu chí nào cũng đạt từ 9 điểm trở lên khi chấm thử, hoặc đã ghi rõ lý do chưa đạt.
+Hạn: tối D9.
+Bàn giao cho: cả đội.",24/10/2026,FALSE,,
+V. SUBMIT,A,Trực sự cố hệ thống,"Mục tiêu: hệ thống không gặp sự cố khi BGK mở.
+Input: link chính thức; các tài khoản demo.
+Các bước:
+1. Sáng D10: kiểm tra công cụ báo sập web, đăng nhập thử 3 vai trò, chạy kịch bản demo 1 lần.
+2. Giữ điện thoại bên mình để xử lý nếu có sự cố trong thời gian chấm.","Output: tin nhắn ""OK"" trong nhóm sau khi kiểm tra xong.
+Coi là xong khi: đã thử đủ link, tài khoản và kịch bản demo, mọi thứ chạy bình thường.
+Hạn: sáng D10, trước khi E nộp.
+Bàn giao cho: E.",25/10/2022,FALSE,,
+,B,Kiểm tra định dạng hồ sơ,"Mục tiêu: hồ sơ không bị loại vì sai thể thức.
+Input: thuyết minh PDF bản cuối; mẫu và quy định của Ban Tổ chức.
+Các bước:
+1. So hồ sơ với mẫu và giới hạn của Ban Tổ chức: số trang, phông chữ, tên file.
+2. Dùng 2 điện thoại quét thử mã QR in trong thuyết minh.","Output: danh sách kiểm tra thể thức, đã đánh dấu đủ.
+Coi là xong khi: đúng số trang, phông chữ và tên file theo quy định, và mã QR trong thuyết minh quét được.
+Hạn: sáng D10.
+Bàn giao cho: E.",25/10/2023,FALSE,,
+,C,Video dự phòng,"Mục tiêu: BGK lúc nào cũng xem được video.
+Input: video bản cuối; link YouTube.
+Các bước:
+1. Mở link YouTube bằng cửa sổ ẩn danh để chắc chắn người ngoài xem được.
+2. Tải file gốc lên Drive, mở quyền xem; ghi cả 2 link vào hồ sơ.","Output: 2 link video (YouTube và Drive) mở được.
+Coi là xong khi: người ngoài mở được cả 2 link mà không cần xin quyền.
+Hạn: sáng D10.
+Bàn giao cho: E.",25/10/2024,FALSE,,
+,D,Sao lưu và gắn phiên bản,"Mục tiêu: giữ nguyên bản đã nộp để đối chiếu về sau.
+Input: repo GitHub; dữ liệu giả lập; cơ sở dữ liệu; firmware.
+Các bước:
+1. Đánh dấu phiên bản v1.0-vong2 trên GitHub.
+2. Sao lưu dữ liệu giả lập, cơ sở dữ liệu và firmware lên Drive.","Output: phiên bản v1.0-vong2 trên GitHub và thư mục sao lưu trên Drive.
+Coi là xong khi: A hoặc E mở thử được cả phiên bản trên GitHub lẫn thư mục sao lưu.
+Hạn: D10.
+Bàn giao cho: A, E.",25/10/2025,FALSE,,
+,E,Nộp bài,"Mục tiêu: nộp đúng hạn, đủ thành phần.
+Input: thuyết minh PDF, các link, video; xác nhận ""OK"" của A, B, C, D.
+Các bước:
+1. Chờ A, B, C, D báo ""OK"" trong nhóm.
+2. Nộp thuyết minh, các link và video theo kênh của Ban Tổ chức.
+3. Chụp lại biên nhận và gửi vào nhóm.","Output: biên nhận nộp bài, gửi vào nhóm.
+Coi là xong khi: Ban Tổ chức xác nhận đã nhận đủ thuyết minh, link và video.
+Hạn: trước hạn chót của Ban Tổ chức, càng sớm càng tốt.
+Bàn giao cho: cả đội.",25/10/2026,FALSE,,
+,,,,,,FALSE,,

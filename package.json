@@ -1,0 +1,30 @@
+{
+  "name": "vnu-smart-free-zone",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "frontend/admin"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,admin \"npm run dev:api\" \"npm run dev:admin\"",
+    "dev:api": "tsx scripts/test-server/server.ts",
+    "dev:admin": "npm run dev --workspace @sfz/admin",
+    "build": "npm run build --workspace @sfz/admin",
+    "typecheck": "tsc --noEmit -p tsconfig.json && npm run typecheck --workspace @sfz/admin",
+    "test": "tsx --test tests/api.test.ts",
+    "test:e2e": "playwright test",
+    "assets": "tsx scripts/generate-design-assets.ts",
+    "report:demo": "tsx scripts/test-server/send-report.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^24.0.0",
+    "concurrently": "^9.2.0",
+    "socket.io": "^4.8.1",
+    "tsx": "^4.20.0",
+    "typescript": "~5.9.3"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  }
+}
