@@ -101,6 +101,7 @@ reportsRouter.post("/", (req: Request, res: Response) => {
     const initialPriority = data.emergency ? "urgent" : "normal";
     const initialSource = data.emergency ? "emergency" : "report";
     const { dueAt } = calculateSLA(initialPriority);
+    const isTrial = Boolean(data.is_trial || data.source === "form2_trial");
 
     targetTicket = {
       code: ticketCode,
@@ -114,6 +115,8 @@ reportsRouter.post("/", (req: Request, res: Response) => {
       assignee_id: null,
       presence: zone.presence,
       feedback_note: null,
+      is_trial: isTrial,
+      is_sandbox: false,
     };
 
     store.saveTicket(targetTicket);
@@ -125,8 +128,8 @@ reportsRouter.post("/", (req: Request, res: Response) => {
       to_status: "received",
       action: "create",
       performed_by_id: null,
-      performed_by_name: "Sinh viên (quét QR)",
-      note: `Tạo phiếu từ phản ánh [${trackingCode}]: ${reportTypeLabels[data.type] || data.type}. Ghi chú: ${cleanedNote || "Không có"}`,
+      performed_by_name: isTrial ? "Sinh viên (thử nghiệm Form 2)" : "Sinh viên (quét QR)",
+      note: `Tạo phiếu từ phản ánh [${trackingCode}]: ${reportTypeLabels[data.type] || data.type}.${isTrial ? " [NGUỒN THỬ NGHIỆM FORM 2]" : ""} Ghi chú: ${cleanedNote || "Không có"}`,
       created_at: nowIso,
     });
 
@@ -136,6 +139,7 @@ reportsRouter.post("/", (req: Request, res: Response) => {
   }
 
   // 4. Lưu bản ghi phản ánh
+  const isTrial = Boolean(data.is_trial || data.source === "form2_trial");
   store.saveReport({
     id: `rep_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
     tracking_code: trackingCode,
@@ -146,8 +150,11 @@ reportsRouter.post("/", (req: Request, res: Response) => {
     note: cleanedNote,
     device_token: data.device_token,
     ticket_code: targetTicket.code,
+    source: data.source || "qr_app",
+    is_trial: isTrial,
+    is_sandbox: false,
     created_at: nowIso,
-  });
+  } as any);
 
   return res.status(201).json({
     tracking_code: trackingCode,

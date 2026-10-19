@@ -120,8 +120,8 @@ test("Gộp nguồn & Nâng mức ưu tiên", () => {
   assert.equal(emergencyMerged.priority, "urgent");
 });
 
-test("Danh mục 20 khu vực & 10 nút cảm biến KTX", () => {
-  assert.equal(DEFAULT_ZONES.length, 20);
+test("Danh mục 25 khu vực & 10 nút cảm biến UET Hoà Lạc", () => {
+  assert.equal(DEFAULT_ZONES.length, 25);
   const sensors = DEFAULT_ZONES.filter((z) => z.sensor_id !== null);
   assert.equal(sensors.length, 10);
 });

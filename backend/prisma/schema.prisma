@@ -87,6 +87,10 @@ model Ticket {
   assignee      User?           @relation("AssignedTickets", fields: [assignee_id], references: [id])
   presence      Boolean?
   feedback_note String?
+  is_sandbox    Boolean         @default(false)
+  is_trial      Boolean         @default(false)
+  is_overdue    Boolean         @default(false)
+  escalated     Boolean         @default(false)
 
   events        Event[]
   history       TicketHistory[]
@@ -130,6 +134,9 @@ model Report {
   emergency     Boolean  @default(false)
   note          String   @default("")
   device_token  String
+  source        String   @default("qr_app") // "qr_app", "form2_trial"
+  is_trial      Boolean  @default(false)
+  is_sandbox    Boolean  @default(false)
   ticket_code   String?
   ticket        Ticket?  @relation(fields: [ticket_code], references: [code])
   created_at    DateTime @default(now())
