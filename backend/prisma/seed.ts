@@ -42,7 +42,7 @@ export const SEED_USERS = [
 export const SEED_TICKETS = [
   {
     code: "SF-DEMO-001",
-    zone_code: "B5-CTD",
+    zone_code: "UET1-3CT",
     source: "report",
     priority: "normal",
     status: "received",
@@ -55,7 +55,7 @@ export const SEED_TICKETS = [
   },
   {
     code: "SF-DEMO-002",
-    zone_code: "B6-ST",
+    zone_code: "UET1-5WC",
     source: "sensor",
     priority: "high",
     status: "assigned",
@@ -68,7 +68,7 @@ export const SEED_TICKETS = [
   },
   {
     code: "SF-DEMO-003",
-    zone_code: "A6-ST",
+    zone_code: "UET2-3CT",
     source: "both",
     priority: "urgent",
     status: "verifying",
@@ -77,11 +77,11 @@ export const SEED_TICKETS = [
     due_at: new Date(Date.now() - 5 * 60 * 1000).toISOString(), // Quá hạn 5 phút (SLA cảnh báo đỏ)
     assignee_id: "usr_catruc",
     presence: true,
-    feedback_note: "Ca trực đang tiếp cận hiện trường lối lên sân thượng toà A",
+    feedback_note: "Ca trực đang tiếp cận hiện trường cầu thang toà UET2",
   },
   {
     code: "SF-DEMO-004",
-    zone_code: "A5-CTD",
+    zone_code: "UET2-5WC",
     source: "emergency",
     priority: "urgent",
     status: "handled",
@@ -94,7 +94,7 @@ export const SEED_TICKETS = [
   },
   {
     code: "SF-DEMO-005",
-    zone_code: "B2-WC",
+    zone_code: "UET3-2HL",
     source: "report",
     priority: "normal",
     status: "responded",
@@ -103,11 +103,11 @@ export const SEED_TICKETS = [
     due_at: new Date(Date.now() - 105 * 60 * 1000).toISOString(),
     assignee_id: "usr_catruc",
     presence: false,
-    feedback_note: "Ca trực đã vệ sinh và tăng cường tuần tra tại khu rửa tay tầng 2 toà B",
+    feedback_note: "Ca trực đã tuần tra và làm sạch hành lang toà UET3",
   },
   {
     code: "SF-DEMO-006",
-    zone_code: "A2-WC",
+    zone_code: "UET4-2CT",
     source: "sensor",
     priority: "low",
     status: "closed",
@@ -116,17 +116,17 @@ export const SEED_TICKETS = [
     due_at: new Date(Date.now() - 345 * 60 * 1000).toISOString(),
     assignee_id: "usr_catruc",
     presence: false,
-    feedback_note: "Sự kiện hơi nước nhà tắm (steam), hệ thống AI đã phân loại chính xác, đóng phiếu.",
+    feedback_note: "Sự kiện hơi nước/bình xịt, hệ thống AI đã phân loại chính xác, đóng phiếu.",
   },
 ];
 
 export const SEED_INFOGRAPHICS = [
   {
     id: "info_001",
-    title: "Vì môi trường KTX không khói thuốc - Sống khoẻ để học tập tốt",
-    image_url: "/assets/infographics/poster-ktx-khong-khoi-thuoc.png",
-    building: "B",
-    zone_code: "B5-CTD",
+    title: "Vì môi trường Trường ĐH Công nghệ (UET) Hoà Lạc không khói thuốc",
+    image_url: "/assets/infographics/poster-uet-khong-khoi-thuoc.png",
+    building: "UET1",
+    zone_code: "UET1-3CT",
     created_by_id: "usr_bql",
     is_active: true,
   },

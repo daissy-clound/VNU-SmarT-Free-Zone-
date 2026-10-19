@@ -8,6 +8,9 @@ import { ticketsRouter, setTicketsSocketEmitter } from "./api/tickets";
 import { zonesRouter, setZonesSocketEmitter } from "./api/zones";
 import { statsRouter } from "./api/stats";
 import { infographicsRouter } from "./api/infographics";
+import { notifyRouter, setNotifySocketEmitter } from "./notify/webpush";
+import { telemetryRouter } from "./api/telemetry";
+import { telemetryIngestService } from "./ingest/mqtt";
 
 const app = express();
 const server = http.createServer(app);
@@ -47,6 +50,8 @@ function broadcastSocketEvent(event: string, data: any) {
 setReportsSocketEmitter(broadcastSocketEvent);
 setTicketsSocketEmitter(broadcastSocketEvent);
 setZonesSocketEmitter(broadcastSocketEvent);
+setNotifySocketEmitter(broadcastSocketEvent);
+telemetryIngestService.setSocketEmitter(broadcastSocketEvent);
 
 // Đăng ký các router API
 app.use("/api/auth", authRouter);
@@ -55,6 +60,8 @@ app.use("/api/tickets", ticketsRouter);
 app.use("/api/zones", zonesRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/infographics", infographicsRouter);
+app.use("/api/notify", notifyRouter);
+app.use("/api/telemetry", telemetryRouter);
 
 // Health check endpoint
 app.get("/api/health", (_req, res) => {

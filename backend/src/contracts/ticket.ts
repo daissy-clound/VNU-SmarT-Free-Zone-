@@ -139,7 +139,7 @@ export const infographicSchema = z.object({
   id: z.string(),
   title: z.string(),
   image_url: z.string(),
-  building: z.enum(["A", "B"]).nullable(),
+  building: z.string().nullable(),
   zone_code: z.string().nullable(),
   created_by_id: z.string(),
   is_active: z.boolean(),

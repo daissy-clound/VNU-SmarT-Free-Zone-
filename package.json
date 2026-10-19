@@ -15,10 +15,11 @@
     "build": "npm run build --workspace @sfz/admin",
     "typecheck": "tsc --noEmit -p tsconfig.json && npm run typecheck --workspace @sfz/admin",
     "test": "tsx --test tests/api.test.ts backend/tests/contracts.test.ts",
-    "test:backend": "tsx --test backend/tests/contracts.test.ts backend/tests/api.test.ts",
+    "test:backend": "tsx --test backend/tests/contracts.test.ts backend/tests/api.test.ts backend/tests/ingest-notify.test.ts",
     "test:e2e": "playwright test",
     "assets": "tsx scripts/generate-design-assets.ts",
-    "report:demo": "tsx scripts/test-server/send-report.ts"
+    "report:demo": "tsx scripts/test-server/send-report.ts",
+    "demo:m1": "tsx scripts/run-milestone-1.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",

@@ -34,3 +34,22 @@ Theo yêu cầu chỉnh giao diện thân thiện hơn: tăng cỡ chữ và đ�
 3. **API & Realtime Socket.IO (`backend/src/api/`):** Triển khai server Express + Socket.IO tại port 3001, các endpoint xác thực theo vai trò, tiếp nhận phản ánh, tra cứu tiến độ phản ánh, danh sách phiếu, chuyển trạng thái và KPI thống kê.
 4. **Kiểm thử:** Đã viết bộ test hợp đồng dữ liệu và API end-to-end (`backend/tests/`). Đã đối chiếu và tương thích 100% với Dashboard Admin của Cúc và luồng QR của Mạnh. [Tài liệu bàn giao](ban-giao-A-2026-10-16.md).
 
+## 17/10/2026 — A: Tích hợp MQTT Ingest & Chuyển đổi danh mục khu vực UET Hoà Lạc (D3)
+
+1. **Cập nhật khu vực thực tế:** Chuyển đổi danh mục sang Trường Đại học Công nghệ (UET) tại Hoà Lạc theo yêu cầu: 4 toà UET (UET1 5 tầng, UET2 5 tầng, UET3 5 tầng, UET4 4 tầng), Nhà đa năng (2 tầng) và 3 Cổng trường Hoà Lạc. Tổng cộng 25 vị trí mã QR và 10 nút cảm biến IoT tại các điểm nóng khói thuốc.
+2. **MQTT Telemetry Ingest (`backend/src/ingest/mqtt.ts`):** Triển khai chương trình nền nhận bản tin telemetry 5s/lần, lưu bản tóm tắt 1 phút và theo dõi nhịp sống cảm biến.
+3. **Tự động mở phiếu:** Kết nối thuật toán phát hiện khói bất thường (PM2.5 ≥ 35 ug/m3) để tự động sinh sự kiện và mở phiếu `SF-...`.
+
+## 18/10/2026 — A: Gộp nguồn ±15 phút, Kiểm soát SLA & Kênh Web Push ca trực (D4)
+
+1. **Gộp nguồn thông minh:** Hoàn thiện thuật toán gộp tin: Nếu cảm biến báo khói và sinh viên cùng gửi phản ánh tại một khu vực trong vòng 15 phút, hệ thống tự động gộp chung vào 1 phiếu và nâng nguồn thành `both`, nâng mức ưu tiên lên `high`/`urgent`.
+2. **Kiểm soát SLA & Escalation:** Cài đặt bộ đếm ngược thời hạn SLA 15 phút và 48 giờ. Phiếu quá hạn tự động gắn cờ `is_overdue`, `escalated` và cung cấp endpoint `GET /api/tickets/overdue` để BQL can thiệp.
+3. **Web Push cho Ca trực (`backend/src/notify/webpush.ts`):** Thiết lập cơ chế thông báo đẩy qua VAPID key tới điện thoại ca trực trong vòng 5 giây, đính kèm thông tin hiện diện PIR: *"Có người tại chỗ (PIR bật)"* hoặc *"Không còn ai"*.
+
+## 19/10/2026 — A: Hoàn thành Mốc 1 — Tích hợp luồng đầu–cuối toàn hệ thống (D5)
+
+1. **Kiểm chứng Mốc 1 (`scripts/run-milestone-1.ts`):** Chạy thành công 100% kịch bản chuẩn *"22:10, UET1-3CT"* qua cả 6 bước: Nút cảm biến phát hiện khói -> MQTT Ingest mở phiếu -> Web Push ca trực -> Sinh viên quét QR gửi phản ánh -> Gộp nguồn 15 phút -> Ca trực tiếp cận xử lý 6 bước -> Sinh viên tra cứu thấy kết quả. Lệnh chạy: `npm run demo:m1`.
+2. **Kiểm thử tự động:** Hoàn thiện bộ 17/17 test cases pass tuyệt đối (`npm run test:backend`).
+3. **Bàn giao:** Xuất bản báo cáo [ban-giao-A-2026-10-19-moc-1.md](ban-giao-A-2026-10-19-moc-1.md) cho toàn đội.
+
+

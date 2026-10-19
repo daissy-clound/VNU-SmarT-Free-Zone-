@@ -82,10 +82,10 @@ test("API: GET /api/health trả về status ok", async () => {
   assert.equal(res.data.service, "sfz-backend");
 });
 
-test("API: GET /api/zones trả về đủ 20 khu vực", async () => {
+test("API: GET /api/zones trả về đủ 25 khu vực UET Hoà Lạc", async () => {
   const res = await makeRequest("GET", "/api/zones");
   assert.equal(res.status, 200);
-  assert.equal(res.data.items.length, 20);
+  assert.equal(res.data.items.length, 25);
   assert.equal(res.data.coordinates_status, "approved");
 });
 
@@ -118,7 +118,7 @@ test("API: POST /api/auth/login và GET /api/auth/me", async () => {
 test("API: POST /api/reports tiếp nhận phản ánh, cấp mã tra cứu & GET /api/reports/track/:code", async () => {
   // Sinh viên gửi phản ánh
   const reportPayload = {
-    zone_code: "B5-CTD",
+    zone_code: "UET1-3CT",
     type: "smoke_now",
     ongoing: true,
     emergency: false,
@@ -138,7 +138,7 @@ test("API: POST /api/reports tiếp nhận phản ánh, cấp mã tra cứu & GE
   );
   assert.equal(trackRes.status, 200);
   assert.equal(trackRes.data.tracking_code, res.data.tracking_code);
-  assert.equal(trackRes.data.zone_code, "B5-CTD");
+  assert.equal(trackRes.data.zone_code, "UET1-3CT");
   assert.ok(trackRes.data.status_label);
 });
 

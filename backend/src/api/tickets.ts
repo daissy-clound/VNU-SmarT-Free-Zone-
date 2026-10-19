@@ -19,12 +19,48 @@ ticketsRouter.get("/", (req: Request, res: Response) => {
   const zoneCode = req.query.zone_code as string | undefined;
   const status = req.query.status as string | undefined;
 
-  const items = store.getTickets({
+  let items = store.getTickets({
     zone_code: zoneCode,
     status: status,
   });
 
-  return res.json({ items });
+  const now = Date.now();
+  const processed = items.map((t) => {
+    const isOverdue =
+      Boolean(t.due_at) &&
+      new Date(t.due_at!).getTime() < now &&
+      ["received", "assigned", "verifying"].includes(t.status);
+    return {
+      ...t,
+      is_overdue: isOverdue,
+      escalated: isOverdue,
+    };
+  });
+
+  return res.json({ items: processed });
+});
+
+/**
+ * GET /api/tickets/overdue
+ * Lấy danh sách các phiếu quá hạn xử lý SLA (cần Ban Quản lý can thiệp khẩn cấp)
+ */
+ticketsRouter.get("/overdue", (_req: Request, res: Response) => {
+  const allTickets = store.getTickets();
+  const now = Date.now();
+
+  const overdueItems = allTickets
+    .filter(
+      (t) =>
+        Boolean(t.due_at) &&
+        new Date(t.due_at!).getTime() < now &&
+        ["received", "assigned", "verifying"].includes(t.status)
+    )
+    .map((t) => ({ ...t, is_overdue: true, escalated: true }));
+
+  return res.json({
+    count: overdueItems.length,
+    items: overdueItems,
+  });
 });
 
 /**
