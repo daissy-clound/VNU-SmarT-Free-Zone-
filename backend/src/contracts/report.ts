@@ -31,6 +31,10 @@ export const reportSchema = z
     note: z.string().max(1000).default(""),
     /** Token ẩn danh của thiết bị để chống spam (tối thiểu 4 ký tự) */
     device_token: z.string().min(4).max(128),
+    /** Nguồn phát sinh phản ánh: app quét QR hay link dùng thử Form 2 */
+    source: z.enum(["qr_app", "form2_trial", "other"]).default("qr_app"),
+    /** Đánh dấu riêng phản ánh từ link dùng thử (Form 2) không tính vào số liệu vận hành */
+    is_trial: z.boolean().default(false),
   })
   .strict();
 

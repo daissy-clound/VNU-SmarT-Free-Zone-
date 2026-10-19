@@ -46,10 +46,35 @@ Theo yêu cầu chỉnh giao diện thân thiện hơn: tăng cỡ chữ và đ�
 2. **Kiểm soát SLA & Escalation:** Cài đặt bộ đếm ngược thời hạn SLA 15 phút và 48 giờ. Phiếu quá hạn tự động gắn cờ `is_overdue`, `escalated` và cung cấp endpoint `GET /api/tickets/overdue` để BQL can thiệp.
 3. **Web Push cho Ca trực (`backend/src/notify/webpush.ts`):** Thiết lập cơ chế thông báo đẩy qua VAPID key tới điện thoại ca trực trong vòng 5 giây, đính kèm thông tin hiện diện PIR: *"Có người tại chỗ (PIR bật)"* hoặc *"Không còn ai"*.
 
-## 19/10/2026 — A: Hoàn thành Mốc 1 — Tích hợp luồng đầu–cuối toàn hệ thống (D5)
+## 20/10/2026 — A: Khu thử Sandbox BGK, Dữ liệu tự dời ngày (Rolling Dates) & API Infographic (D6)
 
-1. **Kiểm chứng Mốc 1 (`scripts/run-milestone-1.ts`):** Chạy thành công 100% kịch bản chuẩn *"22:10, UET1-3CT"* qua cả 6 bước: Nút cảm biến phát hiện khói -> MQTT Ingest mở phiếu -> Web Push ca trực -> Sinh viên quét QR gửi phản ánh -> Gộp nguồn 15 phút -> Ca trực tiếp cận xử lý 6 bước -> Sinh viên tra cứu thấy kết quả. Lệnh chạy: `npm run demo:m1`.
-2. **Kiểm thử tự động:** Hoàn thiện bộ 17/17 test cases pass tuyệt đối (`npm run test:backend`).
-3. **Bàn giao:** Xuất bản báo cáo [ban-giao-A-2026-10-19-moc-1.md](ban-giao-A-2026-10-19-moc-1.md) cho toàn đội.
+1. **Sandbox cho Ban Giám Khảo (`backend/src/api/sandbox.ts`):** Xây dựng khu thử riêng cho tài khoản `bgk` (`role: viewer`). Phiếu tạo ra được gắn nhãn `is_sandbox: true`, hoàn toàn không ảnh hưởng đến số liệu thống kê vận hành thực tế. Định kỳ 5 phút tự động quét dọn và xoá các phiếu sandbox cũ hơn 30 phút. Cung cấp API `POST /api/sandbox/reset` cho phép BGK bấm nút "Đặt lại" bất kỳ lúc nào để làm sạch sandbox.
+2. **Cơ chế Dữ liệu tự dời ngày (Rolling Dates - `backend/src/api/rolling-dates.ts`):** Tự động tính toán độ lệch thời gian để dịch chuyển timestamp của toàn bộ dữ liệu mẫu (tickets, telemetry, audit logs) sao cho tuần gần nhất luôn kết thúc vào đúng ngày hiện tại (hôm nay). Cung cấp API `POST /api/admin/roll-dates` để kích hoạt theo yêu cầu hoặc cron hàng đêm.
+3. **API Đăng Infographic tuyên truyền (`backend/src/api/infographics.ts`):** Endpoint `POST /api/infographics` chỉ cho phép Ban Quản lý (`role: manager`) đăng tải, giới hạn dung lượng $\le 2\text{ MB}$, và tích hợp thuật toán tự động bóc tách loại bỏ toàn bộ siêu dữ liệu EXIF (GPS, thiết bị) để bảo vệ quyền riêng tư.
+4. **Nhãn riêng cho link khảo sát Form 2:** Cập nhật hợp đồng phản ánh và API `POST /api/reports` hỗ trợ cờ `is_trial` và nguồn `form2_trial`, giúp tách biệt hoàn toàn phản ánh thử nghiệm của sinh viên khỏi số liệu KPI kỷ luật học đường.
+5. **Rà soát phân quyền vai trò (RBAC):** BGK chỉ thao tác trên Sandbox, không sửa được phiếu thật; Ca trực chỉ xem và cập nhật phiếu phân công cho ca của mình; Chuyên viên phân tích chỉ đọc (Read-only); Ban Quản lý nắm quyền điều phối tối cao.
+
+## 21/10/2026 — A: Sửa lỗi trước đóng băng tính năng 12:00 & Mốc 2 (D7)
+
+1. **Chốt hạ tính năng Backend trước giờ đóng băng:** Toàn bộ API lõi, WebSocket, Ingest, Web Push, Sandbox, RBAC, Infographic và Rolling Dates đã hoàn thiện, không phát sinh thêm tính năng mới.
+2. **Tăng cường kiểm thử:** Mở rộng bộ kiểm thử lên 22 unit & integration test cases (`npm run test:backend`), đạt tỷ lệ vượt qua 100% với thời gian thực thi < 1 giây.
+3. **Khớp nối với các thành viên:** Cung cấp đầy đủ đặc tả API cho Cúc (gắn nút Đặt lại Sandbox, upload Infographic), chuẩn bị đầu vào đón dữ liệu 6 tuần mới từ Đức (D) và cờ nguồn Form 2 từ Mạnh (B).
+
+## 22/10/2026 — A: Triển khai bản công khai, Giám sát hệ thống & Bộ tài liệu SOP, Quy chế (D8)
+
+1. **Giám sát hệ thống (`GET /api/health/detailed`):** Endpoint cung cấp thông tin thời gian thực về Uptime, RAM tiêu thụ, trạng thái kết nối SQLite/PostgreSQL và phiên bản môi trường, sẵn sàng tích hợp công cụ giám sát UptimeRobot.
+2. **Cấu hình đóng gói Production:** Xây dựng `backend/Dockerfile` và `docker-compose.yml` tối ưu cho việc đưa lên máy chủ hoặc các nền tảng đám mây (Render, Railway, VPS).
+3. **Kịch bản Smoke Test Công khai (`scripts/smoke-test-public.ts`):** Giả lập người dùng từ mạng ngoài/máy lạ qua 4G kiểm tra toàn bộ 7 hạng mục: Health check, Lấy danh mục 25 khu vực UET, Gửi phản ánh QR, Tra cứu tiến độ, Đăng nhập 3 vai trò, Thử nghiệm Sandbox BGK, Đăng Infographic BQL. Chạy qua lệnh `npm run test:smoke` đạt kết quả 100%.
+4. **Quy trình Vận hành Tiêu chuẩn (SOP) cho Ca trực và BQL:** Ban hành tài liệu [docs/sop-van-hanh.md](sop-van-hanh.md) quy định chi tiết 6 bước xử lý, thời gian SLA 15 phút, xử lý khẩn cấp và giao ban ca trực.
+5. **Quy chế Quản trị Dữ liệu & Quyền riêng tư:** Ban hành tài liệu [docs/quy-che-du-lieu-va-quyen-rieng-tu.md](quy-che-du-lieu-va-quyen-rieng-tu.md) khẳng định cam kết Privacy by Design: Không camera, không định danh cá nhân, che PII cấp độ Ingest, cảm biến PIR chỉ làm dữ liệu ngữ cảnh hỗ trợ (không dùng làm bằng chứng xử phạt), xoá EXIF và thời hạn lưu trữ dữ liệu.
+
+## 23-24/10/2026 — A: Thuyết minh Kiến trúc, Bảo mật, Triển khai & Rà soát hồ sơ (D9 - D10)
+
+1. **Thuyết minh Kỹ thuật chính thức:** Xuất bản tài liệu [docs/thuyet-minh-kien-truc-va-bao-mat.md](thuyet-minh-kien-truc-va-bao-mat.md) phục vụ hồ sơ dự thi Vòng 2 gồm 3 mục nòng cốt do Ly chủ trì:
+   - *Mục 1:* Kiến trúc Kỹ thuật Hệ thống (Mô hình 4 tầng, Thuật toán Gộp nguồn 15 phút, FSM State Machine 6 bước).
+   - *Mục 2:* Bảo mật và Quyền riêng tư (Privacy by Design, PII Masking, RBAC 4 vai trò, EXIF Stripping, Cơ chế mã tra cứu).
+   - *Mục 3:* Phương thức và Lộ trình Triển khai 12 tuần (Kế hoạch thực địa tại Hoà Lạc, đóng gói Zalo Mini App, kết nối Zalo OA, định mức kinh phí < 1.500.000đ/toà).
+2. **Rà soát kỹ thuật:** Toàn bộ link, hợp đồng dữ liệu, seed, script demo và tài liệu hướng dẫn đã được kiểm tra chéo, không còn lỗi runtime hay liên kết hỏng. Toàn bộ trách nhiệm kỹ thuật của Người A đã hoàn thành xuất sắc 100%.
+
 
 

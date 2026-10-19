@@ -204,5 +204,9 @@ export async function runSeed(prisma?: any) {
 }
 
 if (process.argv[1] && process.argv[1].endsWith("seed.ts")) {
-  runSeed().catch(console.error);
+  const { PrismaClient } = await import("@prisma/client");
+  const p = new PrismaClient();
+  runSeed(p)
+    .catch(console.error)
+    .finally(() => p.$disconnect());
 }

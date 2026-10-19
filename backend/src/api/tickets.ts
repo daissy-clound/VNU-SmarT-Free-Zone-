@@ -2,6 +2,7 @@ import { Request, Response, Router } from "express";
 import { TicketStatus, statuses } from "../contracts/ticket";
 import { store } from "../db/store";
 import { canTransition } from "../tickets/machine";
+import { optionalAuth } from "./auth";
 
 export const ticketsRouter = Router();
 
@@ -12,17 +13,49 @@ export function setTicketsSocketEmitter(emitter: (event: string, data: any) => v
 
 /**
  * GET /api/tickets
- * Lấy danh sách phiếu xử lý sự cố (hỗ trợ lọc theo zone_code, status)
- * Định dạng trả về: { items: Ticket[] } chuẩn hợp đồng bàn giao cho dashboard C
+ * Lấy danh sách phiếu xử lý sự cố có phân quyền theo vai trò:
+ * - guard: chỉ thấy phiếu được phân công cho mình hoặc phiếu chưa phân công; ẩn sandbox
+ * - viewer (BGK): thấy phiếu mẫu và phiếu sandbox
+ * - manager / analyst: thấy toàn bộ phiếu vận hành
  */
-ticketsRouter.get("/", (req: Request, res: Response) => {
+ticketsRouter.get("/", optionalAuth, (req: Request, res: Response) => {
   const zoneCode = req.query.zone_code as string | undefined;
   const status = req.query.status as string | undefined;
+  const isTrialQuery = req.query.is_trial as string | undefined;
+  const isSandboxQuery = req.query.is_sandbox as string | undefined;
+  const user = (req as any).user;
 
   let items = store.getTickets({
     zone_code: zoneCode,
     status: status,
   });
+
+  // 1. Phân quyền vai trò
+  if (user?.role === "guard") {
+    // Ca trực: chỉ thấy phiếu được giao cho mình hoặc phiếu chưa phân công
+    items = items.filter(
+      (t) =>
+        !t.is_sandbox &&
+        (!t.assignee_id || t.assignee_id === user.id || t.assignee_id === "user-guard-01")
+    );
+  } else if (user?.role === "viewer") {
+    // BGK: thấy phiếu mẫu + phiếu sandbox của BGK
+    items = items.filter((t) => t.is_sandbox || !t.is_trial);
+  } else if (!isSandboxQuery) {
+    // Mặc định ẩn phiếu sandbox đối với BQL để không làm loãng số liệu chính
+    items = items.filter((t) => !t.is_sandbox);
+  }
+
+  // 2. Bộ lọc phụ trợ
+  if (isTrialQuery !== undefined) {
+    const isTrial = isTrialQuery === "true";
+    items = items.filter((t) => Boolean(t.is_trial) === isTrial);
+  }
+
+  if (isSandboxQuery !== undefined) {
+    const isSandbox = isSandboxQuery === "true";
+    items = items.filter((t) => Boolean(t.is_sandbox) === isSandbox);
+  }
 
   const now = Date.now();
   const processed = items.map((t) => {
@@ -34,6 +67,8 @@ ticketsRouter.get("/", (req: Request, res: Response) => {
       ...t,
       is_overdue: isOverdue,
       escalated: isOverdue,
+      is_sandbox: Boolean(t.is_sandbox),
+      is_trial: Boolean(t.is_trial),
     };
   });
 
@@ -87,22 +122,50 @@ ticketsRouter.get("/:code", (req: Request, res: Response) => {
 
 /**
  * PATCH /api/tickets/:code/status
- * Cập nhật trạng thái phiếu tuân theo máy trạng thái 6 bước
+ * Cập nhật trạng thái phiếu tuân theo máy trạng thái 6 bước và kiểm soát thẩm quyền:
+ * - viewer (BGK): chỉ được sửa phiếu sandbox
+ * - analyst: chỉ đọc (Forbidden)
+ * - guard (Ca trực): chỉ được cập nhật verifying, handled
+ * - manager (BQL): toàn quyền
  */
-ticketsRouter.patch("/:code/status", (req: Request, res: Response) => {
+ticketsRouter.patch("/:code/status", optionalAuth, (req: Request, res: Response) => {
   const code = req.params.code;
   const { status: nextStatus, note, assignee_id } = req.body || {};
+  const user = (req as any).user;
 
   const ticket = store.getTicket(code);
   if (!ticket) {
     return res.status(404).json({ error: "Không tìm thấy phiếu" });
   }
 
+  // 1. Kiểm soát phân quyền
+  if (user) {
+    if (user.role === "viewer" && !ticket.is_sandbox) {
+      return res.status(403).json({
+        error: "Từ chối: Ban Giám Khảo chỉ có thể thao tác trên phiếu thử nghiệm (Sandbox), không được sửa phiếu thật",
+      });
+    }
+
+    if (user.role === "analyst") {
+      return res.status(403).json({
+        error: "Từ chối: Vai trò Phân tích chỉ có quyền đọc (Read-only), không được chuyển trạng thái phiếu",
+      });
+    }
+
+    if (user.role === "guard") {
+      if (["responded", "closed"].includes(nextStatus)) {
+        return res.status(403).json({
+          error: "Từ chối: Thao tác phê duyệt phản hồi (responded) hoặc đóng phiếu (closed) thuộc thẩm quyền của Ban Quản lý",
+        });
+      }
+    }
+  }
+
   if (!nextStatus || !statuses.includes(nextStatus)) {
     return res.status(400).json({ error: "Trạng thái mới không hợp lệ" });
   }
 
-  // Kiểm tra chuyển trạng thái hợp lệ
+  // 2. Kiểm tra chuyển trạng thái hợp lệ
   if (!canTransition(ticket.status, nextStatus as TicketStatus)) {
     return res.status(400).json({
       error: `Không thể chuyển trực tiếp từ trạng thái '${ticket.status}' sang '${nextStatus}'`,
@@ -129,8 +192,8 @@ ticketsRouter.patch("/:code/status", (req: Request, res: Response) => {
     from_status: prevStatus,
     to_status: nextStatus,
     action: "status_change",
-    performed_by_id: assignee_id || (req as any).user?.id || null,
-    performed_by_name: (req as any).user?.name || "Ca trực An ninh ĐHQGHN",
+    performed_by_id: assignee_id || user?.id || null,
+    performed_by_name: user?.name || "Ca trực An ninh ĐHQGHN",
     note: note || `Chuyển trạng thái từ ${prevStatus} sang ${nextStatus}`,
     created_at: ticket.updated_at,
   });

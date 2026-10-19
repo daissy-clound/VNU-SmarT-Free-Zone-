@@ -150,10 +150,46 @@ class MemoryDataStore {
     return ticket;
   }
 
+  public deleteTicket(code: string): boolean {
+    this.histories.delete(code);
+    return this.tickets.delete(code);
+  }
+
+  public deleteSandboxTickets(): number {
+    let count = 0;
+    for (const [code, t] of this.tickets.entries()) {
+      if (t.is_sandbox) {
+        this.tickets.delete(code);
+        this.histories.delete(code);
+        count++;
+      }
+    }
+    for (const [code, r] of this.reports.entries()) {
+      if ((r as any).is_sandbox) {
+        this.reports.delete(code);
+      }
+    }
+    return count;
+  }
+
+  public shiftDates(diffMs: number) {
+    for (const t of this.tickets.values()) {
+      t.created_at = new Date(new Date(t.created_at).getTime() + diffMs).toISOString();
+      t.updated_at = new Date(new Date(t.updated_at).getTime() + diffMs).toISOString();
+      if (t.due_at) {
+        t.due_at = new Date(new Date(t.due_at).getTime() + diffMs).toISOString();
+      }
+    }
+  }
+
   // === Reports ===
   public saveReport(report: StoredReport): StoredReport {
     this.reports.set(report.tracking_code, report);
     return report;
+  }
+
+  public getReports(): StoredReport[] {
+    return Array.from(this.reports.values());
   }
 
   public getReportByTrackingCode(trackingCode: string): StoredReport | undefined {

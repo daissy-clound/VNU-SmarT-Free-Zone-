@@ -72,7 +72,7 @@ authRouter.post("/logout", (req: Request, res: Response) => {
 });
 
 /**
- * Middleware xác thực token
+ * Middleware xác thực token và kiểm tra vai trò người dùng
  */
 export function authenticateToken(req: Request, res: Response, next: Function) {
   const authHeader = req.headers.authorization;
@@ -87,5 +87,47 @@ export function authenticateToken(req: Request, res: Response, next: Function) {
   }
 
   (req as any).user = user;
+  next();
+}
+
+/**
+ * Middleware phân quyền theo danh sách vai trò cho phép
+ */
+export function requireAuth(allowedRoles?: string[]) {
+  return (req: Request, res: Response, next: Function) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Yêu cầu quyền truy cập (thiếu Bearer token)" });
+    }
+
+    const token = authHeader.substring(7);
+    const user = tokenStore.get(token);
+    if (!user) {
+      return res.status(401).json({ error: "Phiên đăng nhập không hợp lệ hoặc đã hết hạn" });
+    }
+
+    if (allowedRoles && allowedRoles.length > 0 && !allowedRoles.includes(user.role)) {
+      return res.status(403).json({
+        error: `Từ chối truy cập: vai trò '${user.role}' không có quyền thực hiện thao tác này`,
+      });
+    }
+
+    (req as any).user = user;
+    next();
+  };
+}
+
+/**
+ * Middleware trích xuất thông tin người dùng nếu có token (không bắt buộc)
+ */
+export function optionalAuth(req: Request, _res: Response, next: Function) {
+  const authHeader = req.headers.authorization;
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    const token = authHeader.substring(7);
+    const user = tokenStore.get(token);
+    if (user) {
+      (req as any).user = user;
+    }
+  }
   next();
 }
