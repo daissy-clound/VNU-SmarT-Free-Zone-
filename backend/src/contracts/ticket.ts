@@ -83,13 +83,13 @@ export const ticketSchema = z.object({
   /** Ghi chú phản hồi / lý do xử lý */
   feedback_note: z.string().nullable().optional(),
   /** Cờ sandbox cho tài khoản BGK (tự xoá sau 30 phút, có nút đặt lại) */
-  is_sandbox: z.boolean().default(false),
+  is_sandbox: z.boolean().default(false).optional(),
   /** Cờ phản ánh từ link dùng thử Form 2 */
-  is_trial: z.boolean().default(false),
+  is_trial: z.boolean().default(false).optional(),
   /** Đã quá hạn xử lý SLA 15 phút */
-  is_overdue: z.boolean().default(false),
+  is_overdue: z.boolean().default(false).optional(),
   /** Đã kích hoạt cảnh báo chuyển cấp cho BQL */
-  escalated: z.boolean().default(false),
+  escalated: z.boolean().default(false).optional(),
 });
 export type Ticket = z.infer<typeof ticketSchema>;
 export const ticketListSchema = z.object({ items: z.array(ticketSchema) });

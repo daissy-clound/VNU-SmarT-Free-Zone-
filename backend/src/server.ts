@@ -57,6 +57,8 @@ import { PrismaClient } from "@prisma/client";
 import { sandboxRouter, cleanupExpiredSandboxTickets } from "./api/sandbox";
 import { rollingDatesRouter } from "./api/rolling-dates";
 
+import { docsRouter } from "./api/docs";
+
 export const prisma = new PrismaClient();
 
 // Thiết lập định kỳ mỗi 5 phút dọn dẹp các phiếu Sandbox cũ hơn 30 phút (unref để không block test process)
@@ -66,6 +68,10 @@ const cleanupTimer = setInterval(() => {
   });
 }, 5 * 60 * 1000);
 cleanupTimer.unref();
+
+// Đăng ký trang tài liệu Swagger UI (OpenAPI 3.0 giống hệt FastAPI)
+app.use("/docs", docsRouter);
+app.use("/api/docs", docsRouter);
 
 // Đăng ký các router API
 app.use("/api/auth", authRouter);
@@ -138,6 +144,7 @@ if (isMainModule) {
     console.log(` Tickets: http://127.0.0.1:${PORT}/api/tickets`);
     console.log(` Reports: POST http://127.0.0.1:${PORT}/api/reports`);
     console.log(` Auth:    POST http://127.0.0.1:${PORT}/api/auth/login`);
+    console.log(` Docs:    http://127.0.0.1:${PORT}/docs (Swagger UI)`);
     console.log(`=======================================================`);
   });
 }

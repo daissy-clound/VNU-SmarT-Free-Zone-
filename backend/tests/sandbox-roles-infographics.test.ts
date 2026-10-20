@@ -193,3 +193,15 @@ test("Monitoring: Detailed health endpoint trả về thông số tài nguyên v
   assert.ok(res.data.memory.heap_used_mb > 0);
   assert.equal(res.data.database.status, "ok");
 });
+
+test("Swagger UI: GET /docs và /api/docs trả về giao diện tài liệu tương tác", async () => {
+  const docsRes = await makeRequest("GET", "/docs");
+  assert.equal(docsRes.status, 200);
+  assert.ok(typeof docsRes.data === "string" && docsRes.data.includes("SwaggerUIBundle"));
+
+  const jsonRes = await makeRequest("GET", "/docs/openapi.json");
+  assert.equal(jsonRes.status, 200);
+  assert.equal(jsonRes.data.openapi, "3.0.3");
+  assert.ok(jsonRes.data.paths["/api/reports"]);
+  assert.ok(jsonRes.data.paths["/api/tickets"]);
+});
