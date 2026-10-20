@@ -42,7 +42,36 @@ class TelemetryIngestService {
     event?: Event;
     error?: string;
   }> {
-    const parsed = telemetrySchema.safeParse(raw);
+    let telemetryPayload = raw;
+
+    // Tự động nhận diện và ghép nối định dạng Wokwi ESP32 (của Đức)
+    if (raw && typeof raw === "object" && ("device_id" in raw || "smoke_raw" in raw)) {
+      const d = raw as Record<string, any>;
+      const isSmoke =
+        d.smoke_detected === true ||
+        (typeof d.smoke_raw === "number" && d.smoke_raw >= 1800) ||
+        d.alarm === true;
+
+      telemetryPayload = {
+        node_id: d.node_id || (d.device_id === "sensor_01" ? "G2-WC-F1" : d.device_id || "G2-WC-F1"),
+        ts: d.ts || new Date().toISOString(),
+        seq: typeof d.seq === "number" ? d.seq : 1,
+        pm1: isSmoke ? 32.0 : 6.0,
+        pm25: isSmoke ? (d.smoke_raw ? Math.min(160, Math.max(45, Math.round(d.smoke_raw / 25))) : 75.0) : 12.5,
+        pm10: isSmoke ? 48.0 : 9.0,
+        nc: isSmoke ? 520 : 75,
+        typ_size: 0.5,
+        temp: typeof d.temp === "number" ? d.temp : 28.0,
+        rh: typeof d.rh === "number" ? d.rh : 65.0,
+        presence: d.presence !== undefined ? Boolean(d.presence) : null,
+        presence_age: d.presence ? 0 : 45,
+        rssi: -55,
+        fw: "0.3.0-wokwi",
+        late: false,
+      };
+    }
+
+    const parsed = telemetrySchema.safeParse(telemetryPayload);
     if (!parsed.success) {
       return { status: "invalid", error: parsed.error.message };
     }

@@ -167,3 +167,19 @@ test("SLA & Escalation: Kiểm tra danh sách phiếu quá hạn", async () => {
   assert.equal(overdueRes.data.items[0].is_overdue, true);
   assert.equal(overdueRes.data.items[0].escalated, true);
 });
+
+test("Ingest Wokwi ESP32 (Đức): Tự động nhận diện bản tin mô phỏng ESP32 và mở phiếu khi có khói", async () => {
+  const wokwiPayload = {
+    device_id: "sensor_01",
+    smoke_raw: 2200, // Vượt ngưỡng 1800
+    smoke_detected: true,
+    presence: true,
+    alarm: true,
+  };
+
+  const result = await telemetryIngestService.processTelemetry(wokwiPayload);
+  assert.equal(result.status, "anomaly_detected");
+  assert.ok(result.ticket);
+  assert.ok(result.ticket.code.startsWith("SF-"));
+});
+
