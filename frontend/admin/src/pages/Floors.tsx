@@ -4,14 +4,34 @@ import { Link, useSearchParams } from "react-router-dom";
 import { FloorMap } from "../components/FloorMap";
 import type { DashboardData } from "../useDashboard";
 
+const buildingOptions = [
+  { label: "UET1", value: "UET1" },
+  { label: "UET2", value: "UET2" },
+  { label: "UET3", value: "UET3" },
+  { label: "UET4", value: "UET4" },
+  { label: "Nhà ĐN", value: "DN" },
+  { label: "Khuôn viên", value: "CONG" },
+];
+
+const buildingMaxFloors: Record<string, number> = {
+  UET1: 5,
+  UET2: 5,
+  UET3: 5,
+  UET4: 4,
+  DN: 2,
+  CONG: 1,
+};
+
 export function Floors({ data }: { data: DashboardData }) {
   const [params, setParams] = useSearchParams();
-  const [chosenBuilding, setBuilding] = useState("B");
-  const [chosenFloor, setFloor] = useState(5);
+  const [chosenBuilding, setBuilding] = useState("UET1");
+  const [chosenFloor, setFloor] = useState(1);
   const selected = params.get("zone") || undefined;
   const zone = data.zones.find((item) => item.code === selected);
   const building = zone?.building || chosenBuilding;
-  const floor = zone?.floor || chosenFloor;
+  const maxFloor = buildingMaxFloors[building] || 5;
+  const floor = Math.min(zone?.floor || chosenFloor, maxFloor);
+
   const setSelected = (code?: string) => {
     const next = data.zones.find((item) => item.code === code);
     if (next) {
@@ -27,17 +47,17 @@ export function Floors({ data }: { data: DashboardData }) {
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">KHÔNG GIAN KTX</div>
-          <h1>Sơ đồ tầng</h1>
-          <p>Chọn một cảm biến hoặc điểm QR để xem khu vực.</p>
+          <div className="eyebrow">KHUÔN VIÊN ĐẠI HỌC CÔNG NGHỆ (UET) — ĐHQGHN TẠI HOÀ LẠC</div>
+          <h1>Sơ đồ mặt bằng &amp; tầng</h1>
+          <p>Sơ đồ kiến trúc thực tế các toà nhà UET1-4, Nhà đa năng, hồ nước trung tâm và 3 cổng trường.</p>
         </div>
-        <Tag>2 toà · 6 tầng / toà</Tag>
+        <Tag color="blue">Khuôn viên UET Hoà Lạc · 5 toà nhà + 3 cổng</Tag>
       </div>
       {data.provisional && (
         <Alert
-          type="warning"
+          type="info"
           showIcon
-          title="Sơ đồ minh hoạ: vị trí thực tế đang được xác nhận."
+          title="Sơ đồ kiến trúc thực tế khuôn viên UET Hoà Lạc theo bản vẽ quy hoạch."
         />
       )}
       <div className="map-controls">
@@ -59,14 +79,13 @@ export function Floors({ data }: { data: DashboardData }) {
         </label>
         <Segmented
           aria-label="Chọn toà"
-          options={[
-            { label: "Toà A", value: "A" },
-            { label: "Toà B", value: "B" },
-          ]}
+          options={buildingOptions}
           value={building}
           onChange={(value) => {
-            setBuilding(value);
-            setFloor(floor);
+            const nextB = String(value);
+            setBuilding(nextB);
+            const nextMax = buildingMaxFloors[nextB] || 5;
+            setFloor((prev) => Math.min(prev, nextMax));
             setSelected(undefined);
           }}
         />
@@ -78,10 +97,10 @@ export function Floors({ data }: { data: DashboardData }) {
             setBuilding(building);
             setSelected(undefined);
           }}
-          style={{ width: 130 }}
-          options={Array.from({ length: 6 }, (_, index) => ({
+          style={{ width: 170 }}
+          options={Array.from({ length: maxFloor }, (_, index) => ({
             value: index + 1,
-            label: `Tầng ${index + 1}`,
+            label: building === "CONG" ? "Mặt bằng khuôn viên" : `Tầng ${index + 1}`,
           }))}
         />
       </div>
