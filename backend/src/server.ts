@@ -8,6 +8,9 @@ import { ticketsRouter, setTicketsSocketEmitter } from "./api/tickets";
 import { zonesRouter, setZonesSocketEmitter } from "./api/zones";
 import { statsRouter } from "./api/stats";
 import { infographicsRouter } from "./api/infographics";
+import { notifyRouter, setNotifySocketEmitter } from "./notify/webpush";
+import { telemetryRouter } from "./api/telemetry";
+import { telemetryIngestService } from "./ingest/mqtt";
 
 const app = express();
 const server = http.createServer(app);
@@ -47,6 +50,28 @@ function broadcastSocketEvent(event: string, data: any) {
 setReportsSocketEmitter(broadcastSocketEvent);
 setTicketsSocketEmitter(broadcastSocketEvent);
 setZonesSocketEmitter(broadcastSocketEvent);
+setNotifySocketEmitter(broadcastSocketEvent);
+telemetryIngestService.setSocketEmitter(broadcastSocketEvent);
+
+import { PrismaClient } from "@prisma/client";
+import { sandboxRouter, cleanupExpiredSandboxTickets } from "./api/sandbox";
+import { rollingDatesRouter } from "./api/rolling-dates";
+
+import { docsRouter } from "./api/docs";
+
+export const prisma = new PrismaClient();
+
+// Thiết lập định kỳ mỗi 5 phút dọn dẹp các phiếu Sandbox cũ hơn 30 phút (unref để không block test process)
+const cleanupTimer = setInterval(() => {
+  cleanupExpiredSandboxTickets().catch((err) => {
+    console.error("[Auto Cleanup Sandbox Error]", err);
+  });
+}, 5 * 60 * 1000);
+cleanupTimer.unref();
+
+// Đăng ký trang tài liệu Swagger UI (OpenAPI 3.0 giống hệt FastAPI)
+app.use("/docs", docsRouter);
+app.use("/api/docs", docsRouter);
 
 // Đăng ký các router API
 app.use("/api/auth", authRouter);
@@ -55,15 +80,51 @@ app.use("/api/tickets", ticketsRouter);
 app.use("/api/zones", zonesRouter);
 app.use("/api/stats", statsRouter);
 app.use("/api/infographics", infographicsRouter);
+app.use("/api/notify", notifyRouter);
+app.use("/api/telemetry", telemetryRouter);
+app.use("/api/sandbox", sandboxRouter);
+app.use("/api/admin", rollingDatesRouter);
 
 // Health check endpoint
 app.get("/api/health", (_req, res) => {
   res.json({
     status: "ok",
     service: "sfz-backend",
-    version: "0.2.0-d2",
+    version: "1.0.0-final",
     timestamp: new Date().toISOString(),
     uptime_seconds: Math.floor(process.uptime()),
+  });
+});
+
+// Detailed health check phục vụ giám sát vận hành production (UptimeRobot, Health Monitor)
+app.get("/api/health/detailed", async (_req, res) => {
+  const memUsage = process.memoryUsage();
+  let dbStatus = "ok";
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+  } catch (e) {
+    dbStatus = "error";
+  }
+
+  res.json({
+    status: dbStatus === "ok" ? "ok" : "degraded",
+    service: "sfz-backend",
+    version: "1.0.0-final",
+    timestamp: new Date().toISOString(),
+    uptime_seconds: Math.floor(process.uptime()),
+    database: {
+      type: "sqlite",
+      status: dbStatus,
+    },
+    memory: {
+      rss_mb: Math.round(memUsage.rss / 1024 / 1024),
+      heap_used_mb: Math.round(memUsage.heapUsed / 1024 / 1024),
+      heap_total_mb: Math.round(memUsage.heapTotal / 1024 / 1024),
+    },
+    system: {
+      node_version: process.version,
+      platform: process.platform,
+    },
   });
 });
 
@@ -83,6 +144,7 @@ if (isMainModule) {
     console.log(` Tickets: http://127.0.0.1:${PORT}/api/tickets`);
     console.log(` Reports: POST http://127.0.0.1:${PORT}/api/reports`);
     console.log(` Auth:    POST http://127.0.0.1:${PORT}/api/auth/login`);
+    console.log(` Docs:    http://127.0.0.1:${PORT}/docs (Swagger UI)`);
     console.log(`=======================================================`);
   });
 }
