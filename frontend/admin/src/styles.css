@@ -992,3 +992,437 @@ button:focus-visible {
     max-width: 100vw;
   }
 }
+
+/* ===== D3–D5: chi tiết phiếu, ca trực PWA, tổng quan cảm biến, bản đồ nhiệt ===== */
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+.small {
+  font-size: 13px;
+  line-height: 1.5;
+}
+.sim-tag {
+  margin-inline-end: 0;
+}
+.back-link {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.ticket-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.deadline {
+  min-width: 150px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  background: #e8f3ee;
+  color: #17634c;
+  display: flex;
+  flex-direction: column;
+}
+.deadline strong {
+  font-size: 22px;
+}
+.deadline.overdue {
+  background: #fdecea;
+  color: #b42318;
+}
+.ticket-steps {
+  margin: 4px 0 20px;
+  overflow-x: auto;
+}
+.detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(300px, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.detail-main,
+.detail-side {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
+}
+.action-card {
+  border: 2px solid #b9dccb;
+}
+.big-actions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.big-actions .ant-btn {
+  height: 72px;
+  font-size: 17px;
+  font-weight: 600;
+  flex-direction: column;
+  gap: 4px;
+  white-space: normal;
+}
+.big-actions .ant-btn .anticon {
+  font-size: 22px;
+}
+.arrival-note {
+  margin: 14px 0 0;
+  color: #17634c;
+  font-weight: 600;
+}
+.verify-box {
+  margin-top: 16px;
+  padding: 14px;
+  border-radius: 12px;
+  background: #f6f9f7;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.verify-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.verify-row .ant-segmented-item-label {
+  min-height: 40px;
+  line-height: 40px;
+  padding: 0 14px;
+}
+.history-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.history-item p {
+  margin: 4px 0 0;
+  line-height: 1.5;
+}
+.plain-list {
+  padding-left: 18px;
+  margin: 0 0 8px;
+  line-height: 1.8;
+}
+.dust-chart {
+  margin: 0;
+}
+.dust-plot {
+  position: relative;
+}
+.dust-plot svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  touch-action: pan-y;
+}
+.dust-plot .grid {
+  stroke: #e6ece9;
+  stroke-width: 1;
+}
+.dust-plot .axis {
+  fill: #6c7c75;
+  font-size: 11px;
+}
+.dust-plot .threshold {
+  stroke: #8a6d1f;
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+.dust-plot .crosshair {
+  stroke: #9aa8a2;
+  stroke-width: 1;
+}
+.chart-tooltip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 12px));
+  background: #16302a;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: none;
+  white-space: nowrap;
+}
+/* Tổng quan: trạng thái cảm biến */
+.sensor-card {
+  margin-bottom: 24px;
+}
+.sensor-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.sensor-pill {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 13px;
+}
+.sensor-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 10px;
+}
+.sensor-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  color: #223c33;
+  height: 100%;
+}
+.sensor-tile-head {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+}
+.sensor-tile-name {
+  font-size: 12px;
+  color: #4d5d56;
+  line-height: 1.4;
+}
+.sensor-tile-state {
+  font-size: 13px;
+  font-weight: 600;
+}
+.sensor-tile.normal,
+.sensor-pill.normal {
+  background: #e8f5ee;
+  border-color: #bfe3cf;
+  color: #146c43;
+}
+.sensor-tile.suspected,
+.sensor-pill.suspected {
+  background: #fff1e6;
+  border-color: #f6b98a;
+  color: #a2410c;
+}
+.sensor-tile.offline,
+.sensor-pill.offline {
+  background: #eef0f2;
+  border-color: #c9ced3;
+  color: #475467;
+}
+.sensor-tile.unknown,
+.sensor-pill.unknown {
+  background: #f5f6f7;
+  border-color: #e1e4e8;
+  color: #667085;
+}
+.sensor-tile:hover {
+  filter: brightness(0.97);
+}
+/* Bản đồ nhiệt */
+.heat-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.heatmap-scroll {
+  overflow-x: auto;
+}
+.heatmap table {
+  border-collapse: separate;
+  border-spacing: 2px;
+  width: 100%;
+  min-width: 720px;
+  font-size: 12px;
+}
+.heatmap th {
+  font-weight: 600;
+  color: #4d5d56;
+}
+.heat-zone {
+  text-align: left;
+  white-space: nowrap;
+  padding-right: 8px;
+  position: sticky;
+  left: 0;
+  background: #fff;
+}
+.heat-hour {
+  text-align: left;
+  font-weight: 500;
+  min-width: 22px;
+}
+.heat-cell {
+  height: 28px;
+  min-width: 22px;
+  text-align: center;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.heat-cell.has-value {
+  cursor: pointer;
+}
+.heat-cell:focus-visible {
+  outline: 2px solid #16302a;
+  outline-offset: 1px;
+}
+.heat-total {
+  text-align: right;
+  padding-left: 8px;
+  font-weight: 600;
+}
+.heat-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.heat-legend {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+.heat-legend .swatch {
+  width: 22px;
+  height: 14px;
+  border-radius: 3px;
+}
+/* Ca trực trên điện thoại */
+.shift-ticket-link {
+  display: block;
+  color: inherit;
+}
+.shift-ticket-link:hover {
+  color: inherit;
+}
+.shift-ticket h2 {
+  margin-bottom: 2px;
+}
+.shift-ticket-foot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.overdue-card {
+  border-color: #f4b4ad;
+}
+.notify-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.notify-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0;
+}
+.iphone-guide {
+  padding-left: 20px;
+  margin: 8px 0 0;
+  line-height: 1.7;
+}
+.alert-log {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 8px;
+}
+.alert-log li {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 0.7fr;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #edf1ef;
+  font-size: 13px;
+}
+@media (max-width: 1050px) {
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .big-actions .ant-btn {
+    height: 84px;
+    font-size: 16px;
+  }
+  .ticket-detail .page-heading {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .deadline {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .verify-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .verify-row .ant-segmented {
+    display: flex;
+  }
+  .verify-row .ant-segmented-item {
+    flex: 1;
+  }
+  .notify-actions .ant-btn {
+    flex: 1 1 100%;
+  }
+}
+.steps-compact {
+  display: none;
+}
+@media (max-width: 700px) {
+  .ticket-steps {
+    display: none;
+  }
+  .steps-compact {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 16px;
+    padding: 10px 14px;
+    background: #fff;
+    border-radius: 12px;
+  }
+  .step-dots {
+    display: flex;
+    gap: 6px;
+  }
+  .step-dots i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d6dfdb;
+  }
+  .step-dots i.done {
+    background: #7fb79d;
+  }
+  .step-dots i.current {
+    background: #17634c;
+    box-shadow: 0 0 0 3px #cfe6db;
+  }
+}

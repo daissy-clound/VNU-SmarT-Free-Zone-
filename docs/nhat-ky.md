@@ -78,3 +78,15 @@ Theo yêu cầu chỉnh giao diện thân thiện hơn: tăng cỡ chữ và đ�
 
 
 
+
+## 21/10/2026 — C: mục II. BUILD (trang phiếu, ca trực điện thoại, tổng quan, bản đồ nhiệt, PWA)
+
+Làm xong 4 trang: chi tiết phiếu (`/tickets/<mã>`), ca trực trên điện thoại với 3 nút Đang đến / Đã đến / Báo nhầm và câu hỏi xác minh nhanh, tổng quan có bảng trạng thái 10 cảm biến và cảnh báo realtime, bản đồ nhiệt khu vực × giờ tách nghi vấn / đã xác nhận. Màn hình ca trực thành PWA (manifest, service worker `/sw.js`, bấm thông báo mở thẳng phiếu), kèm [hướng dẫn iPhone](huong-dan-ca-truc-iphone.md). Mọi trang có nhãn "Dữ liệu mô phỏng". [Bàn giao](ban-giao-C-2026-10-21.md).
+
+Kết quả kiểm tra:
+
+- `npm run typecheck`, `npm run build`: đạt. `npm test`: thêm 6 kiểm thử luật 3 nút / quyền / giờ tới hiện trường, đều đạt.
+- `npx playwright test`: 14/14 đạt trên API mới của A, gồm 6 bài mới và 8 bài cũ đã chuyển sang danh mục UET.
+- Cảnh báo phiếu mới hiện trên dashboard khoảng 100 ms sau khi cảm biến gắn cờ (máy cục bộ). Bấm "Đã đến" thì lịch sử ghi bước tới hiện trường, lệch dưới 1 giây so với lúc bấm. Web Push giả lập qua CDP hiện thông báo trỏ đúng phiếu; bấm vào thì mở đúng phiếu.
+
+Chưa làm: thử trên điện thoại thật (cần HTTPS). Đã báo A: máy chủ chưa gửi Web Push thật, chưa lưu chuỗi bụi quá 60 giây, chưa có API thống kê bản đồ nhiệt; ghi chú khi chuyển bước đang hiện cho SV ở trang tra cứu.
