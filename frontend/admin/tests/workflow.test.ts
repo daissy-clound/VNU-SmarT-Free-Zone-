@@ -63,6 +63,9 @@ test("Chỉ hiện nút được phép ở bước hiện tại, theo vai trò",
   assert.deepEqual(availableActions("guard", ticket("received")), ["en_route", "arrived", "false_alarm"]);
   assert.deepEqual(availableActions("guard", ticket("verifying")), ["false_alarm", "resolve"]);
   assert.deepEqual(availableActions("guard", ticket("handled")), [], "phản hồi SV thuộc BQL");
+  assert.deepEqual(availableActions("guard", ticket("received"), false), [], "chưa điều phối cho phòng mình");
+  assert.deepEqual(availableActions("manager", ticket("received")), ["dismiss"], "BQL điều phối, không tự ra hiện trường");
+  assert.deepEqual(availableActions("manager", ticket("verifying")), []);
   assert.deepEqual(availableActions("manager", ticket("handled")), ["respond"]);
   assert.deepEqual(availableActions("manager", ticket("responded")), ["close"]);
   assert.deepEqual(availableActions("manager", ticket("closed")), []);
@@ -82,4 +85,18 @@ test("Giờ tới hiện trường = lần đầu chuyển sang Đang xác minh;
   assert.equal(arrivalTime(h.slice(0, 2)), null);
   assert.equal(isFalseAlarm(h), true);
   assert.equal(isFalseAlarm(h.slice(0, 3)), false);
+});
+
+test("Ban quản lý kết luận báo nhầm từ dữ liệu: không tính là giờ có mặt", () => {
+  const steps = planSteps("received", "dismiss", "Cảm biến đang bảo trì");
+  assert.deepEqual(steps.map((s) => s.status), ["verifying", "handled"]);
+  assert.match(steps[1].note, /^Báo nhầm: Ban quản lý/);
+  const h = [
+    hist(null, "received", "2026-10-21T15:10:00.000Z"),
+    hist("received", "verifying", "2026-10-21T15:11:00.000Z", steps[0].note),
+    hist("verifying", "handled", "2026-10-21T15:11:01.000Z", steps[1].note),
+  ];
+  assert.equal(arrivalTime(h), null);
+  assert.equal(isFalseAlarm(h), true);
+  assert.deepEqual(planSteps("assigned", "dismiss"), [], "đã có người nhận thì để phòng trực kết luận");
 });

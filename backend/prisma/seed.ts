@@ -1,4 +1,5 @@
 import { DEFAULT_ZONES } from "../src/contracts/zones";
+import { DUTY_STAFF_ACCOUNTS } from "../src/contracts/dispatch";
 
 /**
  * Dữ liệu hạt giống (Seed Data) chuẩn MVP Vòng 2:
@@ -37,6 +38,8 @@ export const SEED_USERS = [
     name: "Ban Giám khảo Vòng 2",
     role: "viewer",
   },
+  // Cán bộ phòng trực giảng UET1–4 và Phòng bảo vệ (điều phối kiểm tra)
+  ...DUTY_STAFF_ACCOUNTS.map((a) => ({ ...a, password_hash: "Demo@2026", role: "guard" })),
 ];
 
 export const SEED_TICKETS = [

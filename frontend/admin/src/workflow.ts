@@ -17,6 +17,7 @@ export type ActionKey =
   | "false_alarm"
   | "resolve"
   | "assign"
+  | "dismiss"
   | "respond"
   | "close";
 
@@ -26,9 +27,11 @@ export interface Step {
   assignToSelf?: boolean;
 }
 
-export const ARRIVED_NOTE = "Ca trực đã có mặt tại hiện trường";
-export const EN_ROUTE_NOTE = "Ca trực nhận phiếu, đang đến hiện trường";
+export const ARRIVED_NOTE = "Cán bộ trực đã có mặt tại hiện trường";
+export const EN_ROUTE_NOTE = "Cán bộ trực nhận kiểm tra, đang đến hiện trường";
 export const FALSE_ALARM_PREFIX = "Báo nhầm";
+/** Ban quản lý xác minh từ dữ liệu và kết luận không cần cử người: bước "Đang xác minh" này không phải giờ có mặt */
+export const DISMISS_NOTE = "Ban quản lý xác minh thông tin từ dữ liệu, không cử người kiểm tra";
 
 const ORDER: TicketStatus[] = [
   "received",
@@ -93,6 +96,16 @@ export function planSteps(
           note: [FALSE_ALARM_PREFIX + ": không phát hiện vi phạm", detail].filter(Boolean).join(". "),
         },
       ];
+    case "dismiss":
+      return status === "received"
+        ? [
+            { status: "verifying", note: DISMISS_NOTE },
+            {
+              status: "handled",
+              note: [FALSE_ALARM_PREFIX + ": Ban quản lý xác minh, không phát hiện vi phạm", detail].filter(Boolean).join(". "),
+            },
+          ]
+        : [];
     case "resolve":
       return status === "verifying"
         ? [{ status: "handled", note: ["Đã xác minh và xử lý tại hiện trường", detail].filter(Boolean).join(". ") }]
@@ -106,19 +119,26 @@ export function planSteps(
   }
 }
 
-/** Ai được bấm gì — khớp phân quyền phía máy chủ của A */
-export function canAct(role: UserRole, ticket: Ticket, action: ActionKey) {
+const FIELD: ActionKey[] = ["en_route", "arrived", "false_alarm", "resolve"];
+
+/**
+ * Ai được bấm gì — khớp phân quyền phía máy chủ:
+ * - phòng trực (guard): thao tác hiện trường, chỉ khi phiếu đã điều phối cho phòng mình hoặc mình đã nhận (`mayAct`)
+ * - Ban quản lý: điều phối (trang riêng), kết luận báo nhầm khi chưa cử người, phản hồi SV, đóng phiếu
+ * - BGK: thao tác hiện trường trên phiếu sandbox
+ */
+export function canAct(role: UserRole, ticket: Ticket, action: ActionKey, mayAct = true) {
   if (role === "analyst") return false;
-  if (role === "viewer") return !!ticket.is_sandbox;
-  if (role === "guard") return !["respond", "close"].includes(action);
-  return true;
+  if (role === "viewer") return !!ticket.is_sandbox && action !== "dismiss";
+  if (role === "guard") return mayAct && FIELD.includes(action);
+  return ["dismiss", "respond", "close"].includes(action);
 }
 
 /** Nút hiện ở bước hiện tại (chỉ những nút thực sự có tác dụng) */
-export function availableActions(role: UserRole, ticket: Ticket): ActionKey[] {
-  const all: ActionKey[] = ["en_route", "arrived", "false_alarm", "resolve", "respond", "close"];
+export function availableActions(role: UserRole, ticket: Ticket, mayAct = true): ActionKey[] {
+  const all: ActionKey[] = ["en_route", "arrived", "false_alarm", "resolve", "dismiss", "respond", "close"];
   return all.filter(
-    (a) => canAct(role, ticket, a) && planSteps(ticket.status, a).length > 0,
+    (a) => canAct(role, ticket, a, mayAct) && planSteps(ticket.status, a).length > 0,
   );
 }
 
@@ -126,7 +146,7 @@ export function availableActions(role: UserRole, ticket: Ticket): ActionKey[] {
 export function arrivalTime(history: TicketHistory[]): string | null {
   const entry = [...history]
     .sort((a, b) => a.created_at.localeCompare(b.created_at))
-    .find((h) => h.to_status === "verifying" && h.from_status !== "verifying");
+    .find((h) => h.to_status === "verifying" && h.from_status !== "verifying" && h.note !== DISMISS_NOTE);
   return entry?.created_at ?? null;
 }
 

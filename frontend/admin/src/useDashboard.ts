@@ -1,19 +1,42 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { io } from "socket.io-client";
-import type { Ticket, Zone } from "../../../backend/src/contracts";
+import {
+  roomOfUser,
+  type Dispatch,
+  type RoomList,
+  type Ticket,
+  type User,
+  type Zone,
+} from "../../../backend/src/contracts";
 import { api, API_URL, ApiError, errorMessage } from "./api";
 
-/** Cảnh báo realtime: phiếu mới (ticket:created) hoặc cảnh báo cảm biến cho ca trực (guard:alert) */
+/**
+ * Cảnh báo realtime:
+ * - new: phiếu mới cần Ban quản lý xác minh (ticket:created / guard:alert)
+ * - dispatched: Ban quản lý điều phối phiếu cho phòng trực của người dùng (dispatch:assigned)
+ * - overdue: phòng trực quá 3 phút chưa nhận → Ban quản lý gọi điện (dispatch:overdue)
+ */
 export interface LiveAlert {
+  kind: "new" | "dispatched" | "overdue";
   ticket_code: string;
   zone_code: string;
   source: "ticket" | "sensor";
   presence: boolean | null;
   priority?: string;
+  room_name?: string;
+  room_phone?: string;
   /** Lúc máy chủ phát cảnh báo (để đo độ trễ) */
   dispatched_at: string | null;
   received_at: string;
 }
+
+type DispatchEvent = Dispatch & {
+  room_name: string;
+  room_phone?: string;
+  zone_code: string;
+  presence?: boolean | null;
+  priority?: string;
+};
 
 type GuardAlert = {
   ticket_code?: string;
@@ -28,11 +51,14 @@ export function useDashboard(
   token: string,
   onExpired: () => void,
   onAlert?: (alert: LiveAlert) => void,
+  user?: Pick<User, "id" | "role">,
 ) {
   const alertRef = useRef(onAlert);
   alertRef.current = onAlert;
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [zones, setZones] = useState<Zone[]>([]);
+  const [rooms, setRooms] = useState<RoomList | null>(null);
+  const [dispatches, setDispatches] = useState<Dispatch[]>([]);
   const [provisional, setProvisional] = useState(true);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -45,13 +71,17 @@ export function useDashboard(
     const current = ++revision.current;
     requests.current++;
     try {
-      const [items, areas] = await Promise.all([
+      const [items, areas, roomList, dispatchList] = await Promise.all([
         api.tickets(token),
         api.zones(token),
+        api.rooms(token),
+        api.dispatches(token),
       ]);
       if (current !== revision.current) return;
       setTickets(items);
       setZones(areas.items);
+      setRooms(roomList);
+      setDispatches(dispatchList);
       setProvisional(areas.coordinates_status === "provisional");
       setError("");
       setLastSync(new Date());
@@ -76,18 +106,47 @@ export function useDashboard(
     });
     socket.on("disconnect", () => setLive(false));
     socket.on("connect_error", () => setLive(false));
-    // Một phiếu có thể đến từ cả ticket:created lẫn guard:alert → chỉ báo một lần
+    // Một phiếu có thể đến từ cả ticket:created lẫn guard:alert → chỉ báo một lần.
+    // Phòng trực chỉ nhận phiếu Ban quản lý đã điều phối cho phòng mình; Ban quản lý nhận phiếu mới và phiếu quá hạn nhận.
+    const role = user?.role;
+    const myRoom = user ? roomOfUser(user.id)?.id : undefined;
+    const wants = (kind: LiveAlert["kind"]) =>
+      kind === "dispatched" ? role === "guard" : kind === "overdue" ? role === "manager" : role !== "guard";
     const seen = new Map<string, number>();
     const emit = (alert: LiveAlert) => {
-      const last = seen.get(alert.ticket_code) ?? 0;
+      if (!wants(alert.kind)) return;
+      const key = `${alert.kind}:${alert.ticket_code}`;
+      const last = seen.get(key) ?? 0;
       if (Date.now() - last < 30_000) return;
-      seen.set(alert.ticket_code, Date.now());
+      seen.set(key, Date.now());
       alertRef.current?.(alert);
     };
+    const fromDispatch = (kind: LiveAlert["kind"], d: DispatchEvent): LiveAlert => ({
+      kind,
+      ticket_code: d.ticket_code,
+      zone_code: d.zone_code,
+      source: "ticket",
+      presence: d.presence ?? null,
+      priority: d.priority,
+      room_name: d.room_name,
+      room_phone: d.room_phone,
+      dispatched_at: d.dispatched_at,
+      received_at: new Date().toISOString(),
+    });
+    socket.on("dispatch:assigned", (d?: DispatchEvent) => {
+      void refresh();
+      if (d?.ticket_code && d.room_id === myRoom) emit(fromDispatch("dispatched", d));
+    });
+    socket.on("dispatch:overdue", (d?: DispatchEvent) => {
+      void refresh();
+      if (d?.ticket_code) emit({ ...fromDispatch("overdue", d), dispatched_at: d.accept_deadline });
+    });
+    socket.on("dispatch:updated", () => void refresh());
     socket.on("ticket:created", (ticket?: Ticket) => {
       void refresh();
       if (ticket?.code)
         emit({
+          kind: "new",
           ticket_code: ticket.code,
           zone_code: ticket.zone_code,
           source: ticket.source === "sensor" ? "sensor" : "ticket",
@@ -101,6 +160,7 @@ export function useDashboard(
       void refresh();
       if (alert?.ticket_code)
         emit({
+          kind: "new",
           ticket_code: alert.ticket_code,
           zone_code: alert.zone_code,
           source: "sensor",
@@ -127,10 +187,12 @@ export function useDashboard(
       clearInterval(tick);
       window.removeEventListener("focus", focus);
     };
-  }, [token, refresh]);
+  }, [token, refresh, user?.id, user?.role]);
   return {
     tickets,
     zones,
+    rooms,
+    dispatches,
     provisional,
     loading,
     error,

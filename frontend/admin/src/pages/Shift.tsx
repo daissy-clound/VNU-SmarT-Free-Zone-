@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, App as AntApp, Button, Card, Collapse, Empty, Tag } from "antd";
 import { BellOutlined, DownloadOutlined, MobileOutlined } from "@ant-design/icons";
-import { statusLabels, type User } from "../../../../backend/src/contracts";
+import { roomOfUser, statusLabels, type User } from "../../../../backend/src/contracts";
+import { dispatchOf, mmss } from "../components/DispatchControl";
 import { remaining } from "../components/TicketTable";
 import type { DashboardData } from "../useDashboard";
 import {
@@ -125,7 +126,8 @@ function NotificationSetup({ user, token, sampleCode }: { user: User; token: str
         />
       )}
       <p className="muted small">
-        Thông báo hiện khi có phiếu mới; bấm vào là mở thẳng phiếu với 3 nút Đang đến / Đã đến / Báo nhầm.
+        Thông báo hiện khi Ban quản lý điều phối phiếu cho phòng của bạn; bấm vào là mở thẳng phiếu với 3 nút Đang đến /
+        Đã đến / Báo nhầm.
       </p>
     </Card>
   );
@@ -200,23 +202,40 @@ export function Shift({ data, user, token }: { data: DashboardData; user: User; 
       const ob = remaining(b, data.now).overdue ? 0 : 1;
       return oa - ob || b.created_at.localeCompare(a.created_at);
     });
+  const room = roomOfUser(user.id);
+  const roomStatus = data.rooms?.items.find((r) => r.id === room?.id);
   return (
     <div className="shift-page">
       <div className="page-heading">
         <div>
-          <div className="eyebrow">CA TRỰC</div>
+          <div className="eyebrow">{room ? room.name.toUpperCase() : "CA TRỰC"}</div>
           <h1>Phiếu cần xử lý</h1>
-          <p>{active.length ? `${active.length} phiếu đang chờ ca trực` : "Hiện chưa có phiếu nào cần xử lý."}</p>
+          <p>
+            {active.length
+              ? `${active.length} phiếu Ban quản lý đã điều phối cho phòng`
+              : "Chưa có phiếu nào được điều phối cho phòng."}
+          </p>
+          {roomStatus && (
+            <p className="muted small">
+              <Tag color={roomStatus.on_duty ? "green" : undefined}>
+                {roomStatus.hours === "24/7" ? "Trực 24/7" : roomStatus.on_duty ? "Đang trong giờ trực" : "Ngoài giờ trực"}
+              </Tag>
+              {roomStatus.location} · {roomStatus.hours === "office" ? data.rooms?.office_hours_label : "cả ngày"}
+            </p>
+          )}
         </div>
       </div>
       {!active.length && (
         <Card>
-          <Empty description="Khi có phiếu mới, thông báo sẽ hiện trên điện thoại và tại đây." />
+          <Empty description="Khi Ban quản lý điều phối phiếu cho phòng, thông báo sẽ hiện trên điện thoại và tại đây. Có 3 phút để nhận." />
         </Card>
       )}
       {active.map((ticket) => {
         const zone = data.zones.find((z) => z.code === ticket.zone_code);
         const deadline = remaining(ticket, data.now);
+        const dispatch = dispatchOf(data, ticket.code);
+        const acceptLeft = dispatch ? Date.parse(dispatch.accept_deadline) - data.now : 0;
+        const waiting = !ticket.assignee_id && !!dispatch;
         return (
           <Link key={ticket.code} to={`/tickets/${encodeURIComponent(ticket.code)}`} className="shift-ticket-link">
             <Card className={deadline.overdue ? "shift-ticket overdue-card" : "shift-ticket"}>
@@ -228,6 +247,14 @@ export function Shift({ data, user, token }: { data: DashboardData; user: User; 
               <p className="muted">
                 {ticket.zone_code} · {ticket.assignee_id === user.id ? "Phiếu của bạn" : ticket.assignee_id ? "Đã giao" : "Chưa ai nhận"}
               </p>
+              {waiting && (
+                <p className={acceptLeft > 0 ? "accept-window" : "accept-window late"}>
+                  {acceptLeft > 0
+                    ? `Nhận trong ${mmss(acceptLeft)}`
+                    : "Quá 3 phút chưa nhận — bấm Đang đến ngay"}
+                  {dispatch.note ? ` · ${dispatch.note}` : ""}
+                </p>
+              )}
               <div className="shift-ticket-foot">
                 <Tag color={ticket.presence ? "orange" : undefined}>
                   {ticket.presence === null ? "Hiện diện: không rõ" : ticket.presence ? "Có người tại chỗ" : "Không còn ai"}

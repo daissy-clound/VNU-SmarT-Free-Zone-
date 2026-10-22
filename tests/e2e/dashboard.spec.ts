@@ -257,7 +257,7 @@ for (const username of ["phantich", "bgk"]) {
       page.getByRole("menuitem", { name: "Phân tích", exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("menuitem", { name: "Ca trực", exact: true }),
+      page.getByRole("menuitem", { name: "Phòng trực", exact: true }),
     ).toHaveCount(0);
     await page.goto("/shift");
     await expect(

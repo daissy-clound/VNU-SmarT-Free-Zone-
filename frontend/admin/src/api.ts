@@ -1,6 +1,9 @@
 import { z } from "zod";
 import {
+  dispatchListSchema,
+  dispatchSchema,
   loginSchema,
+  roomListSchema,
   telemetrySchema,
   ticketHistorySchema,
   ticketListSchema,
@@ -93,6 +96,20 @@ export const api = {
     const raw = await request(`/telemetry/recent/${encodeURIComponent(nodeId)}`, token);
     return ((raw.items ?? []) as unknown[]).map((t) => telemetrySchema.parse(t));
   },
+  /** Phòng trực (4 phòng trực giảng + Phòng bảo vệ): đang trực, cán bộ, tải việc */
+  rooms: async (token: string) => roomListSchema.parse(await request("/dispatch/rooms", token)),
+  /** Bản ghi điều phối (phòng trực chỉ nhận bản ghi của phòng mình) */
+  dispatches: async (token: string) => dispatchListSchema.parse(await request("/dispatch", token)).items,
+  /** Ban quản lý điều phối / chuyển phiếu cho phòng trực */
+  dispatch: async (token: string, body: { ticket_code: string; room_id: string; note?: string }) =>
+    dispatchSchema.parse(
+      (await request("/dispatch", token, { method: "POST", body: JSON.stringify(body) })).dispatch,
+    ),
+  /** Ghi nhận đã gọi điện phòng trực (quá hạn nhận) */
+  callRoom: async (token: string, code: string) =>
+    dispatchSchema.parse(
+      (await request(`/dispatch/${encodeURIComponent(code)}/call`, token, { method: "POST" })).dispatch,
+    ),
   vapidKey: async () =>
     z
       .object({ publicKey: z.string() })

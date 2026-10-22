@@ -5,6 +5,7 @@ import {
   SafetyCertificateOutlined,
   EnvironmentOutlined,
   PictureOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Tag } from "antd";
 import { Link } from "react-router-dom";
@@ -34,6 +35,9 @@ export function Overview({
   const sensors = data.zones.filter((zone) => zone.sensor_id);
   const sensorsOk = sensors.filter((zone) => zone.sensor_state === "normal" || zone.sensor_state === "suspected");
   const suspected = sensors.filter((zone) => zone.sensor_state === "suspected");
+  const toDispatch = data.tickets.filter(
+    (t) => t.status === "received" && !t.is_sandbox && !data.dispatches.some((d) => d.ticket_code === t.code),
+  );
   return (
     <>
       <div className="page-heading">
@@ -52,6 +56,20 @@ export function Overview({
           </Button>
         </Link>
       </div>
+      {user.role === "manager" && !data.loading && data.lastSync && toDispatch.length > 0 && (
+        <div className="attention-banner dispatch-banner">
+          <SendOutlined aria-hidden />
+          <div>
+            <strong>{toDispatch.length} phiếu mới chờ xác minh và điều phối</strong>
+            <p>Giao cho phòng trực của toà; phòng trực có 3 phút để nhận.</p>
+          </div>
+          <Link to="/dispatch">
+            <Button type="primary">
+              Mở điều phối <ArrowRightOutlined aria-hidden />
+            </Button>
+          </Link>
+        </div>
+      )}
       {!data.loading && data.lastSync && overdue.length > 0 && (
         <div className="attention-banner">
           <ClockCircleOutlined aria-hidden />

@@ -11,6 +11,7 @@ import { infographicsRouter } from "./api/infographics";
 import { notifyRouter, setNotifySocketEmitter } from "./notify/webpush";
 import { telemetryRouter } from "./api/telemetry";
 import { telemetryIngestService } from "./ingest/mqtt";
+import { dispatchRouter, setDispatchSocketEmitter } from "./api/dispatch";
 
 const app = express();
 const server = http.createServer(app);
@@ -51,6 +52,7 @@ setReportsSocketEmitter(broadcastSocketEvent);
 setTicketsSocketEmitter(broadcastSocketEvent);
 setZonesSocketEmitter(broadcastSocketEvent);
 setNotifySocketEmitter(broadcastSocketEvent);
+setDispatchSocketEmitter(broadcastSocketEvent);
 telemetryIngestService.setSocketEmitter(broadcastSocketEvent);
 
 import { PrismaClient } from "@prisma/client";
@@ -84,6 +86,7 @@ app.use("/api/notify", notifyRouter);
 app.use("/api/telemetry", telemetryRouter);
 app.use("/api/sandbox", sandboxRouter);
 app.use("/api/admin", rollingDatesRouter);
+app.use("/api/dispatch", dispatchRouter);
 
 // Health check endpoint
 app.get("/api/health", (_req, res) => {

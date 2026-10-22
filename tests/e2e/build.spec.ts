@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { mkdirSync } from "node:fs";
-import { API, login } from "./env";
+import { API, dispatchTo, login } from "./env";
 
 /**
  * Mục II. BUILD của C: chi tiết phiếu + bản điện thoại 3 nút, tổng quan realtime,
@@ -51,7 +51,7 @@ test("tổng quan: cảm biến báo nghi vấn → cảnh báo hiện ngay, ô 
   await page.screenshot({ path: `${SHOTS}/chi-tiet-phieu.png`, fullPage: true });
 });
 
-test("ca trực trên điện thoại: Đang đến → Đã đến (ghi giờ tới) → xác minh nhanh → đã xử lý", async ({
+test("phòng trực trên điện thoại: Đang đến → Đã đến (ghi giờ tới) → xác minh nhanh → đã xử lý", async ({
   page,
   request,
 }) => {
@@ -62,7 +62,8 @@ test("ca trực trên điện thoại: Đang đến → Đã đến (ghi giờ t
     })
   ).json();
   const code: string = created.ticket_code;
-  await login(page, "catruc");
+  await dispatchTo(request, code, "PT-UET2");
+  await login(page, "trucuet2");
   await expect(page.getByRole("heading", { name: "Phiếu cần xử lý" })).toBeVisible();
   await page.locator(".shift-ticket-link").filter({ hasText: code }).click();
   await expect(page).toHaveURL(new RegExp(`/tickets/${code}$`));
@@ -85,7 +86,7 @@ test("ca trực trên điện thoại: Đang đến → Đã đến (ghi giờ t
   const arrived = detail.history.find((h: { to_status: string }) => h.to_status === "verifying");
   expect(arrived, "lịch sử phải có bước tới hiện trường").toBeTruthy();
   expect(Math.abs(Date.parse(arrived.created_at) - tapped)).toBeLessThan(5000);
-  // Phản ánh gộp vào phiếu đang mở thêm dòng "received"; chỉ xét chuỗi bước
+  // Phản ánh gộp / bản ghi điều phối thêm dòng giữ nguyên "received"; chỉ xét chuỗi bước
   const steps = detail.history.map((h: { to_status: string }) => h.to_status);
   expect(steps.filter((s: string, i: number) => s !== steps[i - 1])).toEqual(["received", "assigned", "verifying"]);
 
@@ -108,10 +109,12 @@ test("báo nhầm: một nút đi đủ các bước, lịch sử ghi rõ", asyn
       data: { zone_code: "UET3-5ST", type: "smell", ongoing: false, emergency: false, device_token: `c-fa-${Date.now()}` },
     })
   ).json();
-  await login(page, "catruc");
+  await dispatchTo(request, code, "PT-UET3");
+  await login(page, "trucuet3");
   await page.goto(`/tickets/${code}`);
   await page.locator(".big-actions").getByRole("button", { name: "Báo nhầm" }).click();
-  await expect(page.getByText("Báo nhầm", { exact: true }).first()).toBeVisible();
+  // Nhãn "Báo nhầm" trên đầu phiếu chỉ hiện khi đã đi xong các bước
+  await expect(page.locator(".ticket-tags").getByText("Báo nhầm", { exact: true })).toBeVisible();
   const detail = await (await request.get(`${API}/api/tickets/${code}`)).json();
   expect(detail.ticket.status).toBe("handled");
   expect(detail.history.at(-1).note).toMatch(/^Báo nhầm/);
@@ -211,4 +214,55 @@ test("mặt bằng khuôn viên UET: bấm toà mở sơ đồ tầng, bấm c�
   await page.getByText("Khuôn viên", { exact: true }).click();
   await expect(page.locator(".campus-svg")).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
+});
+
+test("điều phối: BQL xác minh và giao phòng trực UET1 → cán bộ nhận thông báo, bấm Đang đến trong 3 phút; phòng khác không thấy", async ({
+  browser,
+  request,
+}) => {
+  const { ticket_code: code } = await (
+    await request.post(`${API}/api/reports`, {
+      data: { zone_code: "UET1-4HL", type: "smoke_now", ongoing: true, emergency: false, device_token: `c-dp-${Date.now()}` },
+    })
+  ).json();
+  const bql = await (await browser.newContext({ viewport: { width: 1440, height: 1000 } })).newPage();
+  const guard = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+  const other = await (await browser.newContext({ viewport: { width: 390, height: 844 } })).newPage();
+  await login(bql);
+  await login(guard, "trucuet1");
+  await login(other, "trucuet2");
+  await expect(guard.locator(".shift-ticket-link").filter({ hasText: code })).toHaveCount(0);
+
+  await bql.getByRole("menuitem", { name: "Điều phối", exact: true }).click();
+  const item = bql.locator(`.dispatch-item[data-ticket="${code}"]`);
+  await expect(item).toContainText("Hành lang phòng học Tầng 4 - UET1");
+  await expect(item).toContainText("Toà UET1 · tầng 4");
+  await expect(bql.locator(".room-card")).toHaveCount(5);
+  await item.getByLabel("Chọn phòng trực").click();
+  await bql.locator(".ant-select-dropdown:visible .ant-select-item-option").filter({ hasText: "Phòng trực giảng UET1" }).click();
+  await expect(item.locator(".ant-select")).toContainText("Phòng trực giảng UET1");
+  await item.getByLabel("Ghi chú cho phòng trực").fill("2 phản ánh, có người tại chỗ");
+  await bql.screenshot({ path: `${SHOTS}/dieu-phoi.png`, fullPage: true });
+  await item.getByRole("button", { name: "Điều phối kiểm tra" }).click();
+
+  // Cán bộ phòng trực UET1 nhận thông báo ngay, thấy đếm ngược 3 phút
+  const alert = guard.locator(".ant-notification-notice").filter({ hasText: code });
+  await expect(alert).toBeVisible({ timeout: 5000 });
+  await expect(alert).toContainText("Ban quản lý điều phối");
+  const card = guard.locator(".shift-ticket-link").filter({ hasText: code });
+  await expect(card.locator(".accept-window")).toContainText(/Nhận trong [23]:\d\d · 2 phản ánh/);
+  await expect(bql.locator(`.dispatch-item[data-ticket="${code}"] .dispatch-countdown`)).toBeVisible();
+  await expect(other.locator(".shift-ticket-link").filter({ hasText: code })).toHaveCount(0);
+  await alert.getByRole("button", { name: "Mở phiếu" }).click();
+  await expect(guard.locator(".big-actions button")).toHaveCount(3);
+  await expect(guard.locator(".action-card")).toContainText("Ban quản lý điều phối cho Phòng trực giảng UET1");
+  await guard.screenshot({ path: `${SHOTS}/phong-truc-nhan-phieu.png`, fullPage: true });
+  await guard.locator(".big-actions").getByRole("button", { name: "Đang đến" }).click();
+  await expect(guard.locator(".big-actions").getByRole("button", { name: "Đang đến" })).toBeDisabled();
+
+  // Ban quản lý thấy ai nhận, sau bao lâu
+  await bql.goto(`/tickets/${code}`);
+  await expect(bql.locator(".dispatch-card")).toContainText("Trực giảng UET1 · Cán bộ A");
+  await expect(bql.locator(".dispatch-card")).toContainText("sau khi điều phối");
+  await expect(bql.locator(".detail-side")).toContainText("Phòng trực giảng UET1 · Đã có người nhận");
 });

@@ -23,7 +23,10 @@ import {
   StopOutlined,
 } from "@ant-design/icons";
 import {
+  dispatchStatusLabels,
+  getRoom,
   priorityLabels,
+  roomOfUser,
   sourceLabels,
   statusLabels,
   statuses,
@@ -32,6 +35,7 @@ import {
 } from "../../../../backend/src/contracts";
 import { api, errorMessage, type TicketDetail as Detail } from "../api";
 import { DustChart } from "../components/DustChart";
+import { DispatchControl, dispatchOf, mmss, staffName } from "../components/DispatchControl";
 import { remaining } from "../components/TicketTable";
 import type { DashboardData } from "../useDashboard";
 import {
@@ -105,14 +109,23 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
   if (!detail) return <Skeleton active paragraph={{ rows: 8 }} />;
 
   const { ticket, zone, history } = detail;
-  const actions = availableActions(user.role, ticket);
+  // Phòng trực chỉ thao tác phiếu Ban quản lý đã điều phối cho phòng mình (chưa ai nhận) hoặc phiếu mình đã nhận
+  const dispatch = dispatchOf(data, ticket.code);
+  const myRoom = roomOfUser(user.id);
+  const mayAct = ticket.assignee_id
+    ? ticket.assignee_id === user.id
+    : !!dispatch && dispatch.room_id === myRoom?.id;
+  const actions: ActionKey[] = availableActions(user.role, ticket, mayAct).filter((a) => a !== "dismiss");
+  const dispatchRoom = dispatch ? getRoom(dispatch.room_id) : undefined;
+  const acceptLeft = dispatch ? Date.parse(dispatch.accept_deadline) - data.now : 0;
   const arrived = arrivalTime(history);
   const falseAlarm = isFalseAlarm(history);
   const signals = signalCounts(history);
   const deadline = remaining(ticket, data.now);
   const stepIndex = statuses.indexOf(ticket.status);
   const sortedHistory = [...history].sort((a, b) => a.created_at.localeCompare(b.created_at));
-  const fieldMode = user.role === "guard" || user.role === "manager";
+  const guard = user.role === "guard";
+  const showActions = guard ? ticket.status !== "closed" : user.role === "manager" && actions.length > 0;
 
   async function run(action: ActionKey, detailText = "") {
     const steps = planSteps(ticket.status, action, detailText);
@@ -195,9 +208,37 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
 
       <div className="detail-grid">
         <div className="detail-main">
-          {fieldMode && ticket.status !== "closed" && (
-            <Card className="action-card" title="Xử lý tại hiện trường">
-              {!actions.length && (
+          {user.role === "manager" && (dispatch || ticket.status === "received") && (
+            <Card className="dispatch-card" title="Điều phối kiểm tra">
+              <DispatchControl ticket={ticket} zone={zone} data={data} token={token} user={user} />
+            </Card>
+          )}
+          {showActions && (
+            <Card className="action-card" title={guard ? "Xử lý tại hiện trường" : "Kết luận & phản hồi"}>
+              {guard && !mayAct && (
+                <Alert
+                  type="info"
+                  showIcon
+                  title={
+                    ticket.assignee_id
+                      ? "Phiếu đã có cán bộ khác nhận kiểm tra."
+                      : "Phiếu chưa được Ban quản lý điều phối cho phòng trực của bạn."
+                  }
+                />
+              )}
+              {guard && mayAct && ticket.status === "received" && dispatch && (
+                <Alert
+                  type={acceptLeft > 0 ? "warning" : "error"}
+                  showIcon
+                  title={
+                    acceptLeft > 0
+                      ? `Ban quản lý điều phối cho ${dispatchRoom?.name ?? "phòng trực"} lúc ${new Date(dispatch.dispatched_at).toLocaleTimeString("vi-VN")}. Bấm "Đang đến" trong ${mmss(acceptLeft)}.`
+                      : "Đã quá 3 phút chưa nhận — Ban quản lý sẽ gọi điện cho phòng trực. Bấm “Đang đến” ngay nếu bạn đi kiểm tra."
+                  }
+                  description={dispatch.note ? `Ghi chú của Ban quản lý: ${dispatch.note}` : undefined}
+                />
+              )}
+              {guard && mayAct && !actions.length && (
                 <Alert type="info" showIcon title="Bước hiện tại không có thao tác nào thuộc vai trò của bạn." />
               )}
               {(can("en_route") || can("arrived") || can("false_alarm")) && (
@@ -301,7 +342,11 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
                         ? `${statusLabels[h.from_status]} → ${statusLabels[h.to_status]}`
                         : h.from_status === null
                           ? "Tiếp nhận phiếu"
-                          : "Bổ sung thông tin"}
+                          : h.action === "dispatch"
+                            ? "Điều phối kiểm tra"
+                            : h.action === "dispatch_call"
+                              ? "Gọi điện phòng trực"
+                              : "Bổ sung thông tin"}
                     </strong>
                     <span className="muted">
                       {fmt(h.created_at)} · {h.performed_by_name || "Hệ thống"}
@@ -326,9 +371,20 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
                 { key: "due", label: "Hạn có mặt", children: ticket.due_at ? fmt(ticket.due_at) : "Không có" },
                 { key: "arrived", label: "Tới hiện trường", children: arrived ? fmt(arrived) : "Chưa ghi nhận" },
                 {
+                  key: "room",
+                  label: "Phòng trực",
+                  children: dispatch
+                    ? `${dispatchRoom?.name ?? dispatch.room_id} · ${dispatchStatusLabels[dispatch.status]}`
+                    : "Chưa điều phối",
+                },
+                {
                   key: "assignee",
                   label: "Người phụ trách",
-                  children: ticket.assignee_id ? (ticket.assignee_id === user.id ? "Bạn" : "Ca trực được giao") : "Chưa phân công",
+                  children: ticket.assignee_id
+                    ? ticket.assignee_id === user.id
+                      ? "Bạn"
+                      : (staffName(data, ticket.assignee_id) ?? "Cán bộ trực được giao")
+                    : "Chưa có người nhận",
                 },
               ]}
             />

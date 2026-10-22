@@ -28,6 +28,7 @@ import {
   MenuOutlined,
   ReloadOutlined,
   SafetyCertificateOutlined,
+  SendOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
 import {
@@ -45,6 +46,7 @@ import { Overview } from "./pages/Overview";
 import { Floors } from "./pages/Floors";
 import { Analytics } from "./pages/analytics/Analytics";
 import { Shift } from "./pages/Shift";
+import { DispatchPage } from "./pages/Dispatch";
 
 const storageKey = "sfz-session-token";
 /** App ca trực đã cài (PWA) giữ phiên trên máy để bấm thông báo là vào thẳng phiếu */
@@ -62,6 +64,12 @@ const navigation = [
     label: "Tổng quan",
     icon: <AppstoreOutlined />,
     roles: ["manager", "analyst", "viewer"],
+  },
+  {
+    key: "/dispatch",
+    label: "Điều phối",
+    icon: <SendOutlined />,
+    roles: ["manager"],
   },
   {
     key: "/floors",
@@ -89,9 +97,9 @@ const navigation = [
   },
   {
     key: "/shift",
-    label: "Ca trực",
+    label: "Phòng trực",
     icon: <TeamOutlined />,
-    roles: ["manager", "guard"],
+    roles: ["guard"],
   },
 ];
 
@@ -123,7 +131,7 @@ function Login({
             <br />
             Bắt đầu từ sự quan tâm.
           </h1>
-          <p>Không gian vận hành dành cho ban quản lý và ca trực khuôn viên UET Hoà Lạc.</p>
+          <p>Không gian vận hành dành cho ban quản lý và phòng trực khuôn viên UET Hoà Lạc.</p>
           <div className="login-steps">
             <span>01 · Phát hiện</span>
             <span>02 · Phản hồi</span>
@@ -218,8 +226,20 @@ function Dashboard({
       const presence =
         alert.presence === null ? "hiện diện không rõ" : alert.presence ? "có người tại chỗ" : "không còn ai";
       const title =
-        alert.source === "sensor" ? `Cảm biến báo nghi vấn · ${alert.zone_code}` : `Phiếu mới · ${alert.zone_code}`;
-      const body = `${zoneName} · ${presence}`;
+        alert.kind === "dispatched"
+          ? `Ban quản lý điều phối kiểm tra · ${alert.zone_code}`
+          : alert.kind === "overdue"
+            ? `Quá 3 phút chưa nhận · ${alert.room_name ?? ""}`
+            : alert.source === "sensor"
+              ? `Cảm biến báo nghi vấn · ${alert.zone_code}`
+              : `Phiếu mới · ${alert.zone_code}`;
+      const body =
+        alert.kind === "overdue"
+          ? `${zoneName} · gọi ${alert.room_phone ?? "phòng trực"} (số giả lập)`
+          : alert.kind === "dispatched"
+            ? `${zoneName} · ${presence} · bấm Đang đến trong 3 phút`
+            : `${zoneName} · ${presence}${user.role === "manager" ? " · cần xác minh và điều phối" : ""}`;
+      const key = `${alert.kind}:${alert.ticket_code}`;
       logAlert({
         ticket_code: alert.ticket_code,
         channel: "socket",
@@ -227,11 +247,11 @@ function Dashboard({
         received_at: alert.received_at,
       });
       const open = () => {
-        notification.destroy(alert.ticket_code);
+        notification.destroy(key);
         navigate(`/tickets/${encodeURIComponent(alert.ticket_code)}`);
       };
-      notification.warning({
-        key: alert.ticket_code,
+      notification[alert.kind === "overdue" ? "error" : "warning"]({
+        key,
         title,
         description: `${alert.ticket_code} · ${body}`,
         placement: "topRight",
@@ -251,9 +271,9 @@ function Dashboard({
           dispatched_at: alert.dispatched_at,
         });
     },
-    [fieldRole, navigate, notification],
+    [fieldRole, navigate, notification, user.role],
   );
-  const data = useDashboard(token, expire, onAlert);
+  const data = useDashboard(token, expire, onAlert, user);
   zonesRef.current = Object.fromEntries(data.zones.map((z) => [z.code, z.name]));
   useEffect(() => onOpenFromNotification((url) => navigate(url)), [navigate]);
   const [mobileMenu, setMobileMenu] = useState(false);
@@ -435,6 +455,10 @@ function Dashboard({
                   <Overview data={data} user={user} onSelect={selectTicket} />
                 )
               }
+            />
+            <Route
+              path="/dispatch"
+              element={protect("/dispatch", <DispatchPage data={data} user={user} token={token} />)}
             />
             <Route
               path="/floors"
