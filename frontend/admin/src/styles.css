@@ -1426,3 +1426,53 @@ button:focus-visible {
     box-shadow: 0 0 0 3px #cfe6db;
   }
 }
+
+/* Mặt bằng khuôn viên (vector hoá từ bản vẽ quy hoạch) */
+.campus-svg {
+  background: #ffffff;
+  border-radius: 10px;
+}
+.campus-building .campus-outline {
+  fill: #c9cac5;
+  stroke: transparent;
+  stroke-width: 3;
+  transition: fill 0.15s, stroke 0.15s;
+}
+.campus-building.suspected .campus-outline {
+  fill: #f6c9a4;
+  stroke: #c2410c;
+  stroke-width: 2.5;
+}
+.campus-building:hover .campus-outline,
+.campus-building:focus-visible .campus-outline {
+  stroke: #17634c;
+  stroke-width: 3.5;
+}
+.campus-label {
+  font-size: 17px;
+  font-weight: 800;
+  fill: #1f2a24;
+  stroke: #ffffff;
+  stroke-width: 4px;
+  paint-order: stroke;
+}
+.campus-gate-label {
+  font-size: 12px;
+  font-weight: 700;
+  fill: #1f2a24;
+  stroke: #ffffff;
+  stroke-width: 3.5px;
+  paint-order: stroke;
+}
+/* Viền focus vẽ trên chính hình (mép toà / khung cổng), chỉ khi dùng bàn phím */
+.campus-svg [role="button"]:focus {
+  outline: none;
+}
+.campus-gate:focus-visible rect {
+  stroke: #17634c;
+  stroke-width: 3;
+}
+.map-controls .ant-segmented {
+  max-width: 100%;
+  overflow-x: auto;
+}

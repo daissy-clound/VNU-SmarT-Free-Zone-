@@ -85,7 +85,9 @@ test("ca trực trên điện thoại: Đang đến → Đã đến (ghi giờ t
   const arrived = detail.history.find((h: { to_status: string }) => h.to_status === "verifying");
   expect(arrived, "lịch sử phải có bước tới hiện trường").toBeTruthy();
   expect(Math.abs(Date.parse(arrived.created_at) - tapped)).toBeLessThan(5000);
-  expect(detail.history.map((h: { to_status: string }) => h.to_status)).toEqual(["received", "assigned", "verifying"]);
+  // Phản ánh gộp vào phiếu đang mở thêm dòng "received"; chỉ xét chuỗi bước
+  const steps = detail.history.map((h: { to_status: string }) => h.to_status);
+  expect(steps.filter((s: string, i: number) => s !== steps[i - 1])).toEqual(["received", "assigned", "verifying"]);
 
   const box = page.locator(".verify-box");
   await box.locator(".verify-row").filter({ hasText: "Còn mùi khói?" }).getByText("Có", { exact: true }).click();
@@ -191,4 +193,22 @@ test("PWA ca trực: manifest cài được, bấm thông báo mở thẳng phi�
   });
   await expect(page).toHaveURL(/\/tickets\/SF-DEMO-003$/);
   await expect(page.locator(".big-actions button")).toHaveCount(3);
+});
+
+test("mặt bằng khuôn viên UET: bấm toà mở sơ đồ tầng, bấm cổng xem thông tin", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await login(page);
+  await page.getByRole("menuitem", { name: "Sơ đồ tầng", exact: true }).click();
+  await expect(page.locator(".campus-svg")).toBeVisible();
+  await expect(page.locator(".campus-building")).toHaveCount(5);
+  expect((await page.request.get("/maps/uet-campus-base.svg")).ok()).toBe(true);
+  await page.locator("#QR-CONG-2").click();
+  await expect(page.getByRole("heading", { name: "Cổng 2 — Cổng phụ phía Tây" })).toBeVisible();
+  await page.locator(".campus-svg").screenshot({ path: `${SHOTS}/mat-bang-khuon-vien.png` });
+  await page.getByRole("button", { name: /^Toà UET2, 5 tầng/ }).click();
+  await expect(page.locator(".floor-point-list strong")).toHaveText("Toà UET2 · Tầng 1");
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByText("Khuôn viên", { exact: true }).click();
+  await expect(page.locator(".campus-svg")).toBeVisible();
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
 });

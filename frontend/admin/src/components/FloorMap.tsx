@@ -1,5 +1,6 @@
 import React from "react";
 import type { Zone } from "../../../../backend/src/contracts";
+import { CampusMap } from "./CampusMap";
 
 const stateColors = {
   normal: "#16a34a",
@@ -21,13 +22,19 @@ export function FloorMap({
   floor,
   selected,
   onSelect,
+  onSelectBuilding,
 }: {
   zones: Zone[];
   building: string;
   floor: number;
   selected?: string;
   onSelect: (zone: Zone) => void;
+  /** Bấm toà nhà trên mặt bằng khuôn viên */
+  onSelectBuilding?: (code: string) => void;
 }) {
+  if (building === "CONG")
+    return <CampusMap zones={zones} selected={selected} onSelect={onSelect} onSelectBuilding={onSelectBuilding} />;
+
   const currentZones = zones.filter(
     (z) => z.building === building && z.floor === floor,
   );
@@ -40,110 +47,6 @@ export function FloorMap({
       role="group"
       aria-label={`Sơ đồ toà ${building}, tầng ${floor}`}
     >
-      <defs>
-        {/* Pattern vạch đỗ xe */}
-        <pattern id="parking-pattern" width="20" height="20" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
-          <line x1="0" y1="0" x2="0" y2="20" stroke="#cbd5e1" strokeWidth="2" />
-        </pattern>
-        {/* Pattern đài phun nước */}
-        <radialGradient id="water-gradient" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#7dd3fc" />
-          <stop offset="70%" stopColor="#0284c7" />
-          <stop offset="100%" stopColor="#0369a1" />
-        </radialGradient>
-      </defs>
-
-      {/* ============================================================== */}
-      {/* 1. MẶT BẰNG TỔNG THỂ KHUÔN VIÊN & CỔNG TRƯỜNG (CONG)            */}
-      {/* ============================================================== */}
-      {building === "CONG" && (
-        <g id="campus-master-plan">
-          {/* Nền khuôn viên cây xanh */}
-          <rect x="20" y="50" width="960" height="480" rx="18" fill="#ecfdf5" stroke="#a7f3d0" strokeWidth="3" />
-
-          {/* Dải đường giao thông nội khu (màu xám ghi) */}
-          <path
-            d="M 500 530 L 500 420 Q 500 350 420 350 L 320 350 Q 240 350 240 260 L 240 120 Q 240 70 320 70 L 680 70 Q 760 70 760 140 L 760 530 Z"
-            fill="#f1f5f9"
-            stroke="#cbd5e1"
-            strokeWidth="38"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M 500 530 L 500 420 Q 500 350 420 350 L 320 350 Q 240 350 240 260 L 240 120 Q 240 70 320 70 L 680 70 Q 760 70 760 140 L 760 530 Z"
-            fill="none"
-            stroke="#ffffff"
-            strokeWidth="2"
-            strokeDasharray="10 8"
-            strokeLinejoin="round"
-          />
-
-          {/* Dải bãi đỗ xe P bên phải */}
-          <rect x="800" y="140" width="60" height="240" rx="6" fill="#f8fafc" stroke="#94a3b8" strokeWidth="2" />
-          <rect x="800" y="140" width="60" height="240" rx="6" fill="url(#parking-pattern)" opacity="0.6" />
-          <text x="830" y="265" textAnchor="middle" fill="#475569" fontSize="20" fontWeight="bold">P</text>
-
-          {/* Hồ nước tròn & Vòng xoay trung tâm */}
-          <circle cx="480" cy="270" r="54" fill="#a7f3d0" stroke="#059669" strokeWidth="4" />
-          <circle cx="480" cy="270" r="42" fill="url(#water-gradient)" stroke="#0284c7" strokeWidth="2" />
-          <circle cx="480" cy="270" r="16" fill="#bae6fd" opacity="0.7" />
-          <text x="480" y="275" textAnchor="middle" fill="#ffffff" fontSize="13" fontWeight="bold">HỒ NƯỚC</text>
-
-          {/* Khối toà UET1 (Bên phải, toà 5 tầng) */}
-          <g id="campus-block-uet1">
-            <rect x="620" y="160" width="110" height="220" rx="8" fill="#e2e8f0" stroke="#475569" strokeWidth="3" />
-            <rect x="635" y="175" width="80" height="190" rx="4" fill="#f1f5f9" stroke="#94a3b8" strokeWidth="1" />
-            <text x="675" y="270" textAnchor="middle" fill="#1e293b" fontSize="16" fontWeight="bold">UET1</text>
-            <text x="675" y="292" textAnchor="middle" fill="#64748b" fontSize="12">5 Tầng</text>
-          </g>
-
-          {/* Khối toà UET2 (Uốn cong dài bên trái) */}
-          <g id="campus-block-uet2">
-            <path
-              d="M 330 180 Q 300 280 340 380 L 390 370 Q 355 280 380 190 Z"
-              fill="#fef3c7"
-              stroke="#d97706"
-              strokeWidth="3"
-            />
-            <text x="350" y="280" textAnchor="middle" fill="#92400e" fontSize="16" fontWeight="bold">UET2</text>
-            <text x="350" y="300" textAnchor="middle" fill="#b45309" fontSize="12">5 Tầng</text>
-          </g>
-
-          {/* Khối Nhà Đa Năng ĐN (Hình bán nguyệt + chữ nhật phía trên hồ nước) */}
-          <g id="campus-block-dn">
-            <rect x="420" y="90" width="110" height="90" rx="8" fill="#ede9fe" stroke="#7c3aed" strokeWidth="3" />
-            <path d="M 475 90 A 45 45 0 0 1 520 135 L 430 135 A 45 45 0 0 1 475 90 Z" fill="#ddd6fe" />
-            <text x="475" y="160" textAnchor="middle" fill="#5b21b6" fontSize="15" fontWeight="bold">ĐN (2 Tầng)</text>
-          </g>
-
-          {/* Khối toà UET3 (Góc Tây Bắc) */}
-          <g id="campus-block-uet3">
-            <polygon points="170,110 270,110 270,180 220,180 220,220 170,220" fill="#e0e7ff" stroke="#4338ca" strokeWidth="3" />
-            <text x="215" y="150" textAnchor="middle" fill="#3730a3" fontSize="15" fontWeight="bold">UET3</text>
-            <text x="215" y="170" textAnchor="middle" fill="#4f46e5" fontSize="12">5 Tầng</text>
-          </g>
-
-          {/* Khối toà UET4 (Phía sau UET3) */}
-          <g id="campus-block-uet4">
-            <rect x="80" y="80" width="80" height="90" rx="6" fill="#fee2e2" stroke="#dc2626" strokeWidth="3" />
-            <text x="120" y="130" textAnchor="middle" fill="#991b1b" fontSize="15" fontWeight="bold">UET4</text>
-            <text x="120" y="150" textAnchor="middle" fill="#b91c1c" fontSize="12">4 Tầng</text>
-          </g>
-
-          {/* Nhãn 3 Cổng trường */}
-          <g fill="#0f172a" fontSize="14" fontWeight="600">
-            <rect x="410" y="470" width="180" height="42" rx="8" fill="#ffffff" stroke="#0ea5e9" strokeWidth="2" />
-            <text x="500" y="497" textAnchor="middle" fill="#0369a1">CỔNG 1: CỔNG CHÍNH</text>
-
-            <rect x="70" y="410" width="180" height="42" rx="8" fill="#ffffff" stroke="#64748b" strokeWidth="2" />
-            <text x="160" y="437" textAnchor="middle" fill="#334155">CỔNG 2: PHỤ TÂY</text>
-
-            <rect x="750" y="410" width="180" height="42" rx="8" fill="#ffffff" stroke="#64748b" strokeWidth="2" />
-            <text x="840" y="437" textAnchor="middle" fill="#334155">CỔNG 3: DỊCH VỤ/KTX</text>
-          </g>
-        </g>
-      )}
-
       {/* ============================================================== */}
       {/* 2. SƠ ĐỒ MẶT BẰNG TOÀ UET1 (5 TẦNG)                             */}
       {/* ============================================================== */}
@@ -308,9 +211,7 @@ export function FloorMap({
 
       {/* Tiêu đề góc trái sơ đồ */}
       <text x="35" y="35" fill="#0f172a" fontSize="20" fontWeight="700">
-        {building === "CONG"
-          ? "MẶT BẰNG TỔNG THỂ KHUÔN VIÊN UET HOÀ LẠC & 3 CỔNG TRƯỜNG"
-          : `TOÀ ${building} · ${floor === 1 && building === "UET1" ? "TẦNG 1 (SẢNH CHÍNH)" : `TẦNG ${floor}`}`}
+        {`TOÀ ${building} · ${floor === 1 && building === "UET1" ? "TẦNG 1 (SẢNH CHÍNH)" : `TẦNG ${floor}`}`}
       </text>
       <text x="965" y="35" textAnchor="end" fill="#64748b" fontSize="14">
         Sơ đồ kiến trúc thực tế · Chuẩn tỷ lệ quy hoạch

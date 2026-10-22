@@ -90,3 +90,16 @@ Kết quả kiểm tra:
 - Cảnh báo phiếu mới hiện trên dashboard khoảng 100 ms sau khi cảm biến gắn cờ (máy cục bộ). Bấm "Đã đến" thì lịch sử ghi bước tới hiện trường, lệch dưới 1 giây so với lúc bấm. Web Push giả lập qua CDP hiện thông báo trỏ đúng phiếu; bấm vào thì mở đúng phiếu.
 
 Chưa làm: thử trên điện thoại thật (cần HTTPS). Đã báo A: máy chủ chưa gửi Web Push thật, chưa lưu chuỗi bụi quá 60 giây, chưa có API thống kê bản đồ nhiệt; ghi chú khi chuyển bước đang hiện cho SV ở trang tra cứu.
+
+## 22/10/2026 — C: mặt bằng khuôn viên UET vector hoá từ bản vẽ quy hoạch
+
+Thay sơ đồ khuôn viên vẽ tay bằng bản vector hoá từ [ảnh quy hoạch UET Hoà Lạc](assets/campus/uet-campus-plan.png). [Ảnh sau khi cập nhật](assets/c-build/mat-bang-khuon-vien.png).
+
+- Trang **Sơ đồ tầng** mở mặc định ở **Khuôn viên**. Toà UET1–UET4 và Nhà đa năng bấm được: toà có điểm nghi vấn thì mở thẳng điểm đó, không thì mở tầng 1. Mỗi toà có nhãn trạng thái cảm biến (ổn / số điểm nghi vấn / mất kết nối) và đổi màu khi có nghi vấn.
+- Cổng 1 và Cổng 2 đặt đúng hai chốt bảo vệ trên bản vẽ (dải xanh lơ phía nam, dải vàng phía tây). **Cổng 3 tạm đặt** ở lối vào phía bãi đỗ xe, vì ảnh bị cắt ở góc này; khung cổng vẽ nét đứt cho tới khi được xác nhận.
+- Dựng lại: `python -I scripts/campus/vectorize.py`. Script sinh `frontend/admin/public/maps/uet-campus-base.svg` (lớp nền: đường, hồ, cây xanh, bãi xe; 108 KB) và `frontend/admin/src/components/campusPlan.ts` (đường bao 5 toà và vị trí cổng). Cần `opencv-python`, `numpy`, `Pillow`.
+- Toạ độ cổng trên mặt bằng nằm ở dashboard (`CAMPUS_GATES`), không dùng `x`, `y` của `CONG-*` trong danh mục của A: ảnh cao 730 px, vượt giới hạn `y ≤ 560` của `zoneSchema`.
+
+Kiểm tra: typecheck, build đạt; `npm test` 19/19; `npx playwright test` 15/15, thêm bài mặt bằng khuôn viên (bấm cổng, bấm toà, không tràn màn hình 390 px). Sửa luôn thanh chọn toà bị tràn ngang trên điện thoại.
+
+Chưa rõ trên ảnh: ý nghĩa dải vàng, dải xanh lơ, khối tím có biểu tượng nhóm người và mảng đỏ ở góc dưới (phần chú thích bị cắt). Sơ đồ giữ nguyên màu như bản vẽ, chưa ghi chú thích cho các mảng này.
