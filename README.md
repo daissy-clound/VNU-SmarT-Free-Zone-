@@ -7,10 +7,11 @@ npm ci
 npm run dev
 ```
 
-Mở **http://127.0.0.1:5173**, đăng nhập `bql` / `Demo@2026`. Các tài khoản thử khác: `catruc`, `phantich`, `bgk` (cùng mật khẩu). API cục bộ chạy tại cổng 3001, dữ liệu RAM được đặt lại khi khởi động.
+Mở **http://127.0.0.1:5173**, đăng nhập `bql` / `Demo@2026`. Các tài khoản thử khác: `catruc`, `phantich`, `bgk`; phòng trực giảng `trucuet1`…`trucuet4` (thêm `trucuet1b`…`trucuet4b`), Phòng bảo vệ `catruc`, `baove` (cùng mật khẩu). API cục bộ chạy tại cổng 3001, dữ liệu RAM được đặt lại khi khởi động.
 
 Mở trang **Phiếu**, chạy `npm run report:demo -- B5-CTD` trong terminal thứ hai: phiếu từ HTTP API tự xuất hiện trên dashboard. Phạm vi bàn giao hiện tại là localhost theo yêu cầu; có hướng dẫn nối máy chủ A/B khi sẵn sàng.
 
+- [Bàn giao C 21/10 — mục II: trang phiếu, ca trực điện thoại 3 nút, tổng quan realtime, bản đồ nhiệt, PWA](docs/ban-giao-C-2026-10-21.md) · [Hướng dẫn cài app ca trực trên iPhone](docs/huong-dan-ca-truc-iphone.md).
 - [Wireframe 5 trang và sơ đồ 12 tầng](docs/assets/c-d2/index.html).
 - [Bàn giao C cho A/E: hợp đồng API, tài khoản, cách tích hợp và giới hạn D2](docs/ban-giao-C-2026-10-16.md).
 - Kiểm tra: `npm run typecheck`, `npm run build`, `npm test`; kiểm thử trình duyệt: `npx playwright install chromium` rồi `npm run test:e2e`.

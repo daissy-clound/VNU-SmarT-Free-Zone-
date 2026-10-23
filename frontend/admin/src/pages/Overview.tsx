@@ -5,11 +5,13 @@ import {
   SafetyCertificateOutlined,
   EnvironmentOutlined,
   PictureOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import { Button, Card, Tag } from "antd";
 import { Link } from "react-router-dom";
 import type { Ticket, User } from "../../../../backend/src/contracts";
 import { TicketTable } from "../components/TicketTable";
+import { SensorBoard } from "../components/SensorBoard";
 import type { DashboardData } from "../useDashboard";
 
 export function Overview({
@@ -28,6 +30,14 @@ export function Overview({
     (ticket) => ticket.due_at && Date.parse(ticket.due_at) < data.now,
   );
   const complete = data.tickets.length - active.length;
+  const startOfDay = new Date(data.now).setHours(0, 0, 0, 0);
+  const today = data.tickets.filter((t) => Date.parse(t.created_at) >= startOfDay);
+  const sensors = data.zones.filter((zone) => zone.sensor_id);
+  const sensorsOk = sensors.filter((zone) => zone.sensor_state === "normal" || zone.sensor_state === "suspected");
+  const suspected = sensors.filter((zone) => zone.sensor_state === "suspected");
+  const toDispatch = data.tickets.filter(
+    (t) => t.status === "received" && !t.is_sandbox && !data.dispatches.some((d) => d.ticket_code === t.code),
+  );
   return (
     <>
       <div className="page-heading">
@@ -46,6 +56,20 @@ export function Overview({
           </Button>
         </Link>
       </div>
+      {user.role === "manager" && !data.loading && data.lastSync && toDispatch.length > 0 && (
+        <div className="attention-banner dispatch-banner">
+          <SendOutlined aria-hidden />
+          <div>
+            <strong>{toDispatch.length} phiếu mới chờ xác minh và điều phối</strong>
+            <p>Giao cho phòng trực của toà; phòng trực có 3 phút để nhận.</p>
+          </div>
+          <Link to="/dispatch">
+            <Button type="primary">
+              Mở điều phối <ArrowRightOutlined aria-hidden />
+            </Button>
+          </Link>
+        </div>
+      )}
       {!data.loading && data.lastSync && overdue.length > 0 && (
         <div className="attention-banner">
           <ClockCircleOutlined aria-hidden />
@@ -79,19 +103,19 @@ export function Overview({
             href: "/tickets?scope=overdue",
           },
           {
-            label: "Đã hoàn tất xử lý",
-            value: complete,
+            label: "Phiếu mới hôm nay",
+            value: today.length,
             icon: <SafetyCertificateOutlined />,
-            note: "Xử lý / phản hồi / đóng",
+            note: `${today.filter((t) => t.source === "sensor" || t.source === "both").length} từ cảm biến · ${complete} đã hoàn tất (tổng)`,
             style: "blue",
-            href: "/tickets?scope=completed",
+            href: "/tickets",
           },
           {
-            label: "Khu vực theo dõi",
-            value: data.zones.length,
+            label: "Cảm biến hoạt động",
+            value: `${sensorsOk.length}/${sensors.length}`,
             icon: <EnvironmentOutlined />,
-            note: `${data.zones.filter((zone) => zone.sensor_id).length} cảm biến · ${data.zones.length} điểm QR`,
-            style: "green",
+            note: suspected.length ? `${suspected.length} điểm đang nghi vấn có khói` : "Không có điểm nghi vấn",
+            style: suspected.length ? "amber" : "green",
             href: "/floors",
           },
         ].map((item) => (
@@ -114,6 +138,13 @@ export function Overview({
           </Link>
         ))}
       </div>
+      <Card
+        className="sensor-card"
+        title="Trạng thái cảm biến"
+        extra={<Link to="/floors">Xem sơ đồ tầng →</Link>}
+      >
+        <SensorBoard zones={data.zones} />
+      </Card>
       <div className="overview-grid">
         <Card
           title="Phiếu mới nhất"

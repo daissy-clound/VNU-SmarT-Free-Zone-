@@ -3,6 +3,7 @@ import { TicketStatus, statuses } from "../contracts/ticket";
 import { store } from "../db/store";
 import { canTransition } from "../tickets/machine";
 import { optionalAuth } from "./auth";
+import { dispatchService } from "../dispatch/service";
 
 export const ticketsRouter = Router();
 
@@ -14,7 +15,7 @@ export function setTicketsSocketEmitter(emitter: (event: string, data: any) => v
 /**
  * GET /api/tickets
  * Lấy danh sách phiếu xử lý sự cố có phân quyền theo vai trò:
- * - guard: chỉ thấy phiếu được phân công cho mình hoặc phiếu chưa phân công; ẩn sandbox
+ * - guard (phòng trực): chỉ thấy phiếu BQL đã điều phối cho phòng mình (chưa ai nhận) hoặc phiếu mình đã nhận; ẩn sandbox
  * - viewer (BGK): thấy phiếu mẫu và phiếu sandbox
  * - manager / analyst: thấy toàn bộ phiếu vận hành
  */
@@ -32,12 +33,8 @@ ticketsRouter.get("/", optionalAuth, (req: Request, res: Response) => {
 
   // 1. Phân quyền vai trò
   if (user?.role === "guard") {
-    // Ca trực: chỉ thấy phiếu được giao cho mình hoặc phiếu chưa phân công
-    items = items.filter(
-      (t) =>
-        !t.is_sandbox &&
-        (!t.assignee_id || t.assignee_id === user.id || t.assignee_id === "user-guard-01")
-    );
+    // Phòng trực: chỉ thấy phiếu Ban quản lý đã điều phối cho phòng mình, hoặc phiếu mình đã nhận
+    items = items.filter((t) => !t.is_sandbox && dispatchService.visibleToGuard(t, user.id));
   } else if (user?.role === "viewer") {
     // BGK: thấy phiếu mẫu + phiếu sandbox của BGK
     items = items.filter((t) => t.is_sandbox || !t.is_trial);
@@ -153,6 +150,11 @@ ticketsRouter.patch("/:code/status", optionalAuth, (req: Request, res: Response)
     }
 
     if (user.role === "guard") {
+      if (!dispatchService.visibleToGuard(ticket, user.id)) {
+        return res.status(403).json({
+          error: "Từ chối: phiếu chưa được Ban quản lý điều phối cho phòng trực của bạn, hoặc đã có cán bộ khác nhận",
+        });
+      }
       if (["responded", "closed"].includes(nextStatus)) {
         return res.status(403).json({
           error: "Từ chối: Thao tác phê duyệt phản hồi (responded) hoặc đóng phiếu (closed) thuộc thẩm quyền của Ban Quản lý",

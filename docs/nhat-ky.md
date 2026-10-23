@@ -78,3 +78,41 @@ Theo yêu cầu chỉnh giao diện thân thiện hơn: tăng cỡ chữ và đ�
 
 
 
+
+## 21/10/2026 — C: mục II. BUILD (trang phiếu, ca trực điện thoại, tổng quan, bản đồ nhiệt, PWA)
+
+Làm xong 4 trang: chi tiết phiếu (`/tickets/<mã>`), ca trực trên điện thoại với 3 nút Đang đến / Đã đến / Báo nhầm và câu hỏi xác minh nhanh, tổng quan có bảng trạng thái 10 cảm biến và cảnh báo realtime, bản đồ nhiệt khu vực × giờ tách nghi vấn / đã xác nhận. Màn hình ca trực thành PWA (manifest, service worker `/sw.js`, bấm thông báo mở thẳng phiếu), kèm [hướng dẫn iPhone](huong-dan-ca-truc-iphone.md). Mọi trang có nhãn "Dữ liệu mô phỏng". [Bàn giao](ban-giao-C-2026-10-21.md).
+
+Kết quả kiểm tra:
+
+- `npm run typecheck`, `npm run build`: đạt. `npm test`: thêm 6 kiểm thử luật 3 nút / quyền / giờ tới hiện trường, đều đạt.
+- `npx playwright test`: 14/14 đạt trên API mới của A, gồm 6 bài mới và 8 bài cũ đã chuyển sang danh mục UET.
+- Cảnh báo phiếu mới hiện trên dashboard khoảng 100 ms sau khi cảm biến gắn cờ (máy cục bộ). Bấm "Đã đến" thì lịch sử ghi bước tới hiện trường, lệch dưới 1 giây so với lúc bấm. Web Push giả lập qua CDP hiện thông báo trỏ đúng phiếu; bấm vào thì mở đúng phiếu.
+
+Chưa làm: thử trên điện thoại thật (cần HTTPS). Đã báo A: máy chủ chưa gửi Web Push thật, chưa lưu chuỗi bụi quá 60 giây, chưa có API thống kê bản đồ nhiệt; ghi chú khi chuyển bước đang hiện cho SV ở trang tra cứu.
+
+## 22/10/2026 — C: mặt bằng khuôn viên UET vector hoá từ bản vẽ quy hoạch
+
+Thay sơ đồ khuôn viên vẽ tay bằng bản vector hoá từ [ảnh quy hoạch UET Hoà Lạc](assets/campus/uet-campus-plan.png). [Ảnh sau khi cập nhật](assets/c-build/mat-bang-khuon-vien.png).
+
+- Trang **Sơ đồ tầng** mở mặc định ở **Khuôn viên**. Toà UET1–UET4 và Nhà đa năng bấm được: toà có điểm nghi vấn thì mở thẳng điểm đó, không thì mở tầng 1. Mỗi toà có nhãn trạng thái cảm biến (ổn / số điểm nghi vấn / mất kết nối) và đổi màu khi có nghi vấn.
+- Cổng 1 và Cổng 2 đặt đúng hai chốt bảo vệ trên bản vẽ (dải xanh lơ phía nam, dải vàng phía tây). **Cổng 3 tạm đặt** ở lối vào phía bãi đỗ xe, vì ảnh bị cắt ở góc này; khung cổng vẽ nét đứt cho tới khi được xác nhận.
+- Dựng lại: `python -I scripts/campus/vectorize.py`. Script sinh `frontend/admin/public/maps/uet-campus-base.svg` (lớp nền: đường, hồ, cây xanh, bãi xe; 108 KB) và `frontend/admin/src/components/campusPlan.ts` (đường bao 5 toà và vị trí cổng). Cần `opencv-python`, `numpy`, `Pillow`.
+- Toạ độ cổng trên mặt bằng nằm ở dashboard (`CAMPUS_GATES`), không dùng `x`, `y` của `CONG-*` trong danh mục của A: ảnh cao 730 px, vượt giới hạn `y ≤ 560` của `zoneSchema`.
+
+Kiểm tra: typecheck, build đạt; `npm test` 19/19; `npx playwright test` 15/15, thêm bài mặt bằng khuôn viên (bấm cổng, bấm toà, không tràn màn hình 390 px). Sửa luôn thanh chọn toà bị tràn ngang trên điện thoại.
+
+Chưa rõ trên ảnh: ý nghĩa dải vàng, dải xanh lơ, khối tím có biểu tượng nhóm người và mảng đỏ ở góc dưới (phần chú thích bị cắt). Sơ đồ giữ nguyên màu như bản vẽ, chưa ghi chú thích cho các mảng này.
+
+## 22/10/2026 — C: điều phối kiểm tra cho phòng trực giảng
+
+Ban quản lý (một ban chung cho trường) nhận phiếu, xác minh thông tin rồi giao cho phòng trực. Mỗi toà UET1–UET4 có một phòng trực giảng làm giờ hành chính (thứ 2–6, 7:30–17:00, giờ Việt Nam). Nhà đa năng và các cổng do Phòng bảo vệ trực 24/7. [Màn điều phối](assets/c-build/dieu-phoi.png), [cán bộ trực nhận phiếu trên điện thoại](assets/c-build/phong-truc-nhan-phieu.png).
+
+- **Trang Điều phối (Ban quản lý):** liệt kê phiếu mới kèm thông tin để xác minh (khu vực, toà, tầng, nguồn tin, hiện diện, hạn có mặt, trạng thái cảm biến). Hệ thống đề xuất sẵn phòng của toà; ngoài giờ hành chính thì đề xuất Phòng bảo vệ, và Ban quản lý vẫn chọn được phòng khác. Có thêm ghi chú cho phòng trực và nút "Không cần kiểm tra (báo nhầm)". Bên phải là 5 phòng trực: đang trực hay không, cán bộ rảnh hay bận, số phiếu chờ nhận và đang kiểm tra. Trang Tổng quan có băng nhắc số phiếu chờ điều phối.
+- **Hạn nhận 3 phút:** đồng hồ đếm ngược hiện cho cả Ban quản lý và cán bộ trực. Quá 3 phút chưa ai nhận thì Ban quản lý nhận cảnh báo đỏ kèm số điện thoại của phòng trực (**số giả lập**, dạng `024 0000 110x`). Nút "Đã gọi điện" ghi cuộc gọi vào lịch sử phiếu, nút "Chuyển phòng khác" giao lại cho phòng khác.
+- **Phòng trực:** cán bộ chỉ thấy và chỉ thao tác được trên phiếu đã điều phối cho phòng mình. Máy chủ chặn cả hai việc này, không chỉ ẩn trên giao diện. Thông báo hiện ngay khi được điều phối (đo cục bộ khoảng 0,3 giây). Bấm "Đang đến" là nhận phiếu; sau đó vẫn là 3 nút và các câu xác minh như trước. Khi một cán bộ đã nhận, đồng nghiệp cùng phòng không thao tác thay được.
+- **Ban quản lý thấy ai nhận, nhận sau bao lâu.** Lịch sử phiếu ghi các bước điều phối, chuyển phòng và gọi điện. Ban quản lý không còn 3 nút hiện trường.
+
+Phần máy chủ là module mới (`backend/src/contracts/dispatch.ts`, `backend/src/dispatch/service.ts`, `backend/src/api/dispatch.ts`: `GET /api/dispatch/rooms`, `GET /api/dispatch`, `POST /api/dispatch`, `POST /api/dispatch/:code/call`). **Sửa vào code của A:** `tickets.ts` (lọc phiếu và chặn chuyển bước theo phòng trực, bỏ ngoại lệ `user-guard-01`), `server.ts` (đăng ký router), `seed.ts` (thêm 9 tài khoản phòng trực), `contracts/index.ts`. Bản ghi điều phối hiện giữ trong RAM như phiếu; chưa thêm vào Swagger `/docs`.
+
+Kiểm tra: typecheck, build đạt; `npm test` 23/23, thêm 3 kiểm thử điều phối (giờ hành chính, quyền theo phòng, quá hạn 3 phút có giả lập đồng hồ); `npx playwright test` 16/16, thêm bài điều phối hai máy (Ban quản lý giao, phòng trực UET1 nhận, phòng UET2 không thấy). Bài kiểm thử máy chủ cũ `sandbox-roles-infographics` có 2–4 bài lỗi sẵn vì thiếu CSDL Prisma, không liên quan đến thay đổi này.
