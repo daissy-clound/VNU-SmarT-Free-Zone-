@@ -53,9 +53,11 @@ class MemoryDataStore {
         role: u.role as any,
         password_hash: u.password_hash,
       });
-    }
+    }    
 
-    // 3. Nạp phiếu mẫu
+    // 3. Nạp phiếu mẫu cho môi trường local; Render có thể tắt bằng SEED_DEMO_TICKETS=false.
+
+    if (process.env.SEED_DEMO_TICKETS !== "false") {
     for (const t of SEED_TICKETS) {
       this.tickets.set(t.code, { ...t } as any);
       this.histories.set(t.code, [
@@ -71,7 +73,7 @@ class MemoryDataStore {
           created_at: t.created_at,
         },
       ]);
-    }
+    }    }
 
     // 4. Nạp infographic
     for (const info of SEED_INFOGRAPHICS) {
