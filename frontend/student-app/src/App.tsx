@@ -59,22 +59,22 @@ export function App() {
         <div className="app-brand">
           <div className="app-logo">
             <div className="logo-badge" aria-label="Logo">
-              <LeafIcon size={22} color="#ffffff" strokeWidth={2.2} />
+              <LeafIcon size={20} color="#ffffff" strokeWidth={2.2} />
             </div>
-            <div>
-              <div className="app-title">VNU SmarT-Free Zone</div>
-              <div className="app-subtitle-row">
-                <span className="app-subtitle">Môi trường Học đường Không Khói thuốc</span>
-                <span className="campus-pill">UET · Hoà Lạc</span>
+            <div className="brand-text">
+              <div className="brand-title-line">
+                <span className="app-title">VNU SmarT-Free Zone</span>
+                <span className="campus-badge">UET Hoà Lạc</span>
               </div>
+              <span className="app-tagline">Môi trường học đường không khói thuốc</span>
             </div>
           </div>
           <a
             href="tel:18006606"
             className="hotline-chip"
-            title="Đường dây nóng Tư vấn cai nghiện thuốc lá miễn phí (Bộ Y tế)"
+            title="Tổng đài tư vấn cai thuốc lá miễn phí (Bộ Y tế) 1800 6606"
           >
-            <PhoneIcon size={13} color="#ffffff" strokeWidth={2.2} />
+            <PhoneIcon size={12} color="#ffffff" strokeWidth={2.2} />
             <span>1800.6606</span>
           </a>
         </div>

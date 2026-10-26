@@ -193,51 +193,55 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                   <>
                     <Row gutter={[16, 16]}>
                       <Col xs={24} md={8}>
-                        <Card title="Hiệu quả Mô phỏng Tuần tra" bordered={false} className="stat-card">
+                        <Card title="Hiệu quả Mô phỏng Tuần tra" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Độ phủ sự kiện khói (AI Gợi ý)"
                             value={forecastData.comparison_simulation?.ai_suggested_coverage}
                             suffix="%"
-                            valueStyle={{ color: "#17634c", fontWeight: 700 }}
+                            valueStyle={{ color: "#0b5e42", fontWeight: 700 }}
                           />
-                          <div style={{ marginTop: 8 }}>
-                            <Text type="secondary">So với tuần tra cố định: </Text>
+                          <div style={{ marginTop: 10, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                            <Text type="secondary" style={{ fontSize: 12 }}>So với cố định:</Text>
                             <Tag color="volcano">{forecastData.comparison_simulation?.fixed_patrol_coverage}%</Tag>
                             <Tag color="green">Tăng {forecastData.comparison_simulation?.improvement_factor}</Tag>
                           </div>
                           <Progress
                             percent={forecastData.comparison_simulation?.ai_suggested_coverage}
-                            strokeColor="#17634c"
-                            style={{ marginTop: 12 }}
+                            strokeColor="#0b5e42"
+                            style={{ marginTop: 14 }}
                           />
                         </Card>
                       </Col>
                       <Col xs={24} md={8}>
-                        <Card title="Điểm nóng Nguy cơ Cao nhất" bordered={false} className="stat-card">
+                        <Card title="Điểm nóng Nguy cơ Cao nhất" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title={forecastData.top_hotspots?.[0]?.zone_name || "N/A"}
                             value={forecastData.top_hotspots?.[0]?.risk_score}
                             suffix="/ 100 điểm rủi ro"
                             valueStyle={{ color: "#d4380d", fontWeight: 700 }}
                           />
-                          <div style={{ marginTop: 8 }}>
-                            <Tag color="red">Khung giờ nóng: {forecastData.top_hotspots?.[0]?.peak_hour}:00 - {forecastData.top_hotspots?.[0]?.peak_hour + 1}:00</Tag>
+                          <div style={{ marginTop: 10 }}>
+                            <Tag color="red">
+                              Khung giờ cao điểm: {forecastData.top_hotspots?.[0]?.peak_hour}:00 - {forecastData.top_hotspots?.[0]?.peak_hour + 1}:00
+                            </Tag>
                           </div>
-                          <Text type="secondary" style={{ fontSize: 12, display: "block", marginTop: 8 }}>
+                          <Text type="secondary" style={{ fontSize: 12, display: "block", marginTop: 8, lineHeight: 1.5 }}>
                             Hành động: {forecastData.top_hotspots?.[0]?.recommended_actions}
                           </Text>
                         </Card>
                       </Col>
                       <Col xs={24} md={8}>
-                        <Card title="Lịch Ca tuần tra Đề xuất" bordered={false} className="stat-card">
+                        <Card title="Lịch Ca tuần tra Đề xuất" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Số ca tuần tra thông minh tối ưu"
                             value={forecastData.recommended_patrol_shifts?.length || 6}
                             suffix="ca / ngày (30p/ca)"
                             valueStyle={{ color: "#0958d9", fontWeight: 700 }}
                           />
-                          <div style={{ marginTop: 8 }}>
-                            <Text type="secondary">Phủ được 88% nguy cơ tại 4 toà UET và Nhà đa năng mà không cần tăng biên chế bảo vệ.</Text>
+                          <div style={{ marginTop: 10 }}>
+                            <Text type="secondary" style={{ fontSize: 12, lineHeight: 1.5, display: "block" }}>
+                              Phủ được 88% nguy cơ tại 4 toà UET và Nhà đa năng mà không cần tăng biên chế bảo vệ.
+                            </Text>
                           </div>
                         </Card>
                       </Col>
@@ -395,47 +399,55 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
 
                     <Row gutter={[16, 16]}>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Độ chính xác tổng thể (Accuracy)"
                             value={Math.round(transparencyData.overall.accuracy * 1000) / 10}
                             suffix="%"
-                            valueStyle={{ color: "#17634c", fontWeight: 700 }}
+                            valueStyle={{ color: "#0b5e42", fontWeight: 700 }}
                           />
-                          <small>Trên 140 sự kiện kiểm tra độc lập</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Trên 140 sự kiện kiểm tra độc lập
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Tỷ lệ Báo nhầm (False Alarm)"
                             value={transparencyData.overall.false_alarm_per_node_per_day}
-                            suffix="lần / nút / ngày"
-                            valueStyle={{ color: "#1677ff", fontWeight: 700 }}
+                            suffix="lần/nút/ngày"
+                            valueStyle={{ color: "#0284c7", fontWeight: 700 }}
                           />
-                          <small>Đạt cam kết Vòng 1 (≤ 1 lần/ngày)</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Đạt cam kết Vòng 1 (≤ 1 lần/ngày)
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Độ trễ phát hiện trung vị (P50)"
                             value={transparencyData.overall.detection_latency_median_seconds}
-                            suffix="giây (~1.4 phút)"
-                            valueStyle={{ color: "#722ed1", fontWeight: 700 }}
+                            suffix="giây"
+                            valueStyle={{ color: "#7c3aed", fontWeight: 700 }}
                           />
-                          <small>Cam kết Vòng 1: ≤ 2 phút</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            ~1.4 phút (Cam kết Vòng 1: ≤ 2 phút)
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title="Độ trễ Web Push tới ca trực (P95)"
                             value={transparencyData.overall.alert_dispatch_latency_p95_seconds}
                             suffix="giây"
-                            valueStyle={{ color: "#cf1322", fontWeight: 700 }}
+                            valueStyle={{ color: "#be123c", fontWeight: 700 }}
                           />
-                          <small>Cam kết Vòng 1: &lt; 5 giây</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Cam kết Vòng 1: &lt; 5 giây
+                          </Text>
                         </Card>
                       </Col>
                     </Row>
@@ -491,20 +503,24 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                     </Card>
 
                     <Card title="Ma trận Nhầm lẫn (Confusion Matrix trên 140 Sự kiện Độc lập)" style={{ marginTop: 16 }}>
-                      <div style={{ overflowX: "auto" }}>
-                        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center" }}>
+                      <div style={{ overflowX: "auto", paddingBottom: 6 }}>
+                        <table style={{ width: "100%", minWidth: 640, borderCollapse: "collapse", textAlign: "center" }}>
                           <thead>
-                            <tr style={{ background: "#fafafa" }}>
-                              <th style={{ border: "1px solid #f0f0f0", padding: 8 }}>Thực tế \ Dự đoán</th>
+                            <tr style={{ background: "#f8fafc" }}>
+                              <th style={{ border: "1px solid #e2e8f0", padding: "10px 14px", fontWeight: 700, fontSize: 13, color: "#1e293b", textAlign: "left" }}>
+                                Thực tế \ Dự đoán
+                              </th>
                               {transparencyData.confusion_matrix.classes.map((cls: string) => (
-                                <th key={cls} style={{ border: "1px solid #f0f0f0", padding: 8 }}>{cls}</th>
+                                <th key={cls} style={{ border: "1px solid #e2e8f0", padding: "10px 12px", fontWeight: 600, fontSize: 12, color: "#334155", whiteSpace: "nowrap" }}>
+                                  {cls}
+                                </th>
                               ))}
                             </tr>
                           </thead>
                           <tbody>
                             {transparencyData.confusion_matrix.matrix.map((row: number[], rIdx: number) => (
                               <tr key={rIdx}>
-                                <td style={{ border: "1px solid #f0f0f0", padding: 8, fontWeight: "bold", textAlign: "left", background: "#fafafa" }}>
+                                <td style={{ border: "1px solid #e2e8f0", padding: "10px 14px", fontWeight: 600, textAlign: "left", background: "#f8fafc", fontSize: 13, color: "#1e293b", whiteSpace: "nowrap" }}>
                                   {transparencyData.confusion_matrix.classes[rIdx]}
                                 </td>
                                 {row.map((cell: number, cIdx: number) => {
@@ -513,11 +529,12 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                                     <td
                                       key={cIdx}
                                       style={{
-                                        border: "1px solid #f0f0f0",
-                                        padding: 8,
-                                        fontWeight: isDiagonal ? "bold" : "normal",
-                                        background: isDiagonal ? "#e6f4ea" : cell > 0 ? "#fff1f0" : "transparent",
-                                        color: isDiagonal ? "#17634c" : cell > 0 ? "#cf1322" : "#999",
+                                        border: "1px solid #e2e8f0",
+                                        padding: "10px 12px",
+                                        fontWeight: isDiagonal ? 700 : 500,
+                                        fontSize: 13,
+                                        background: isDiagonal ? "#ecfdf5" : cell > 0 ? "#fff1f2" : "#ffffff",
+                                        color: isDiagonal ? "#047857" : cell > 0 ? "#be123c" : "#94a3b8",
                                       }}
                                     >
                                       {cell}
@@ -659,11 +676,11 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                       <Card
                         hoverable
                         cover={
-                          <div style={{ height: 220, overflow: "hidden", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <div style={{ height: 260, overflow: "hidden", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", padding: 8 }}>
                             <img
                               alt={info.title}
                               src={info.image_url}
-                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                              style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
                             />
                           </div>
                         }
