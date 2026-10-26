@@ -5,7 +5,7 @@ import { DUTY_STAFF_ACCOUNTS } from "../src/contracts/dispatch";
  * Dữ liệu hạt giống (Seed Data) chuẩn MVP Vòng 2:
  * 1. 20 khu vực & 10 nút cảm biến KTX ĐHQGHN
  * 2. 4 tài khoản demo cho 4 vai trò (mật khẩu chung: Demo@2026)
- * 3. 6 phiếu mẫu ban đầu (SF-DEMO-001 -> SF-DEMO-006) đủ 6 trạng thái và SLA
+ * 3. 6 phiếu mẫu ban đầu; có thể tắt bằng SEED_DEMO_TICKETS=false
  * 4. 1 infographic mẫu
  */
 
@@ -175,23 +175,25 @@ export async function runSeed(prisma?: any) {
       });
     }
 
-    // 3. Tickets
-    for (const t of SEED_TICKETS) {
-      await prisma.ticket.upsert({
-        where: { code: t.code },
-        update: {
-          ...t,
-          created_at: new Date(t.created_at),
-          updated_at: new Date(t.updated_at),
-          due_at: t.due_at ? new Date(t.due_at) : null,
-        },
-        create: {
-          ...t,
-          created_at: new Date(t.created_at),
-          updated_at: new Date(t.updated_at),
-          due_at: t.due_at ? new Date(t.due_at) : null,
-        },
-      });
+    // 3. Demo tickets are enabled by default for local development.
+    if (process.env.SEED_DEMO_TICKETS !== "false") {
+      for (const t of SEED_TICKETS) {
+        await prisma.ticket.upsert({
+          where: { code: t.code },
+          update: {
+            ...t,
+            created_at: new Date(t.created_at),
+            updated_at: new Date(t.updated_at),
+            due_at: t.due_at ? new Date(t.due_at) : null,
+          },
+          create: {
+            ...t,
+            created_at: new Date(t.created_at),
+            updated_at: new Date(t.updated_at),
+            due_at: t.due_at ? new Date(t.due_at) : null,
+          },
+        });
+      }
     }
 
     // 4. Infographics
