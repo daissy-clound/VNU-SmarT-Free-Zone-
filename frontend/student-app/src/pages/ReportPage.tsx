@@ -48,7 +48,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedZone) {
-      setErrorMessage("Vui lòng chọn hoặc quét mã QR khu vực.");
+      setErrorMessage("Vui lòng chọn hoặc quét mã QR toạ độ khu vực.");
       return;
     }
 
@@ -75,7 +75,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
   const handleToggleEmergency = () => {
     if (!emergency) {
       const confirmEmergency = window.confirm(
-        "KÍCH HOẠT CẢNH BÁO KHẨN CẤP:\nBạn có chắc chắn muốn phát tín hiệu KHẨN CẤP (Nguy cơ cháy nổ, hoả hoạn, sự cố nghiêm trọng)?\n\nHệ thống sẽ phát còi báo động tại phòng trực và kích hoạt đường dây nóng bảo vệ 24/7."
+        "KÍCH HOẠT HỖ TRỢ ƯU TIÊN:\nBạn có muốn gửi yêu cầu ưu tiên đến đội trực toà nhà để được hỗ trợ kiểm tra ngay lập tức?"
       );
       if (confirmEmergency) {
         setEmergency(true);
@@ -110,60 +110,46 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
     },
     {
       key: "smell" as ReportTypeOption,
-      title: "Mùi khói nồng nặc",
-      desc: "Mùi khói đọng kín không gian",
+      title: "Mùi khói thuốc",
+      desc: "Mùi khói còn lưu lại trong khu vực",
       Icon: WindIcon,
     },
   ];
 
   return (
     <div className="page-report">
-      {/* Banner Khẩn cấp tinh tế */}
-      <div className="emergency-callout">
-        <div className="emergency-info">
-          <div className="emergency-icon">
-            <AlertTriangleIcon size={20} strokeWidth={2.2} />
+      {/* Banner Hỗ trợ trực tiếp thân thiện, không gây hoảng loạn */}
+      <div className={`support-callout ${emergency ? "active" : ""}`}>
+        <div className="support-callout-info">
+          <div className="support-callout-icon">
+            {emergency ? <CheckCircleIcon size={20} strokeWidth={2.4} /> : <AlertTriangleIcon size={18} strokeWidth={2.2} />}
           </div>
           <div>
-            <div className="emergency-title">Tình huống hoả hoạn hoặc nguy hiểm?</div>
-            <div className="emergency-sub">Kích hoạt cảnh báo đỏ tới đội bảo vệ 24/7 & PCCC</div>
+            <div className="support-callout-title">
+              {emergency ? "Đang bật chế độ ưu tiên hỗ trợ" : "Cần hỗ trợ xử lý ngay tại chỗ?"}
+            </div>
+            <div className="support-callout-sub">
+              {emergency
+                ? "Phiếu sẽ được điều phối tức thời đến cán bộ trực hiện trường"
+                : "Gửi thông báo nhanh khi phát sinh sự cố cần can thiệp gấp"}
+            </div>
           </div>
         </div>
         <button
           type="button"
-          className="btn-emergency-action"
+          className="btn-support-action"
           onClick={handleToggleEmergency}
         >
-          {emergency ? "Tắt báo động" : "Báo khẩn cấp"}
+          {emergency ? "Huỷ yêu cầu" : "Cần hỗ trợ gấp"}
         </button>
       </div>
-
-      {emergency && (
-        <div
-          style={{
-            background: "var(--accent-rose-subtle)",
-            border: "1px solid var(--accent-rose-border)",
-            borderRadius: "var(--radius-sm)",
-            padding: "10px 14px",
-            marginBottom: 12,
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <AlertTriangleIcon size={18} color="var(--accent-rose)" />
-          <span style={{ fontSize: 12, color: "var(--accent-rose)", fontWeight: 600 }}>
-            Chế độ Khẩn cấp đang BẬT: Phiếu sẽ chuyển thẳng mức ưu tiên cao nhất.
-          </span>
-        </div>
-      )}
 
       <form onSubmit={handleSubmit}>
         {/* Vị trí phản ánh */}
         <div className="card">
           <div className="card-title">
             <div className="card-title-left">
-              <MapPinIcon size={18} color="var(--primary)" />
+              <MapPinIcon size={17} color="var(--primary)" />
               <span>Vị trí phản ánh</span>
             </div>
             {isUrlZone ? (
@@ -236,7 +222,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
         <div className="card">
           <div className="card-title">
             <div className="card-title-left">
-              <span>Hiện tượng ghi nhận</span>
+              <span>Nội dung ghi nhận</span>
             </div>
             <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 500 }}>
               Chạm để chọn 1 loại
@@ -257,7 +243,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
                 >
                   <div className="type-tile-header">
                     <div className="type-tile-icon">
-                      <Icon size={18} strokeWidth={2} />
+                      <Icon size={17} strokeWidth={2} />
                     </div>
                     <div className="type-tile-check">
                       {active && <CheckCircleIcon size={14} strokeWidth={2.8} />}
@@ -272,23 +258,28 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
           {/* Công tắc hành vi đang diễn ra */}
           <div
-            className="toggle-row"
+            className="switch-row"
             onClick={() => setOngoing(!ongoing)}
             role="switch"
             aria-checked={ongoing}
-            style={{ borderTop: "1px solid var(--border-subtle)", marginTop: 10, paddingTop: 12 }}
+            style={{ borderTop: "1px solid var(--border-subtle)", marginTop: 10, paddingTop: 10, cursor: "pointer" }}
           >
-            <div>
-              <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
-                Hành vi đang diễn ra tại chỗ
+            <div className="switch-label-group">
+              <div className="switch-title">
+                Đang diễn ra tại vị trí này
               </div>
-              <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>
-                Bật để phòng trực ưu tiên xuất phát can thiệp tức thời (SLA ≤ 3 phút)
+              <div className="switch-desc">
+                Bật để cán bộ trực toà nhà ưu tiên tiếp nhận và hỗ trợ kịp thời
               </div>
             </div>
-            <div className={`toggle-switch ${ongoing ? "on" : ""}`}>
-              <div className="toggle-knob" />
-            </div>
+            <label className="toggle-switch" onClick={(e) => e.stopPropagation()}>
+              <input
+                type="checkbox"
+                checked={ongoing}
+                onChange={(e) => setOngoing(e.target.checked)}
+              />
+              <span className="toggle-slider" />
+            </label>
           </div>
         </div>
 
@@ -296,23 +287,34 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
         <div className="card">
           <div className="card-title">
             <div className="card-title-left">
-              <span>Ghi chú bổ sung (Tuỳ chọn)</span>
+              <span>Ghi chú bổ sung</span>
             </div>
-            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Không bắt buộc</span>
+            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Tuỳ chọn</span>
           </div>
           <textarea
             className="form-textarea"
-            placeholder="Mô tả nhanh vị trí cụ thể (VD: góc sau thang máy, chiếu nghỉ tầng 3... - Vui lòng không ghi tên cá nhân)."
+            placeholder="Mô tả nhanh vị trí cụ thể (VD: góc sau thang máy, chiếu nghỉ tầng 3... Vui lòng không ghi tên cá nhân)."
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={300}
           />
 
           {/* Cam kết bảo mật Zero-PII */}
-          <div className="privacy-assurance">
-            <ShieldCheckIcon size={18} color="var(--primary)" style={{ flexShrink: 0, marginTop: 1 }} />
-            <div className="privacy-assurance-text">
-              <strong>Bảo mật danh tính 100%:</strong> Hệ thống tuân thủ quy chuẩn Zero-PII. Chúng tôi không lưu số điện thoại, tài khoản hay địa chỉ IP của bạn.
+          <div
+            style={{
+              display: "flex",
+              alignItems: "flex-start",
+              gap: 8,
+              marginTop: 10,
+              padding: "10px 12px",
+              background: "var(--primary-subtle)",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid var(--primary-border)",
+            }}
+          >
+            <ShieldCheckIcon size={16} color="var(--primary)" style={{ flexShrink: 0, marginTop: 2 }} />
+            <div style={{ fontSize: 11, color: "var(--text-secondary)", lineHeight: 1.45 }}>
+              <strong style={{ color: "var(--primary-dark)" }}>Bảo mật ẩn danh 100%:</strong> Hệ thống không lưu số điện thoại, tài khoản hay thông tin nhận dạng cá nhân của bạn.
             </div>
           </div>
         </div>
@@ -355,12 +357,12 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
                 }}
                 className="animate-spin"
               />
-              <span>Đang gửi phản ánh...</span>
+              <span>Đang gửi thông tin...</span>
             </>
           ) : (
             <>
-              <SendIcon size={17} strokeWidth={2.2} />
-              <span>GỬI PHẢN ÁNH ẨN DANH (≤ 30s)</span>
+              <SendIcon size={16} strokeWidth={2.2} />
+              <span>Gửi phản ánh ẩn danh</span>
             </>
           )}
         </button>

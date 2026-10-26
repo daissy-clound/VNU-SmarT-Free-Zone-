@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { platform } from "../platform";
+import {
+  PhoneIcon,
+  HeartPulseIcon,
+  SparklesIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+} from "../components/Icons";
 
 export function QuitSupportPage() {
-  const [activeSubTab, setActiveSubTab] = useState<"craving" | "plan" | "fagerstrom" | "chat">("craving");
+  const [activeSubTab, setActiveSubTab] = useState<"craving" | "plan" | "fagerstrom">("craving");
 
   // Craving 4D State
   const [cravingActive, setCravingActive] = useState<boolean>(false);
@@ -18,16 +25,7 @@ export function QuitSupportPage() {
   const [startDate, setStartDate] = useState<string>("");
   const [cigsPerDay, setCigsPerDay] = useState<number>(10);
   const [costPerPack, setCostPerPack] = useState<number>(30000);
-  const [reason, setReason] = useState<string>("Bảo vệ sức khoẻ bản thân & gia đình");
-
-  // Chatbot State
-  const [messages, setMessages] = useState<{ sender: "user" | "bot"; text: string }[]>([
-    {
-      sender: "bot",
-      text: "Xin chào bạn! Mình là Trợ lý Đồng hành Cai thuốc lá. Bạn đang cảm thấy thế nào hôm nay? Có cơn thèm thuốc nào xuất hiện không?",
-    },
-  ]);
-  const [inputMessage, setInputMessage] = useState<string>("");
+  const [reason, setReason] = useState<string>("Bảo vệ sức khoẻ bản thân & người thân");
 
   useEffect(() => {
     const saved = platform.getQuitPlan();
@@ -77,30 +75,6 @@ export function QuitSupportPage() {
     setFScore(total);
   };
 
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!inputMessage.trim()) return;
-
-    const userText = inputMessage.trim();
-    const newMsgList: { sender: "user" | "bot"; text: string }[] = [...messages, { sender: "user", text: userText }];
-    setMessages(newMsgList);
-    setInputMessage("");
-
-    // Giả lập bot phản hồi đồng cảm theo khoa học
-    setTimeout(() => {
-      let reply = "Cơn thèm thuốc thường chỉ đạt đỉnh trong vòng 3 đến 5 phút rồi sẽ giảm dần. Bạn hãy thử uống ngay 1 cốc nước lọc lớn hoặc rửa mặt bằng nước mát nhé!";
-      const lower = userText.toLowerCase();
-      if (lower.includes("thèm") || lower.includes("nhớ")) {
-        reply = "Cảm giác thèm thuốc là dấu hiệu cơ thể bạn đang tự thải độc nicotine ra ngoài. Hãy bấm vào nút 'Cấp cứu Cơn thèm' ở trên và thở theo nhịp 4-7-8 cùng mình nhé!";
-      } else if (lower.includes("nản") || lower.includes("khó") || lower.includes("mệt")) {
-        reply = "Cai thuốc là một hành trình cần sự kiên nhẫn với chính mình. Mỗi điếu thuốc bạn từ chối hôm nay đã giúp phổi bạn có cơ hội phục hồi thêm một chút rồi. Cố lên nhé!";
-      } else if (lower.includes("bác sĩ") || lower.includes("tổng đài") || lower.includes("tư vấn")) {
-        reply = "Bạn có thể gọi ngay Tổng đài Quốc gia Tư vấn Cai thuốc lá miễn cước 1800 6606 (từ 8h - 22h hàng ngày) hoặc liên hệ Trạm Y tế ĐHQGHN để được cán bộ y tế đồng hành.";
-      }
-      setMessages([...newMsgList, { sender: "bot", text: reply }]);
-    }, 600);
-  };
-
   // Tính số ngày và tiền tiết kiệm
   let daysClean = 0;
   let moneySaved = 0;
@@ -116,161 +90,182 @@ export function QuitSupportPage() {
   return (
     <div className="page-quit-support">
       {/* Banner Tổng đài Quốc gia & Y tế trường */}
-      <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 12, padding: "12px 14px", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div
+        style={{
+          background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+          border: "1px solid #bbf7d0",
+          borderRadius: "var(--radius-md)",
+          padding: "12px 14px",
+          marginBottom: 12,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          gap: 10,
+        }}
+      >
         <div>
-          <strong style={{ color: "#166534", fontSize: 13 }}>Tổng đài Quốc gia Cai thuốc lá (Miễn phí):</strong>
-          <div style={{ fontSize: 18, fontWeight: 800, color: "#15803d" }}>1800 6606</div>
+          <div style={{ color: "#166534", fontSize: 12, fontWeight: 600 }}>Tổng đài tư vấn cai thuốc lá (Miễn cước):</div>
+          <div style={{ fontSize: 18, fontWeight: 800, color: "#15803d", marginTop: 1 }}>1800 6606</div>
         </div>
         <a
           href="tel:18006606"
-          style={{ background: "var(--primary)", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: "var(--radius-full)", fontSize: 12, fontWeight: 700 }}
+          style={{
+            background: "var(--primary)",
+            color: "#ffffff",
+            textDecoration: "none",
+            padding: "8px 14px",
+            borderRadius: "var(--radius-full)",
+            fontSize: 12,
+            fontWeight: 700,
+            whiteSpace: "nowrap",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 5,
+          }}
         >
-          Gọi miễn cước
+          <PhoneIcon size={12} color="#ffffff" />
+          <span>Gọi miễn phí</span>
         </a>
       </div>
 
-      {/* Điều hướng sub-tabs */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 4 }}>
+      {/* Điều hướng 3 công cụ khoa học chính thức (100% chức năng thực tế) */}
+      <div className="support-subtabs">
         {[
-          { id: "craving", label: "Vượt cơn thèm (4D)" },
-          { id: "plan", label: "Kế hoạch cai thuốc" },
-          { id: "fagerstrom", label: "Đo mức nghiện" },
-          { id: "chat", label: "Trợ lý đồng hành" },
+          { id: "craving", label: "Thư giãn 4D" },
+          { id: "plan", label: "Lộ trình cá nhân" },
+          { id: "fagerstrom", label: "Đánh giá thói quen" },
         ].map((tab) => (
           <button
             key={tab.id}
             type="button"
+            className={`subtab-pill ${activeSubTab === tab.id ? "active" : ""}`}
             onClick={() => setActiveSubTab(tab.id as any)}
-            style={{
-              flex: "none",
-              padding: "7px 12px",
-              borderRadius: 20,
-              border: activeSubTab === tab.id ? "1.5px solid #17634c" : "1px solid #e2e8f0",
-              background: activeSubTab === tab.id ? "#17634c" : "#ffffff",
-              color: activeSubTab === tab.id ? "#ffffff" : "#475569",
-              fontSize: 12,
-              fontWeight: 700,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
-            }}
           >
             {tab.label}
           </button>
         ))}
       </div>
 
-      {/* Tab 1: Cấp cứu cơn thèm 4D */}
+      {/* Tab 1: Thư giãn 4D */}
       {activeSubTab === "craving" && (
         <div>
           <div className="breathing-box">
-            <h2 style={{ fontSize: 18, fontWeight: 800 }}>VƯỢT CƠN THÈM THUỐC 4D</h2>
-            <p style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>
-              Cơn thèm nicotine sinh lý chỉ kéo dài 3 – 5 phút. Hãy cùng thở sâu để vượt qua!
+            <h2 className="breathing-title">Thực hành Thư giãn 4D</h2>
+            <p className="breathing-sub">
+              Cơn thôi thúc thường lắng dịu sau 3 – 5 phút. Hãy cùng hít thở sâu theo nhịp và thư giãn tâm trí nhé.
             </p>
 
             <div className="breathing-circle">
-              <span style={{ fontSize: 28, fontWeight: 800 }}>
+              <div className="breathing-time">
                 {Math.floor(cravingSeconds / 60)}:{(cravingSeconds % 60).toString().padStart(2, "0")}
-              </span>
-              <span style={{ fontSize: 11, marginTop: 4, textAlign: "center", padding: "0 8px" }}>
+              </div>
+              <div className="breathing-phase">
                 {breathingPhase}
-              </span>
+              </div>
             </div>
 
             <button
               type="button"
+              className="btn-breathing-action"
               onClick={() => {
                 setCravingActive(!cravingActive);
                 if (!cravingActive && cravingSeconds === 0) setCravingSeconds(180);
               }}
-              style={{
-                background: "#ffffff",
-                color: "#17634c",
-                border: "none",
-                padding: "10px 22px",
-                borderRadius: 20,
-                fontWeight: 800,
-                fontSize: 14,
-                cursor: "pointer",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
-              }}
             >
-              {cravingActive ? "Tạm dừng" : "BẮT ĐẦU VƯỢT CƠN THÈM (3 PHÚT)"}
+              <HeartPulseIcon size={16} />
+              <span>{cravingActive ? "Tạm dừng bài tập" : "Bắt đầu bài tập thở 3 phút"}</span>
             </button>
           </div>
 
           <div className="card">
-            <div className="card-title">💡 Kỹ thuật 4D Khoa học từ WHO</div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 13 }}>
+            <div className="card-title">
+              <div className="card-title-left">
+                <SparklesIcon size={16} color="var(--primary)" />
+                <span>Phương pháp 4D từ Tổ chức Y tế Thế giới (WHO)</span>
+              </div>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 13, lineHeight: 1.5 }}>
               <div>
-                <strong style={{ color: "#17634c" }}>1. Delay (Trì hoãn):</strong> Đợi ít nhất 5 phút trước khi quyết định. 90% cơn thèm sẽ tự biến mất.
+                <strong style={{ color: "var(--primary)" }}>1. Delay (Trì hoãn):</strong> Đợi khoảng 5 phút trước khi quyết định. Phần lớn cảm giác bồn chồn sẽ tự lắng xuống.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>2. Deep breath (Thở sâu):</strong> Hít vào thật sâu bằng mũi trong 4 giây, giữ 7 giây và thở ra từ từ bằng miệng trong 8 giây.
+                <strong style={{ color: "var(--primary)" }}>2. Deep breath (Thở sâu):</strong> Hít vào thật chậm bằng mũi trong 4 giây, giữ hơi 7 giây và thở ra từ từ qua miệng trong 8 giây.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>3. Drink water (Uống nước):</strong> Uống từng ngụm nước lạnh nhỏ để xoa dịu cảm giác bồn chồn ở khoang miệng.
+                <strong style={{ color: "var(--primary)" }}>3. Drink water (Uống nước):</strong> Nhấp từng ngụm nước mát để làm dịu cảm giác nơi vòm họng.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>4. Distract (Làm việc khác):</strong> Đứng dậy đi bộ, nghe một bản nhạc yêu thích hoặc trò chuyện cùng bạn bè.
+                <strong style={{ color: "var(--primary)" }}>4. Distract (Đổi hoạt động):</strong> Đi dạo vài bước, nghe bài hát yêu thích hoặc trò chuyện cùng bạn bè.
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Tab 2: Kế hoạch cai thuốc của tôi */}
+      {/* Tab 2: Lộ trình cá nhân */}
       {activeSubTab === "plan" && (
         <div>
           {plan ? (
             <div>
-              <div className="card" style={{ background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)", border: "1px solid #86efac" }}>
+              <div
+                className="card"
+                style={{
+                  background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+                  border: "1px solid #86efac",
+                }}
+              >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                   <div>
-                    <span style={{ fontSize: 11, color: "#15803d", fontWeight: 700 }}>HÀNH TRÌNH TỰ DO</span>
-                    <div style={{ fontSize: 28, fontWeight: 800, color: "#166534" }}>{daysClean} ngày</div>
+                    <span style={{ fontSize: 11, color: "#15803d", fontWeight: 700 }}>HÀNH TRÌNH TÍCH CỰC</span>
+                    <div style={{ fontSize: 26, fontWeight: 800, color: "#166534", marginTop: 2 }}>
+                      {daysClean} ngày
+                    </div>
                     <div style={{ fontSize: 12, color: "#166534" }}>Bắt đầu từ: {plan.startDate}</div>
                   </div>
                   <div style={{ textAlign: "right" }}>
                     <span style={{ fontSize: 11, color: "#15803d", fontWeight: 700 }}>TIẾT KIỆM ĐƯỢC</span>
-                    <div style={{ fontSize: 20, fontWeight: 800, color: "#0f766e" }}>
+                    <div style={{ fontSize: 20, fontWeight: 800, color: "#0f766e", marginTop: 2 }}>
                       {moneySaved.toLocaleString("vi-VN")} đ
                     </div>
-                    <div style={{ fontSize: 11, color: "#166534" }}>Tương đương ~{Math.floor(moneySaved / 30000)} bữa ăn SV</div>
+                    <div style={{ fontSize: 11, color: "#166534" }}>
+                      Tương đương ~{Math.floor(moneySaved / 30000)} bữa ăn sinh viên
+                    </div>
                   </div>
                 </div>
 
-                <div style={{ marginTop: 14, paddingTop: 10, borderTop: "1px dashed #86efac", fontSize: 12, color: "#166534" }}>
-                  <strong>Lý do của bạn:</strong> "{plan.reason}"
+                <div style={{ marginTop: 12, paddingTop: 10, borderTop: "1px dashed #86efac", fontSize: 12, color: "#166534" }}>
+                  <strong>Mục tiêu của bạn:</strong> "{plan.reason}"
                 </div>
               </div>
 
               {/* Các mốc hồi phục sinh lý */}
               <div className="card">
-                <div className="card-title">🌱 Các mốc Cơ thể Phục hồi</div>
+                <div className="card-title">
+                  <span>Các mốc cơ thể hồi phục tự nhiên</span>
+                </div>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 12 }}>
-                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 0 ? 1 : 0.5 }}>
-                    <span style={{ fontSize: 18 }}>⏱️</span>
+                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 0 ? 1 : 0.6 }}>
+                    <span style={{ fontSize: 16 }}>⏱️</span>
                     <div>
-                      <strong>Sau 20 phút:</strong> Huyết áp và nhịp tim bắt đầu hạ dần về mức bình thường.
+                      <strong>Sau 20 phút:</strong> Huyết áp và nhịp tim bắt đầu trở về mức bình thường.
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 1 ? 1 : 0.5 }}>
-                    <span style={{ fontSize: 18 }}>🫁</span>
+                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 1 ? 1 : 0.6 }}>
+                    <span style={{ fontSize: 16 }}>🫁</span>
                     <div>
-                      <strong>Sau 24 giờ:</strong> Nồng độ khí CO độc hại trong máu giảm xuống 0, lượng oxy tăng tối đa.
+                      <strong>Sau 24 giờ:</strong> Nồng độ khí CO độc hại trong máu giảm hẳn, lượng oxy tăng lên.
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 2 ? 1 : 0.5 }}>
-                    <span style={{ fontSize: 18 }}>🍎</span>
+                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 2 ? 1 : 0.6 }}>
+                    <span style={{ fontSize: 16 }}>🍎</span>
                     <div>
-                      <strong>Sau 48 giờ:</strong> Các đầu mút dây thần kinh bắt đầu mọc lại; khứu giác và vị giác hồi phục rõ rệt.
+                      <strong>Sau 48 giờ:</strong> Vị giác và khứu giác cảm nhận hương vị thức ăn tinh tế hơn.
                     </div>
                   </div>
-                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 14 ? 1 : 0.5 }}>
-                    <span style={{ fontSize: 18 }}>🏃</span>
+                  <div style={{ display: "flex", gap: 10, opacity: daysClean >= 14 ? 1 : 0.6 }}>
+                    <span style={{ fontSize: 16 }}>🏃</span>
                     <div>
-                      <strong>Sau 2 - 4 tuần:</strong> Chức năng lưu thông tuần hoàn máu và thể tích thông khí phổi tăng tới 30%.
+                      <strong>Sau 2 - 4 tuần:</strong> Thể tích thông khí phổi và sức bền thể lực cải thiện rõ rệt.
                     </div>
                   </div>
                 </div>
@@ -280,23 +275,25 @@ export function QuitSupportPage() {
                 type="button"
                 className="btn-secondary"
                 onClick={() => {
-                  if (window.confirm("Bạn có muốn điều chỉnh lại kế hoạch cai thuốc không?")) {
+                  if (window.confirm("Bạn có muốn điều chỉnh lại lộ trình đồng hành không?")) {
                     setPlan(null);
                   }
                 }}
               >
-                Chỉnh sửa kế hoạch
+                Chỉnh sửa lộ trình
               </button>
             </div>
           ) : (
             <form onSubmit={handleSavePlan} className="card">
-              <div className="card-title">🎯 Thiết lập Kế hoạch Cai thuốc</div>
-              <p style={{ fontSize: 12, color: "#64748b", marginBottom: 12 }}>
-                Dữ liệu chỉ lưu riêng tư trên máy của bạn. Không gửi lên máy chủ, không liên quan đến xử lý kỷ luật.
+              <div className="card-title">
+                <span>Thiết lập lộ trình sống khoẻ</span>
+              </div>
+              <p style={{ fontSize: 12, color: "#64748b", marginBottom: 12, lineHeight: 1.45 }}>
+                Dữ liệu chỉ lưu riêng tư trên thiết bị của bạn, giúp bạn theo dõi tiến trình của chính mình.
               </p>
 
               <div className="form-group">
-                <label className="form-label">Chọn ngày bắt đầu không hút:</label>
+                <label className="form-label">Chọn ngày bắt đầu:</label>
                 <input
                   type="date"
                   className="form-input"
@@ -307,7 +304,7 @@ export function QuitSupportPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Số điếu thuốc/hơi Pod trung bình mỗi ngày:</label>
+                <label className="form-label">Số điếu thuốc / hơi Pod trung bình mỗi ngày:</label>
                 <input
                   type="number"
                   className="form-input"
@@ -319,7 +316,7 @@ export function QuitSupportPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Giá trung bình 1 bao thuốc / 1 đầu Pod (VND):</label>
+                <label className="form-label">Chi phí trung bình (VND/gói hoặc đầu pod):</label>
                 <input
                   type="number"
                   className="form-input"
@@ -330,70 +327,74 @@ export function QuitSupportPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Động lực lớn nhất để bạn từ bỏ thuốc:</label>
+                <label className="form-label">Động lực lớn nhất để bạn duy trì lối sống lành mạnh:</label>
                 <input
                   type="text"
                   className="form-input"
                   value={reason}
                   onChange={(e) => setReason(e.target.value)}
-                  placeholder="VD: Tiết kiệm tiền mua laptop, bảo vệ người yêu..."
+                  placeholder="VD: Tiết kiệm chi phí, bảo vệ sức khoẻ người thân..."
                 />
               </div>
 
               <button type="submit" className="btn-primary">
-                LƯU KẾ HOẠCH & BẮT ĐẦU ĐẾM NGÀY
+                <span>Lưu lộ trình đồng hành</span>
               </button>
             </form>
           )}
         </div>
       )}
 
-      {/* Tab 3: Thang đo Fagerstrom */}
+      {/* Tab 3: Thang đo Fagerstrom chuẩn quốc tế */}
       {activeSubTab === "fagerstrom" && (
         <div className="card">
-          <div className="card-title">📊 Đánh giá Mức độ Phụ thuộc Nicotine</div>
-          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 14 }}>
-            Thang đo Fagerström Test for Nicotine Dependence (FTND) chuẩn quốc tế gồm 6 câu hỏi:
+          <div className="card-title">
+            <span>Đánh giá mức độ phụ thuộc Nicotine (Fagerström FTND)</span>
+          </div>
+          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 14, lineHeight: 1.45 }}>
+            Thang đo khoa học quốc tế gồm 6 câu hỏi giúp bạn hiểu rõ mức độ phụ thuộc để áp dụng phương pháp phù hợp:
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {[
               {
-                q: "1. Bạn hút điếu thuốc đầu tiên trong ngày sau khi thức dậy bao lâu?",
+                q: "1. Bạn thường dùng điếu thuốc đầu tiên trong ngày sau khi thức dậy bao lâu?",
                 opts: ["Dưới 5 phút (3 điểm)", "Từ 6 - 30 phút (2 điểm)", "Từ 31 - 60 phút (1 điểm)", "Sau 60 phút (0 điểm)"],
                 scores: [3, 2, 1, 0],
               },
               {
-                q: "2. Bạn có thấy khó kiềm chế việc hút thuốc ở những nơi bị cấm (như phòng học, KTX)?",
+                q: "2. Bạn có thấy khó kiềm chế ở những khu vực học đường cấm hút thuốc?",
                 opts: ["Có (1 điểm)", "Không (0 điểm)"],
                 scores: [1, 0],
               },
               {
                 q: "3. Điếu thuốc nào trong ngày làm bạn cảm thấy khó từ bỏ nhất?",
-                opts: ["Điếu đầu tiên vào sáng sớm (1 điểm)", "Bất kỳ điếu nào khác (0 điểm)"],
+                opts: ["Điếu đầu tiên vào sáng sớm (1 điểm)", "Các điếu khác trong ngày (0 điểm)"],
                 scores: [1, 0],
               },
               {
-                q: "4. Bạn hút bao nhiêu điếu thuốc mỗi ngày?",
+                q: "4. Bạn dùng bao nhiêu điếu thuốc mỗi ngày?",
                 opts: ["Trên 30 điếu (3 điểm)", "Từ 21 - 30 điếu (2 điểm)", "Từ 11 - 20 điếu (1 điểm)", "Dưới 10 điếu (0 điểm)"],
                 scores: [3, 2, 1, 0],
               },
               {
-                q: "5. Bạn có hút nhiều hơn vào các buổi sáng so với phần còn lại của ngày không?",
+                q: "5. Bạn có hút nhiều hơn vào các buổi sáng so với buổi chiều tối?",
                 opts: ["Có (1 điểm)", "Không (0 điểm)"],
                 scores: [1, 0],
               },
               {
-                q: "6. Bạn có vẫn hút thuốc khi bị ốm liệt giường không?",
+                q: "6. Khi bị cảm cúm hoặc ốm phải nghỉ ngơi, bạn có hút thuốc không?",
                 opts: ["Có (1 điểm)", "Không (0 điểm)"],
                 scores: [1, 0],
               },
             ].map((item, idx) => (
               <div key={idx} style={{ paddingBottom: 10, borderBottom: "1px solid #f1f5f9" }}>
-                <strong style={{ fontSize: 13, color: "#1e293b" }}>{item.q}</strong>
-                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 6 }}>
+                <div style={{ fontSize: 13, fontWeight: 600, color: "var(--text-primary)", lineHeight: 1.4 }}>
+                  {item.q}
+                </div>
+                <div style={{ display: "flex", flexDirection: "column", gap: 6, marginTop: 8 }}>
                   {item.opts.map((opt, oIdx) => (
-                    <label key={oIdx} style={{ fontSize: 12, display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+                    <label key={oIdx} style={{ fontSize: 12, display: "flex", alignItems: "center", gap: 8, cursor: "pointer", color: "var(--text-secondary)" }}>
                       <input
                         type="radio"
                         name={`f_q_${idx}`}
@@ -418,63 +419,23 @@ export function QuitSupportPage() {
             style={{ marginTop: 14 }}
             onClick={handleCalculateFagerstrom}
           >
-            TÍNH ĐIỂM & XEM KẾT QUẢ
+            <span>Xem kết quả đánh giá</span>
           </button>
 
           {fScore !== null && (
-            <div style={{ marginTop: 14, padding: 14, borderRadius: 8, background: "#f0fdf4", border: "1px solid #86efac" }}>
-              <strong style={{ color: "#166534", fontSize: 15 }}>
-                Kết quả: {fScore} / 10 điểm — {fScore <= 2 ? "Phụ thuộc rất thấp" : fScore <= 4 ? "Phụ thuộc trung bình" : fScore <= 6 ? "Phụ thuộc nặng" : "Phụ thuộc rất nặng"}
+            <div style={{ marginTop: 14, padding: 14, borderRadius: "var(--radius-sm)", background: "#f0fdf4", border: "1px solid #86efac" }}>
+              <strong style={{ color: "#166534", fontSize: 14 }}>
+                Kết quả: {fScore} / 10 điểm — {fScore <= 2 ? "Phụ thuộc nhẹ" : fScore <= 4 ? "Phụ thuộc vừa" : fScore <= 6 ? "Phụ thuộc đáng chú ý" : "Phụ thuộc cao"}
               </strong>
-              <p style={{ fontSize: 12, color: "#15803d", marginTop: 4 }}>
+              <p style={{ fontSize: 12, color: "#15803d", marginTop: 4, lineHeight: 1.45 }}>
                 {fScore <= 2
-                  ? "Bạn chủ yếu hút thuốc theo thói quen tâm lý xã hội. Việc bỏ thuốc hoàn toàn khả thi chỉ bằng ý chí và thay đổi môi trường."
+                  ? "Bạn chủ yếu dùng theo thói quen môi trường xung quanh. Bạn hoàn toàn có thể chủ động kiểm soát và thay đổi lối sống một cách nhẹ nhàng."
                   : fScore <= 5
-                  ? "Cơ thể bạn đã bắt đầu quen với nồng độ nicotine. Bạn nên áp dụng kế hoạch cai giảm dần kết hợp liệu pháp tâm lý 4D."
-                  : "Mức độ phụ thuộc nicotine cao. Bạn nên liên hệ Tổng đài 1800 6606 để được bác sĩ hướng dẫn phác đồ hỗ trợ phù hợp."}
+                  ? "Cơ thể đã quen với nhịp sinh hoạt có nicotine. Áp dụng kỹ thuật thở 4D và giảm dần theo từng tuần sẽ mang lại hiệu quả rất tích cực."
+                  : "Mức độ gắn bó tương đối cao. Hãy liên hệ Tổng đài 1800 6606 để được chuyên gia y tế đồng hành và hỗ trợ phác đồ khoa học nhé."}
               </p>
             </div>
           )}
-        </div>
-      )}
-
-      {/* Tab 4: Trợ lý AI Cai thuốc */}
-      {activeSubTab === "chat" && (
-        <div className="card" style={{ display: "flex", flexDirection: "column", height: 440 }}>
-          <div className="card-title">🤖 Trợ lý Đồng hành Cai thuốc (AI Coach)</div>
-          
-          <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 8, padding: 8, background: "#f8fafc", borderRadius: 8 }}>
-            {messages.map((m, idx) => (
-              <div
-                key={idx}
-                style={{
-                  alignSelf: m.sender === "user" ? "flex-end" : "flex-start",
-                  background: m.sender === "user" ? "#17634c" : "#ffffff",
-                  color: m.sender === "user" ? "#ffffff" : "#1e293b",
-                  padding: "8px 12px",
-                  borderRadius: 12,
-                  maxWidth: "80%",
-                  fontSize: 13,
-                  boxShadow: "0 1px 2px rgba(0,0,0,0.05)",
-                }}
-              >
-                {m.text}
-              </div>
-            ))}
-          </div>
-
-          <form onSubmit={handleSendMessage} style={{ display: "flex", gap: 6, marginTop: 10 }}>
-            <input
-              type="text"
-              className="form-input"
-              placeholder="Nhập tâm sự hoặc câu hỏi của bạn..."
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-            />
-            <button type="submit" className="btn-primary" style={{ width: "auto", padding: "0 16px" }}>
-              Gửi
-            </button>
-          </form>
         </div>
       )}
     </div>
