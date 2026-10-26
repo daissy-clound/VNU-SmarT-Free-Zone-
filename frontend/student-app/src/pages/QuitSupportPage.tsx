@@ -123,19 +123,19 @@ export function QuitSupportPage() {
         </div>
         <a
           href="tel:18006606"
-          style={{ background: "#15803d", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: 20, fontSize: 12, fontWeight: 700 }}
+          style={{ background: "var(--primary)", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: "var(--radius-full)", fontSize: 12, fontWeight: 700 }}
         >
-          📞 Gọi ngay
+          Gọi miễn cước
         </a>
       </div>
 
       {/* Điều hướng sub-tabs */}
       <div style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 4 }}>
         {[
-          { id: "craving", label: "⚡ Vượt cơn thèm (4D)" },
-          { id: "plan", label: "🎯 Kế hoạch của tôi" },
-          { id: "fagerstrom", label: "📊 Đo mức nghiện" },
-          { id: "chat", label: "💬 Trợ lý AI" },
+          { id: "craving", label: "Vượt cơn thèm (4D)" },
+          { id: "plan", label: "Kế hoạch cai thuốc" },
+          { id: "fagerstrom", label: "Đo mức nghiện" },
+          { id: "chat", label: "Trợ lý đồng hành" },
         ].map((tab) => (
           <button
             key={tab.id}

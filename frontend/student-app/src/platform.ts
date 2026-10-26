@@ -125,12 +125,26 @@ export const platform = {
    * Lấy danh sách infographic tuyên truyền đang kích hoạt
    */
   async getInfographics(): Promise<any[]> {
+    const officialPosters = [
+      {
+        id: "official-poster-2026",
+        title: "Chiến dịch: Không Khói Thuốc Trọn Tương Lai — VNU UET",
+        image_url: "/infographics/no-smoking-poster.png",
+        building: "Toàn khuôn viên ĐHQGHN",
+        created_at: new Date().toISOString(),
+        description: "Thông điệp 4 hành động: Nói Không - Bảo Vệ - Thay Đổi - Hành Động vì một thế hệ học đường văn minh không khói thuốc.",
+      },
+    ];
     try {
       const res = await fetch("/api/infographics");
       const data = await res.json();
-      return data.items || [];
+      if (Array.isArray(data.items) && data.items.length > 0) {
+        const hasOfficial = data.items.some((i: any) => i.image_url?.includes("no-smoking-poster"));
+        return hasOfficial ? data.items : [...officialPosters, ...data.items];
+      }
+      return officialPosters;
     } catch {
-      return [];
+      return officialPosters;
     }
   },
 

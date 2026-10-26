@@ -126,9 +126,9 @@ export const SEED_TICKETS = [
 export const SEED_INFOGRAPHICS = [
   {
     id: "info_001",
-    title: "Vì môi trường Trường ĐH Công nghệ (UET) Hoà Lạc không khói thuốc",
-    image_url: "/assets/infographics/poster-uet-khong-khoi-thuoc.png",
-    building: "UET1",
+    title: "Áp phích: Không Khói Thuốc Trọn Tương Lai — VNU UET",
+    image_url: "/infographics/no-smoking-poster.png",
+    building: "Toàn trường",
     zone_code: "UET1-3CT",
     created_by_id: "usr_bql",
     is_active: true,
