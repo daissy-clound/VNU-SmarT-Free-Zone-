@@ -1,0 +1,2504 @@
+[
+  {
+    "event_id": "ev_67",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-14T20:49:22.157Z",
+    "end_time": "2026-09-14T21:04:49.157Z",
+    "class": "steam",
+    "peak_pm25": 40.6,
+    "duration_seconds": 927
+  },
+  {
+    "event_id": "ev_267",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-15T07:46:22.157Z",
+    "end_time": "2026-09-15T07:59:29.157Z",
+    "class": "cigarette",
+    "peak_pm25": 59.4,
+    "duration_seconds": 787
+  },
+  {
+    "event_id": "ev_20",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-15T07:52:22.157Z",
+    "end_time": "2026-09-15T08:09:00.157Z",
+    "class": "cigarette",
+    "peak_pm25": 73.9,
+    "duration_seconds": 998
+  },
+  {
+    "event_id": "ev_34",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-15T08:08:22.157Z",
+    "end_time": "2026-09-15T08:08:54.157Z",
+    "class": "spray",
+    "peak_pm25": 88.2,
+    "duration_seconds": 32
+  },
+  {
+    "event_id": "ev_229",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-15T08:40:22.157Z",
+    "end_time": "2026-09-15T08:43:09.157Z",
+    "class": "vape",
+    "peak_pm25": 130.3,
+    "duration_seconds": 167
+  },
+  {
+    "event_id": "ev_152",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-15T08:50:22.157Z",
+    "end_time": "2026-09-15T09:15:08.157Z",
+    "class": "steam",
+    "peak_pm25": 41.7,
+    "duration_seconds": 1486
+  },
+  {
+    "event_id": "ev_132",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-15T20:12:22.157Z",
+    "end_time": "2026-09-15T20:14:09.157Z",
+    "class": "vape",
+    "peak_pm25": 79.2,
+    "duration_seconds": 107
+  },
+  {
+    "event_id": "ev_18",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-15T22:08:22.157Z",
+    "end_time": "2026-09-15T22:24:31.157Z",
+    "class": "cigarette",
+    "peak_pm25": 62.1,
+    "duration_seconds": 969
+  },
+  {
+    "event_id": "ev_257",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-15T22:23:22.157Z",
+    "end_time": "2026-09-15T22:36:39.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.8,
+    "duration_seconds": 797
+  },
+  {
+    "event_id": "ev_148",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-16T06:54:22.157Z",
+    "end_time": "2026-09-16T06:56:30.157Z",
+    "class": "vape",
+    "peak_pm25": 97.1,
+    "duration_seconds": 128
+  },
+  {
+    "event_id": "ev_212",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-16T22:13:22.157Z",
+    "end_time": "2026-09-16T22:29:06.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.6,
+    "duration_seconds": 944
+  },
+  {
+    "event_id": "ev_193",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-16T22:20:22.157Z",
+    "end_time": "2026-09-16T22:23:46.157Z",
+    "class": "vape",
+    "peak_pm25": 103.8,
+    "duration_seconds": 204
+  },
+  {
+    "event_id": "ev_169",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-17T07:05:22.157Z",
+    "end_time": "2026-09-17T07:07:40.157Z",
+    "class": "vape",
+    "peak_pm25": 79.6,
+    "duration_seconds": 138
+  },
+  {
+    "event_id": "ev_259",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-17T07:51:22.157Z",
+    "end_time": "2026-09-17T07:53:44.157Z",
+    "class": "vape",
+    "peak_pm25": 91.7,
+    "duration_seconds": 142
+  },
+  {
+    "event_id": "ev_203",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-17T21:15:22.157Z",
+    "end_time": "2026-09-17T21:16:52.157Z",
+    "class": "vape",
+    "peak_pm25": 84.4,
+    "duration_seconds": 90
+  },
+  {
+    "event_id": "ev_99",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-09-17T21:46:22.157Z",
+    "end_time": "2026-09-17T21:49:43.157Z",
+    "class": "vape",
+    "peak_pm25": 124.9,
+    "duration_seconds": 201
+  },
+  {
+    "event_id": "ev_26",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-17T21:51:22.157Z",
+    "end_time": "2026-09-17T22:07:14.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77.1,
+    "duration_seconds": 952
+  },
+  {
+    "event_id": "ev_81",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-17T22:49:22.157Z",
+    "end_time": "2026-09-17T23:03:16.157Z",
+    "class": "cigarette",
+    "peak_pm25": 55.7,
+    "duration_seconds": 834
+  },
+  {
+    "event_id": "ev_3",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-18T22:13:22.157Z",
+    "end_time": "2026-09-18T22:16:32.157Z",
+    "class": "vape",
+    "peak_pm25": 96.8,
+    "duration_seconds": 190
+  },
+  {
+    "event_id": "ev_246",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-18T22:24:22.157Z",
+    "end_time": "2026-09-18T22:43:06.157Z",
+    "class": "cigarette",
+    "peak_pm25": 74,
+    "duration_seconds": 1124
+  },
+  {
+    "event_id": "ev_179",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-19T08:10:22.157Z",
+    "end_time": "2026-09-19T08:10:57.157Z",
+    "class": "spray",
+    "peak_pm25": 88,
+    "duration_seconds": 35
+  },
+  {
+    "event_id": "ev_235",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-19T08:17:22.157Z",
+    "end_time": "2026-09-19T08:19:55.157Z",
+    "class": "vape",
+    "peak_pm25": 83.9,
+    "duration_seconds": 153
+  },
+  {
+    "event_id": "ev_69",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-19T08:49:22.157Z",
+    "end_time": "2026-09-19T08:51:59.157Z",
+    "class": "vape",
+    "peak_pm25": 105.5,
+    "duration_seconds": 157
+  },
+  {
+    "event_id": "ev_89",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-09-19T09:10:22.157Z",
+    "end_time": "2026-09-19T09:20:31.157Z",
+    "class": "cigarette",
+    "peak_pm25": 62.8,
+    "duration_seconds": 609
+  },
+  {
+    "event_id": "ev_29",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-19T20:22:22.157Z",
+    "end_time": "2026-09-19T20:28:37.157Z",
+    "class": "dust",
+    "peak_pm25": 45.8,
+    "duration_seconds": 375
+  },
+  {
+    "event_id": "ev_195",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-20T06:51:22.157Z",
+    "end_time": "2026-09-20T06:54:16.157Z",
+    "class": "vape",
+    "peak_pm25": 90.7,
+    "duration_seconds": 174
+  },
+  {
+    "event_id": "ev_120",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-20T07:05:22.157Z",
+    "end_time": "2026-09-20T07:19:23.157Z",
+    "class": "cigarette",
+    "peak_pm25": 86.6,
+    "duration_seconds": 841
+  },
+  {
+    "event_id": "ev_109",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-09-20T07:27:22.157Z",
+    "end_time": "2026-09-20T07:30:33.157Z",
+    "class": "vape",
+    "peak_pm25": 82.8,
+    "duration_seconds": 191
+  },
+  {
+    "event_id": "ev_223",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-20T07:31:22.157Z",
+    "end_time": "2026-09-20T07:33:20.157Z",
+    "class": "vape",
+    "peak_pm25": 91.8,
+    "duration_seconds": 118
+  },
+  {
+    "event_id": "ev_271",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-20T08:05:22.157Z",
+    "end_time": "2026-09-20T08:08:24.157Z",
+    "class": "vape",
+    "peak_pm25": 122.5,
+    "duration_seconds": 182
+  },
+  {
+    "event_id": "ev_177",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-20T08:40:22.157Z",
+    "end_time": "2026-09-20T08:59:36.157Z",
+    "class": "cigarette",
+    "peak_pm25": 63.7,
+    "duration_seconds": 1154
+  },
+  {
+    "event_id": "ev_10",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-20T09:00:22.157Z",
+    "end_time": "2026-09-20T09:02:56.157Z",
+    "class": "vape",
+    "peak_pm25": 109.1,
+    "duration_seconds": 154
+  },
+  {
+    "event_id": "ev_189",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-20T20:18:22.157Z",
+    "end_time": "2026-09-20T20:21:25.157Z",
+    "class": "vape",
+    "peak_pm25": 118.1,
+    "duration_seconds": 183
+  },
+  {
+    "event_id": "ev_63",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-20T20:48:22.157Z",
+    "end_time": "2026-09-20T21:05:49.157Z",
+    "class": "cigarette",
+    "peak_pm25": 67.4,
+    "duration_seconds": 1047
+  },
+  {
+    "event_id": "ev_37",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-21T07:05:22.157Z",
+    "end_time": "2026-09-21T07:17:37.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.2,
+    "duration_seconds": 735
+  },
+  {
+    "event_id": "ev_28",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-21T07:12:22.157Z",
+    "end_time": "2026-09-21T07:27:32.157Z",
+    "class": "cigarette",
+    "peak_pm25": 67.9,
+    "duration_seconds": 910
+  },
+  {
+    "event_id": "ev_21",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-21T07:22:22.157Z",
+    "end_time": "2026-09-21T07:41:34.157Z",
+    "class": "steam",
+    "peak_pm25": 42.1,
+    "duration_seconds": 1152
+  },
+  {
+    "event_id": "ev_224",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-21T07:25:22.157Z",
+    "end_time": "2026-09-21T07:36:19.157Z",
+    "class": "cigarette",
+    "peak_pm25": 58.9,
+    "duration_seconds": 657
+  },
+  {
+    "event_id": "ev_153",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-21T07:44:22.157Z",
+    "end_time": "2026-09-21T07:54:35.157Z",
+    "class": "cigarette",
+    "peak_pm25": 76.7,
+    "duration_seconds": 613
+  },
+  {
+    "event_id": "ev_238",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-21T07:50:22.157Z",
+    "end_time": "2026-09-21T07:52:07.157Z",
+    "class": "vape",
+    "peak_pm25": 85.2,
+    "duration_seconds": 105
+  },
+  {
+    "event_id": "ev_138",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-21T07:57:22.157Z",
+    "end_time": "2026-09-21T08:02:55.157Z",
+    "class": "dust",
+    "peak_pm25": 56.4,
+    "duration_seconds": 333
+  },
+  {
+    "event_id": "ev_41",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-21T20:11:22.157Z",
+    "end_time": "2026-09-21T20:13:29.157Z",
+    "class": "vape",
+    "peak_pm25": 128.9,
+    "duration_seconds": 127
+  },
+  {
+    "event_id": "ev_53",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-21T20:38:22.157Z",
+    "end_time": "2026-09-21T20:51:13.157Z",
+    "class": "cigarette",
+    "peak_pm25": 69.9,
+    "duration_seconds": 771
+  },
+  {
+    "event_id": "ev_256",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-22T06:27:22.157Z",
+    "end_time": "2026-09-22T06:38:45.157Z",
+    "class": "cigarette",
+    "peak_pm25": 84.6,
+    "duration_seconds": 683
+  },
+  {
+    "event_id": "ev_62",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-22T06:29:22.157Z",
+    "end_time": "2026-09-22T06:32:01.157Z",
+    "class": "vape",
+    "peak_pm25": 105.3,
+    "duration_seconds": 159
+  },
+  {
+    "event_id": "ev_24",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-23T07:11:22.157Z",
+    "end_time": "2026-09-23T07:21:46.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.5,
+    "duration_seconds": 624
+  },
+  {
+    "event_id": "ev_230",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-23T07:59:22.157Z",
+    "end_time": "2026-09-23T08:15:30.157Z",
+    "class": "cigarette",
+    "peak_pm25": 66.4,
+    "duration_seconds": 968
+  },
+  {
+    "event_id": "ev_40",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-23T08:20:22.157Z",
+    "end_time": "2026-09-23T08:38:56.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77,
+    "duration_seconds": 1114
+  },
+  {
+    "event_id": "ev_23",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-23T08:39:22.157Z",
+    "end_time": "2026-09-23T08:53:48.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.1,
+    "duration_seconds": 866
+  },
+  {
+    "event_id": "ev_233",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-23T09:04:22.157Z",
+    "end_time": "2026-09-23T09:05:56.157Z",
+    "class": "vape",
+    "peak_pm25": 128.9,
+    "duration_seconds": 94
+  },
+  {
+    "event_id": "ev_66",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-23T20:25:22.157Z",
+    "end_time": "2026-09-23T20:48:31.157Z",
+    "class": "steam",
+    "peak_pm25": 64.6,
+    "duration_seconds": 1389
+  },
+  {
+    "event_id": "ev_176",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-23T21:19:22.157Z",
+    "end_time": "2026-09-23T21:38:56.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.4,
+    "duration_seconds": 1174
+  },
+  {
+    "event_id": "ev_180",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-24T06:24:22.157Z",
+    "end_time": "2026-09-24T06:34:57.157Z",
+    "class": "cigarette",
+    "peak_pm25": 85.5,
+    "duration_seconds": 635
+  },
+  {
+    "event_id": "ev_125",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-24T07:50:22.157Z",
+    "end_time": "2026-09-24T07:53:11.157Z",
+    "class": "vape",
+    "peak_pm25": 96.3,
+    "duration_seconds": 169
+  },
+  {
+    "event_id": "ev_216",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-24T07:58:22.157Z",
+    "end_time": "2026-09-24T08:09:51.157Z",
+    "class": "cigarette",
+    "peak_pm25": 72.9,
+    "duration_seconds": 689
+  },
+  {
+    "event_id": "ev_239",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-24T08:32:22.157Z",
+    "end_time": "2026-09-24T08:46:30.157Z",
+    "class": "cigarette",
+    "peak_pm25": 88,
+    "duration_seconds": 848
+  },
+  {
+    "event_id": "ev_30",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-24T20:37:22.157Z",
+    "end_time": "2026-09-24T20:51:37.157Z",
+    "class": "cigarette",
+    "peak_pm25": 68.6,
+    "duration_seconds": 855
+  },
+  {
+    "event_id": "ev_57",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-09-24T20:47:22.157Z",
+    "end_time": "2026-09-24T21:00:42.157Z",
+    "class": "cigarette",
+    "peak_pm25": 94.3,
+    "duration_seconds": 800
+  },
+  {
+    "event_id": "ev_164",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-24T20:55:22.157Z",
+    "end_time": "2026-09-24T21:16:14.157Z",
+    "class": "steam",
+    "peak_pm25": 60,
+    "duration_seconds": 1252
+  },
+  {
+    "event_id": "ev_249",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-24T22:21:22.157Z",
+    "end_time": "2026-09-24T22:24:05.157Z",
+    "class": "vape",
+    "peak_pm25": 77.6,
+    "duration_seconds": 163
+  },
+  {
+    "event_id": "ev_133",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-24T22:26:22.157Z",
+    "end_time": "2026-09-24T22:29:00.157Z",
+    "class": "vape",
+    "peak_pm25": 88.6,
+    "duration_seconds": 158
+  },
+  {
+    "event_id": "ev_32",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-25T06:27:22.157Z",
+    "end_time": "2026-09-25T06:43:51.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.2,
+    "duration_seconds": 989
+  },
+  {
+    "event_id": "ev_202",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-25T06:29:22.157Z",
+    "end_time": "2026-09-25T06:39:46.157Z",
+    "class": "cigarette",
+    "peak_pm25": 86.6,
+    "duration_seconds": 624
+  },
+  {
+    "event_id": "ev_171",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-25T06:33:22.157Z",
+    "end_time": "2026-09-25T06:57:04.157Z",
+    "class": "steam",
+    "peak_pm25": 64.5,
+    "duration_seconds": 1422
+  },
+  {
+    "event_id": "ev_276",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-25T07:04:22.157Z",
+    "end_time": "2026-09-25T07:07:05.157Z",
+    "class": "vape",
+    "peak_pm25": 94.1,
+    "duration_seconds": 163
+  },
+  {
+    "event_id": "ev_222",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-25T07:05:22.157Z",
+    "end_time": "2026-09-25T07:24:39.157Z",
+    "class": "cigarette",
+    "peak_pm25": 87.8,
+    "duration_seconds": 1157
+  },
+  {
+    "event_id": "ev_146",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-25T07:57:22.157Z",
+    "end_time": "2026-09-25T08:16:57.157Z",
+    "class": "steam",
+    "peak_pm25": 47.2,
+    "duration_seconds": 1175
+  },
+  {
+    "event_id": "ev_255",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-25T08:31:22.157Z",
+    "end_time": "2026-09-25T08:43:33.157Z",
+    "class": "cigarette",
+    "peak_pm25": 58.4,
+    "duration_seconds": 731
+  },
+  {
+    "event_id": "ev_108",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-09-25T08:35:22.157Z",
+    "end_time": "2026-09-25T08:49:20.157Z",
+    "class": "cigarette",
+    "peak_pm25": 76,
+    "duration_seconds": 838
+  },
+  {
+    "event_id": "ev_1",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-25T08:58:22.157Z",
+    "end_time": "2026-09-25T09:01:35.157Z",
+    "class": "vape",
+    "peak_pm25": 97.2,
+    "duration_seconds": 193
+  },
+  {
+    "event_id": "ev_194",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-25T21:32:22.157Z",
+    "end_time": "2026-09-25T21:49:26.157Z",
+    "class": "cigarette",
+    "peak_pm25": 81.3,
+    "duration_seconds": 1024
+  },
+  {
+    "event_id": "ev_118",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-09-25T21:54:22.157Z",
+    "end_time": "2026-09-25T21:56:33.157Z",
+    "class": "vape",
+    "peak_pm25": 134.3,
+    "duration_seconds": 131
+  },
+  {
+    "event_id": "ev_278",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-26T06:22:22.157Z",
+    "end_time": "2026-09-26T06:38:43.157Z",
+    "class": "cigarette",
+    "peak_pm25": 78.1,
+    "duration_seconds": 981
+  },
+  {
+    "event_id": "ev_160",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-26T06:43:22.157Z",
+    "end_time": "2026-09-26T06:55:19.157Z",
+    "class": "cigarette",
+    "peak_pm25": 72.7,
+    "duration_seconds": 717
+  },
+  {
+    "event_id": "ev_209",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-26T08:30:22.157Z",
+    "end_time": "2026-09-26T08:42:11.157Z",
+    "class": "cigarette",
+    "peak_pm25": 58.4,
+    "duration_seconds": 709
+  },
+  {
+    "event_id": "ev_103",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-09-26T20:22:22.157Z",
+    "end_time": "2026-09-26T20:28:45.157Z",
+    "class": "dust",
+    "peak_pm25": 56,
+    "duration_seconds": 383
+  },
+  {
+    "event_id": "ev_167",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-26T20:54:22.157Z",
+    "end_time": "2026-09-26T20:56:59.157Z",
+    "class": "vape",
+    "peak_pm25": 120.1,
+    "duration_seconds": 157
+  },
+  {
+    "event_id": "ev_241",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-26T21:36:22.157Z",
+    "end_time": "2026-09-26T21:38:40.157Z",
+    "class": "vape",
+    "peak_pm25": 117.1,
+    "duration_seconds": 138
+  },
+  {
+    "event_id": "ev_170",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-26T22:48:22.157Z",
+    "end_time": "2026-09-26T23:00:16.157Z",
+    "class": "cigarette",
+    "peak_pm25": 75.2,
+    "duration_seconds": 714
+  },
+  {
+    "event_id": "ev_147",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-27T09:04:22.157Z",
+    "end_time": "2026-09-27T09:22:25.157Z",
+    "class": "cigarette",
+    "peak_pm25": 87.9,
+    "duration_seconds": 1083
+  },
+  {
+    "event_id": "ev_6",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-27T09:06:22.157Z",
+    "end_time": "2026-09-27T09:13:01.157Z",
+    "class": "dust",
+    "peak_pm25": 60.8,
+    "duration_seconds": 399
+  },
+  {
+    "event_id": "ev_213",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-27T21:19:22.157Z",
+    "end_time": "2026-09-27T21:32:33.157Z",
+    "class": "cigarette",
+    "peak_pm25": 94.7,
+    "duration_seconds": 791
+  },
+  {
+    "event_id": "ev_262",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-27T21:23:22.157Z",
+    "end_time": "2026-09-27T21:25:26.157Z",
+    "class": "vape",
+    "peak_pm25": 88.3,
+    "duration_seconds": 124
+  },
+  {
+    "event_id": "ev_51",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-27T21:45:22.157Z",
+    "end_time": "2026-09-27T22:01:27.157Z",
+    "class": "cigarette",
+    "peak_pm25": 60.6,
+    "duration_seconds": 965
+  },
+  {
+    "event_id": "ev_240",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-27T22:55:22.157Z",
+    "end_time": "2026-09-27T23:19:47.157Z",
+    "class": "steam",
+    "peak_pm25": 48.7,
+    "duration_seconds": 1465
+  },
+  {
+    "event_id": "ev_252",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-28T07:10:22.157Z",
+    "end_time": "2026-09-28T07:26:27.157Z",
+    "class": "cigarette",
+    "peak_pm25": 58.4,
+    "duration_seconds": 965
+  },
+  {
+    "event_id": "ev_12",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-28T07:24:22.157Z",
+    "end_time": "2026-09-28T07:44:01.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80.1,
+    "duration_seconds": 1179
+  },
+  {
+    "event_id": "ev_258",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-09-28T07:36:22.157Z",
+    "end_time": "2026-09-28T07:48:59.157Z",
+    "class": "cigarette",
+    "peak_pm25": 66.5,
+    "duration_seconds": 757
+  },
+  {
+    "event_id": "ev_231",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-28T08:24:22.157Z",
+    "end_time": "2026-09-28T08:26:15.157Z",
+    "class": "vape",
+    "peak_pm25": 88.2,
+    "duration_seconds": 113
+  },
+  {
+    "event_id": "ev_11",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-29T07:39:22.157Z",
+    "end_time": "2026-09-29T07:40:58.157Z",
+    "class": "vape",
+    "peak_pm25": 101,
+    "duration_seconds": 96
+  },
+  {
+    "event_id": "ev_22",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-09-29T08:22:22.157Z",
+    "end_time": "2026-09-29T08:25:42.157Z",
+    "class": "vape",
+    "peak_pm25": 103.7,
+    "duration_seconds": 200
+  },
+  {
+    "event_id": "ev_161",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-29T08:39:22.157Z",
+    "end_time": "2026-09-29T08:53:26.157Z",
+    "class": "cigarette",
+    "peak_pm25": 69.6,
+    "duration_seconds": 844
+  },
+  {
+    "event_id": "ev_188",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-29T20:50:22.157Z",
+    "end_time": "2026-09-29T21:06:07.157Z",
+    "class": "cigarette",
+    "peak_pm25": 85.5,
+    "duration_seconds": 945
+  },
+  {
+    "event_id": "ev_181",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-29T20:55:22.157Z",
+    "end_time": "2026-09-29T21:11:46.157Z",
+    "class": "steam",
+    "peak_pm25": 42.2,
+    "duration_seconds": 984
+  },
+  {
+    "event_id": "ev_186",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-29T20:59:22.157Z",
+    "end_time": "2026-09-29T21:15:55.157Z",
+    "class": "cigarette",
+    "peak_pm25": 60.4,
+    "duration_seconds": 993
+  },
+  {
+    "event_id": "ev_168",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-29T22:48:22.157Z",
+    "end_time": "2026-09-29T23:04:50.157Z",
+    "class": "cigarette",
+    "peak_pm25": 76.1,
+    "duration_seconds": 988
+  },
+  {
+    "event_id": "ev_145",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-29T22:49:22.157Z",
+    "end_time": "2026-09-29T22:51:22.157Z",
+    "class": "vape",
+    "peak_pm25": 122.9,
+    "duration_seconds": 120
+  },
+  {
+    "event_id": "ev_234",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-30T06:31:22.157Z",
+    "end_time": "2026-09-30T06:47:20.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80.9,
+    "duration_seconds": 958
+  },
+  {
+    "event_id": "ev_39",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-30T07:01:22.157Z",
+    "end_time": "2026-09-30T07:11:34.157Z",
+    "class": "cigarette",
+    "peak_pm25": 63,
+    "duration_seconds": 612
+  },
+  {
+    "event_id": "ev_236",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-09-30T08:45:22.157Z",
+    "end_time": "2026-09-30T08:59:52.157Z",
+    "class": "cigarette",
+    "peak_pm25": 86.9,
+    "duration_seconds": 870
+  },
+  {
+    "event_id": "ev_42",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-30T08:50:22.157Z",
+    "end_time": "2026-09-30T09:10:06.157Z",
+    "class": "cigarette",
+    "peak_pm25": 61.8,
+    "duration_seconds": 1184
+  },
+  {
+    "event_id": "ev_157",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-09-30T21:00:22.157Z",
+    "end_time": "2026-09-30T21:18:55.157Z",
+    "class": "cigarette",
+    "peak_pm25": 91.7,
+    "duration_seconds": 1113
+  },
+  {
+    "event_id": "ev_52",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-09-30T21:03:22.157Z",
+    "end_time": "2026-09-30T21:20:52.157Z",
+    "class": "cigarette",
+    "peak_pm25": 81.9,
+    "duration_seconds": 1050
+  },
+  {
+    "event_id": "ev_187",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-30T22:06:22.157Z",
+    "end_time": "2026-09-30T22:24:42.157Z",
+    "class": "cigarette",
+    "peak_pm25": 93,
+    "duration_seconds": 1100
+  },
+  {
+    "event_id": "ev_201",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-09-30T23:09:22.157Z",
+    "end_time": "2026-09-30T23:27:26.157Z",
+    "class": "cigarette",
+    "peak_pm25": 63.2,
+    "duration_seconds": 1084
+  },
+  {
+    "event_id": "ev_218",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-09-30T23:09:22.157Z",
+    "end_time": "2026-09-30T23:26:07.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.9,
+    "duration_seconds": 1005
+  },
+  {
+    "event_id": "ev_248",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-01T07:00:22.157Z",
+    "end_time": "2026-10-01T07:19:12.157Z",
+    "class": "cigarette",
+    "peak_pm25": 93.3,
+    "duration_seconds": 1130
+  },
+  {
+    "event_id": "ev_121",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-01T07:36:22.157Z",
+    "end_time": "2026-10-01T07:54:23.157Z",
+    "class": "cigarette",
+    "peak_pm25": 70.4,
+    "duration_seconds": 1081
+  },
+  {
+    "event_id": "ev_228",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-01T09:03:22.157Z",
+    "end_time": "2026-10-01T09:05:06.157Z",
+    "class": "vape",
+    "peak_pm25": 80.5,
+    "duration_seconds": 104
+  },
+  {
+    "event_id": "ev_204",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-01T21:17:22.157Z",
+    "end_time": "2026-10-01T21:18:16.157Z",
+    "class": "spray",
+    "peak_pm25": 118.8,
+    "duration_seconds": 54
+  },
+  {
+    "event_id": "ev_100",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-01T21:57:22.157Z",
+    "end_time": "2026-10-01T22:15:29.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.6,
+    "duration_seconds": 1087
+  },
+  {
+    "event_id": "ev_253",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-02T06:20:22.157Z",
+    "end_time": "2026-10-02T06:21:09.157Z",
+    "class": "spray",
+    "peak_pm25": 119.2,
+    "duration_seconds": 47
+  },
+  {
+    "event_id": "ev_16",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-02T07:04:22.157Z",
+    "end_time": "2026-10-02T07:22:50.157Z",
+    "class": "cigarette",
+    "peak_pm25": 92.6,
+    "duration_seconds": 1108
+  },
+  {
+    "event_id": "ev_91",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-02T08:20:22.157Z",
+    "end_time": "2026-10-02T08:23:09.157Z",
+    "class": "vape",
+    "peak_pm25": 117.6,
+    "duration_seconds": 167
+  },
+  {
+    "event_id": "ev_44",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-02T08:43:22.157Z",
+    "end_time": "2026-10-02T08:46:14.157Z",
+    "class": "vape",
+    "peak_pm25": 78.1,
+    "duration_seconds": 172
+  },
+  {
+    "event_id": "ev_128",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-02T08:55:22.157Z",
+    "end_time": "2026-10-02T08:58:22.157Z",
+    "class": "vape",
+    "peak_pm25": 86.2,
+    "duration_seconds": 180
+  },
+  {
+    "event_id": "ev_215",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-02T21:38:22.157Z",
+    "end_time": "2026-10-02T21:52:42.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80.9,
+    "duration_seconds": 860
+  },
+  {
+    "event_id": "ev_77",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-02T21:56:22.157Z",
+    "end_time": "2026-10-02T21:59:19.157Z",
+    "class": "vape",
+    "peak_pm25": 91.1,
+    "duration_seconds": 177
+  },
+  {
+    "event_id": "ev_58",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-03T06:51:22.157Z",
+    "end_time": "2026-10-03T06:53:07.157Z",
+    "class": "vape",
+    "peak_pm25": 122.3,
+    "duration_seconds": 105
+  },
+  {
+    "event_id": "ev_96",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-03T08:02:22.157Z",
+    "end_time": "2026-10-03T08:24:08.157Z",
+    "class": "steam",
+    "peak_pm25": 41,
+    "duration_seconds": 1306
+  },
+  {
+    "event_id": "ev_5",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-03T08:42:22.157Z",
+    "end_time": "2026-10-03T08:45:36.157Z",
+    "class": "vape",
+    "peak_pm25": 104.5,
+    "duration_seconds": 194
+  },
+  {
+    "event_id": "ev_124",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-03T21:27:22.157Z",
+    "end_time": "2026-10-03T21:43:25.157Z",
+    "class": "cigarette",
+    "peak_pm25": 71.2,
+    "duration_seconds": 963
+  },
+  {
+    "event_id": "ev_163",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-03T21:56:22.157Z",
+    "end_time": "2026-10-03T22:16:11.157Z",
+    "class": "steam",
+    "peak_pm25": 44.7,
+    "duration_seconds": 1189
+  },
+  {
+    "event_id": "ev_141",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-03T22:03:22.157Z",
+    "end_time": "2026-10-03T22:06:21.157Z",
+    "class": "vape",
+    "peak_pm25": 130.3,
+    "duration_seconds": 179
+  },
+  {
+    "event_id": "ev_107",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-03T22:28:22.157Z",
+    "end_time": "2026-10-03T22:30:44.157Z",
+    "class": "vape",
+    "peak_pm25": 100.3,
+    "duration_seconds": 142
+  },
+  {
+    "event_id": "ev_182",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-04T06:49:22.157Z",
+    "end_time": "2026-10-04T07:06:04.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77.3,
+    "duration_seconds": 1002
+  },
+  {
+    "event_id": "ev_55",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-04T07:42:22.157Z",
+    "end_time": "2026-10-04T07:56:48.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77.6,
+    "duration_seconds": 866
+  },
+  {
+    "event_id": "ev_270",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-04T08:24:22.157Z",
+    "end_time": "2026-10-04T08:27:37.157Z",
+    "class": "vape",
+    "peak_pm25": 114.4,
+    "duration_seconds": 195
+  },
+  {
+    "event_id": "ev_80",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-04T20:40:22.157Z",
+    "end_time": "2026-10-04T20:51:42.157Z",
+    "class": "cigarette",
+    "peak_pm25": 64.5,
+    "duration_seconds": 680
+  },
+  {
+    "event_id": "ev_166",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-04T20:41:22.157Z",
+    "end_time": "2026-10-04T20:55:34.157Z",
+    "class": "cigarette",
+    "peak_pm25": 75.6,
+    "duration_seconds": 852
+  },
+  {
+    "event_id": "ev_104",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-04T21:14:22.157Z",
+    "end_time": "2026-10-04T21:36:21.157Z",
+    "class": "steam",
+    "peak_pm25": 44.7,
+    "duration_seconds": 1319
+  },
+  {
+    "event_id": "ev_206",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-04T22:59:22.157Z",
+    "end_time": "2026-10-04T23:01:51.157Z",
+    "class": "vape",
+    "peak_pm25": 107.5,
+    "duration_seconds": 149
+  },
+  {
+    "event_id": "ev_190",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-05T07:30:22.157Z",
+    "end_time": "2026-10-05T07:49:53.157Z",
+    "class": "cigarette",
+    "peak_pm25": 59.4,
+    "duration_seconds": 1171
+  },
+  {
+    "event_id": "ev_247",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-05T07:35:22.157Z",
+    "end_time": "2026-10-05T07:36:57.157Z",
+    "class": "vape",
+    "peak_pm25": 128.7,
+    "duration_seconds": 95
+  },
+  {
+    "event_id": "ev_205",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-05T07:55:22.157Z",
+    "end_time": "2026-10-05T07:57:15.157Z",
+    "class": "vape",
+    "peak_pm25": 123.6,
+    "duration_seconds": 113
+  },
+  {
+    "event_id": "ev_113",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-05T08:23:22.157Z",
+    "end_time": "2026-10-05T08:36:46.157Z",
+    "class": "cigarette",
+    "peak_pm25": 55.7,
+    "duration_seconds": 804
+  },
+  {
+    "event_id": "ev_47",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-05T08:35:22.157Z",
+    "end_time": "2026-10-05T08:37:50.157Z",
+    "class": "vape",
+    "peak_pm25": 114.7,
+    "duration_seconds": 148
+  },
+  {
+    "event_id": "ev_106",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-05T20:11:22.157Z",
+    "end_time": "2026-10-05T20:19:50.157Z",
+    "class": "dust",
+    "peak_pm25": 47.3,
+    "duration_seconds": 508
+  },
+  {
+    "event_id": "ev_137",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-05T20:52:22.157Z",
+    "end_time": "2026-10-05T20:55:04.157Z",
+    "class": "vape",
+    "peak_pm25": 90.8,
+    "duration_seconds": 162
+  },
+  {
+    "event_id": "ev_15",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-06T06:43:22.157Z",
+    "end_time": "2026-10-06T06:46:43.157Z",
+    "class": "vape",
+    "peak_pm25": 119.8,
+    "duration_seconds": 201
+  },
+  {
+    "event_id": "ev_277",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-06T07:23:22.157Z",
+    "end_time": "2026-10-06T07:43:13.157Z",
+    "class": "cigarette",
+    "peak_pm25": 59.3,
+    "duration_seconds": 1191
+  },
+  {
+    "event_id": "ev_214",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-06T08:16:22.157Z",
+    "end_time": "2026-10-06T08:37:18.157Z",
+    "class": "steam",
+    "peak_pm25": 57,
+    "duration_seconds": 1256
+  },
+  {
+    "event_id": "ev_35",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-06T08:31:22.157Z",
+    "end_time": "2026-10-06T08:53:18.157Z",
+    "class": "steam",
+    "peak_pm25": 48.9,
+    "duration_seconds": 1316
+  },
+  {
+    "event_id": "ev_265",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-06T08:58:22.157Z",
+    "end_time": "2026-10-06T09:00:52.157Z",
+    "class": "vape",
+    "peak_pm25": 133.4,
+    "duration_seconds": 150
+  },
+  {
+    "event_id": "ev_45",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-06T20:34:22.157Z",
+    "end_time": "2026-10-06T20:50:52.157Z",
+    "class": "cigarette",
+    "peak_pm25": 82.9,
+    "duration_seconds": 990
+  },
+  {
+    "event_id": "ev_142",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-06T22:06:22.157Z",
+    "end_time": "2026-10-06T22:08:39.157Z",
+    "class": "vape",
+    "peak_pm25": 84.9,
+    "duration_seconds": 137
+  },
+  {
+    "event_id": "ev_72",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-07T08:06:22.157Z",
+    "end_time": "2026-10-07T08:22:34.157Z",
+    "class": "cigarette",
+    "peak_pm25": 92,
+    "duration_seconds": 972
+  },
+  {
+    "event_id": "ev_36",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-07T08:53:22.157Z",
+    "end_time": "2026-10-07T09:08:17.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77.6,
+    "duration_seconds": 895
+  },
+  {
+    "event_id": "ev_129",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-07T08:57:22.157Z",
+    "end_time": "2026-10-07T09:16:10.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.4,
+    "duration_seconds": 1128
+  },
+  {
+    "event_id": "ev_65",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-07T09:01:22.157Z",
+    "end_time": "2026-10-07T09:09:07.157Z",
+    "class": "dust",
+    "peak_pm25": 56.8,
+    "duration_seconds": 465
+  },
+  {
+    "event_id": "ev_140",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-07T21:55:22.157Z",
+    "end_time": "2026-10-07T22:13:41.157Z",
+    "class": "cigarette",
+    "peak_pm25": 60.2,
+    "duration_seconds": 1099
+  },
+  {
+    "event_id": "ev_266",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-07T22:55:22.157Z",
+    "end_time": "2026-10-07T23:14:52.157Z",
+    "class": "steam",
+    "peak_pm25": 58.6,
+    "duration_seconds": 1170
+  },
+  {
+    "event_id": "ev_135",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-08T06:55:22.157Z",
+    "end_time": "2026-10-08T07:11:40.157Z",
+    "class": "cigarette",
+    "peak_pm25": 73.1,
+    "duration_seconds": 978
+  },
+  {
+    "event_id": "ev_196",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-08T08:18:22.157Z",
+    "end_time": "2026-10-08T08:21:15.157Z",
+    "class": "vape",
+    "peak_pm25": 83.7,
+    "duration_seconds": 173
+  },
+  {
+    "event_id": "ev_185",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-08T08:52:22.157Z",
+    "end_time": "2026-10-08T08:54:11.157Z",
+    "class": "vape",
+    "peak_pm25": 84.2,
+    "duration_seconds": 109
+  },
+  {
+    "event_id": "ev_131",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-09T06:16:22.157Z",
+    "end_time": "2026-10-09T06:17:58.157Z",
+    "class": "vape",
+    "peak_pm25": 103.8,
+    "duration_seconds": 96
+  },
+  {
+    "event_id": "ev_101",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-09T06:18:22.157Z",
+    "end_time": "2026-10-09T06:37:59.157Z",
+    "class": "steam",
+    "peak_pm25": 43.5,
+    "duration_seconds": 1177
+  },
+  {
+    "event_id": "ev_31",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-09T06:24:22.157Z",
+    "end_time": "2026-10-09T06:27:37.157Z",
+    "class": "vape",
+    "peak_pm25": 85,
+    "duration_seconds": 195
+  },
+  {
+    "event_id": "ev_242",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-09T06:32:22.157Z",
+    "end_time": "2026-10-09T06:34:46.157Z",
+    "class": "vape",
+    "peak_pm25": 111,
+    "duration_seconds": 144
+  },
+  {
+    "event_id": "ev_174",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-09T06:58:22.157Z",
+    "end_time": "2026-10-09T07:00:15.157Z",
+    "class": "vape",
+    "peak_pm25": 105,
+    "duration_seconds": 113
+  },
+  {
+    "event_id": "ev_38",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-09T07:00:22.157Z",
+    "end_time": "2026-10-09T07:02:17.157Z",
+    "class": "vape",
+    "peak_pm25": 116.4,
+    "duration_seconds": 115
+  },
+  {
+    "event_id": "ev_111",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-09T07:23:22.157Z",
+    "end_time": "2026-10-09T07:23:52.157Z",
+    "class": "spray",
+    "peak_pm25": 113.6,
+    "duration_seconds": 30
+  },
+  {
+    "event_id": "ev_272",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-09T08:41:22.157Z",
+    "end_time": "2026-10-09T08:58:52.157Z",
+    "class": "cigarette",
+    "peak_pm25": 59.6,
+    "duration_seconds": 1050
+  },
+  {
+    "event_id": "ev_122",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-09T08:43:22.157Z",
+    "end_time": "2026-10-09T09:00:45.157Z",
+    "class": "cigarette",
+    "peak_pm25": 62.8,
+    "duration_seconds": 1043
+  },
+  {
+    "event_id": "ev_208",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-09T20:45:22.157Z",
+    "end_time": "2026-10-09T21:00:34.157Z",
+    "class": "cigarette",
+    "peak_pm25": 88.2,
+    "duration_seconds": 912
+  },
+  {
+    "event_id": "ev_2",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-09T22:45:22.157Z",
+    "end_time": "2026-10-09T23:02:50.157Z",
+    "class": "cigarette",
+    "peak_pm25": 72.3,
+    "duration_seconds": 1048
+  },
+  {
+    "event_id": "ev_117",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-09T22:53:22.157Z",
+    "end_time": "2026-10-09T22:54:12.157Z",
+    "class": "spray",
+    "peak_pm25": 89.8,
+    "duration_seconds": 50
+  },
+  {
+    "event_id": "ev_115",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-10T07:04:22.157Z",
+    "end_time": "2026-10-10T07:25:56.157Z",
+    "class": "steam",
+    "peak_pm25": 57.1,
+    "duration_seconds": 1294
+  },
+  {
+    "event_id": "ev_207",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-10T07:10:22.157Z",
+    "end_time": "2026-10-10T07:26:27.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.4,
+    "duration_seconds": 965
+  },
+  {
+    "event_id": "ev_71",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-10T07:20:22.157Z",
+    "end_time": "2026-10-10T07:44:46.157Z",
+    "class": "steam",
+    "peak_pm25": 48.1,
+    "duration_seconds": 1464
+  },
+  {
+    "event_id": "ev_273",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-10T07:53:22.157Z",
+    "end_time": "2026-10-10T07:56:03.157Z",
+    "class": "vape",
+    "peak_pm25": 96.3,
+    "duration_seconds": 161
+  },
+  {
+    "event_id": "ev_200",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-10T09:08:22.157Z",
+    "end_time": "2026-10-10T09:28:01.157Z",
+    "class": "cigarette",
+    "peak_pm25": 86.7,
+    "duration_seconds": 1179
+  },
+  {
+    "event_id": "ev_75",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-10T20:36:22.157Z",
+    "end_time": "2026-10-10T20:39:40.157Z",
+    "class": "vape",
+    "peak_pm25": 105.4,
+    "duration_seconds": 198
+  },
+  {
+    "event_id": "ev_56",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-10T20:59:22.157Z",
+    "end_time": "2026-10-10T21:19:16.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.4,
+    "duration_seconds": 1194
+  },
+  {
+    "event_id": "ev_263",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-10T22:58:22.157Z",
+    "end_time": "2026-10-10T23:14:58.157Z",
+    "class": "steam",
+    "peak_pm25": 62.9,
+    "duration_seconds": 996
+  },
+  {
+    "event_id": "ev_87",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-10T23:04:22.157Z",
+    "end_time": "2026-10-10T23:22:09.157Z",
+    "class": "cigarette",
+    "peak_pm25": 94.2,
+    "duration_seconds": 1067
+  },
+  {
+    "event_id": "ev_33",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-11T06:18:22.157Z",
+    "end_time": "2026-10-11T06:24:51.157Z",
+    "class": "dust",
+    "peak_pm25": 48,
+    "duration_seconds": 389
+  },
+  {
+    "event_id": "ev_251",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-11T06:35:22.157Z",
+    "end_time": "2026-10-11T06:36:11.157Z",
+    "class": "spray",
+    "peak_pm25": 89.3,
+    "duration_seconds": 49
+  },
+  {
+    "event_id": "ev_150",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-11T07:53:22.157Z",
+    "end_time": "2026-10-11T07:55:19.157Z",
+    "class": "vape",
+    "peak_pm25": 115,
+    "duration_seconds": 117
+  },
+  {
+    "event_id": "ev_54",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-11T07:54:22.157Z",
+    "end_time": "2026-10-11T08:06:48.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80.1,
+    "duration_seconds": 746
+  },
+  {
+    "event_id": "ev_93",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-11T20:35:22.157Z",
+    "end_time": "2026-10-11T20:38:02.157Z",
+    "class": "vape",
+    "peak_pm25": 86.6,
+    "duration_seconds": 160
+  },
+  {
+    "event_id": "ev_60",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-11T21:48:22.157Z",
+    "end_time": "2026-10-11T22:03:19.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80,
+    "duration_seconds": 897
+  },
+  {
+    "event_id": "ev_261",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-11T22:42:22.157Z",
+    "end_time": "2026-10-11T23:03:08.157Z",
+    "class": "steam",
+    "peak_pm25": 45.6,
+    "duration_seconds": 1246
+  },
+  {
+    "event_id": "ev_139",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-12T07:16:22.157Z",
+    "end_time": "2026-10-12T07:18:46.157Z",
+    "class": "vape",
+    "peak_pm25": 133.1,
+    "duration_seconds": 144
+  },
+  {
+    "event_id": "ev_82",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-12T07:49:22.157Z",
+    "end_time": "2026-10-12T08:10:02.157Z",
+    "class": "steam",
+    "peak_pm25": 59.8,
+    "duration_seconds": 1240
+  },
+  {
+    "event_id": "ev_275",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-12T07:58:22.157Z",
+    "end_time": "2026-10-12T08:18:11.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.9,
+    "duration_seconds": 1189
+  },
+  {
+    "event_id": "ev_211",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-12T08:43:22.157Z",
+    "end_time": "2026-10-12T08:56:37.157Z",
+    "class": "cigarette",
+    "peak_pm25": 68.1,
+    "duration_seconds": 795
+  },
+  {
+    "event_id": "ev_165",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-12T08:54:22.157Z",
+    "end_time": "2026-10-12T09:07:45.157Z",
+    "class": "cigarette",
+    "peak_pm25": 61.9,
+    "duration_seconds": 803
+  },
+  {
+    "event_id": "ev_74",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-12T09:09:22.157Z",
+    "end_time": "2026-10-12T09:27:32.157Z",
+    "class": "steam",
+    "peak_pm25": 52.5,
+    "duration_seconds": 1090
+  },
+  {
+    "event_id": "ev_198",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-12T09:09:22.157Z",
+    "end_time": "2026-10-12T09:29:54.157Z",
+    "class": "steam",
+    "peak_pm25": 51.1,
+    "duration_seconds": 1232
+  },
+  {
+    "event_id": "ev_95",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-12T20:25:22.157Z",
+    "end_time": "2026-10-12T20:27:25.157Z",
+    "class": "vape",
+    "peak_pm25": 83.7,
+    "duration_seconds": 123
+  },
+  {
+    "event_id": "ev_158",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-12T20:51:22.157Z",
+    "end_time": "2026-10-12T21:05:10.157Z",
+    "class": "cigarette",
+    "peak_pm25": 72.2,
+    "duration_seconds": 828
+  },
+  {
+    "event_id": "ev_88",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-12T21:44:22.157Z",
+    "end_time": "2026-10-12T21:47:50.157Z",
+    "class": "vape",
+    "peak_pm25": 132,
+    "duration_seconds": 208
+  },
+  {
+    "event_id": "ev_119",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-12T22:35:22.157Z",
+    "end_time": "2026-10-12T22:36:05.157Z",
+    "class": "spray",
+    "peak_pm25": 114.4,
+    "duration_seconds": 43
+  },
+  {
+    "event_id": "ev_156",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-13T06:14:22.157Z",
+    "end_time": "2026-10-13T06:33:57.157Z",
+    "class": "cigarette",
+    "peak_pm25": 70.4,
+    "duration_seconds": 1175
+  },
+  {
+    "event_id": "ev_155",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-13T06:31:22.157Z",
+    "end_time": "2026-10-13T06:38:47.157Z",
+    "class": "dust",
+    "peak_pm25": 46.8,
+    "duration_seconds": 445
+  },
+  {
+    "event_id": "ev_4",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-13T06:55:22.157Z",
+    "end_time": "2026-10-13T07:05:41.157Z",
+    "class": "cigarette",
+    "peak_pm25": 68.1,
+    "duration_seconds": 619
+  },
+  {
+    "event_id": "ev_175",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-13T07:40:22.157Z",
+    "end_time": "2026-10-13T07:46:57.157Z",
+    "class": "dust",
+    "peak_pm25": 58.6,
+    "duration_seconds": 395
+  },
+  {
+    "event_id": "ev_130",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-13T08:08:22.157Z",
+    "end_time": "2026-10-13T08:10:27.157Z",
+    "class": "vape",
+    "peak_pm25": 129.3,
+    "duration_seconds": 125
+  },
+  {
+    "event_id": "ev_183",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-13T08:20:22.157Z",
+    "end_time": "2026-10-13T08:22:43.157Z",
+    "class": "vape",
+    "peak_pm25": 99.3,
+    "duration_seconds": 141
+  },
+  {
+    "event_id": "ev_97",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-14T07:32:22.157Z",
+    "end_time": "2026-10-14T07:48:20.157Z",
+    "class": "cigarette",
+    "peak_pm25": 79.3,
+    "duration_seconds": 958
+  },
+  {
+    "event_id": "ev_197",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-14T08:06:22.157Z",
+    "end_time": "2026-10-14T08:25:36.157Z",
+    "class": "steam",
+    "peak_pm25": 62.3,
+    "duration_seconds": 1154
+  },
+  {
+    "event_id": "ev_85",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-14T08:12:22.157Z",
+    "end_time": "2026-10-14T08:12:54.157Z",
+    "class": "spray",
+    "peak_pm25": 123.2,
+    "duration_seconds": 32
+  },
+  {
+    "event_id": "ev_136",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-14T21:34:22.157Z",
+    "end_time": "2026-10-14T21:54:00.157Z",
+    "class": "cigarette",
+    "peak_pm25": 75.7,
+    "duration_seconds": 1178
+  },
+  {
+    "event_id": "ev_144",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-14T22:05:22.157Z",
+    "end_time": "2026-10-14T22:18:15.157Z",
+    "class": "cigarette",
+    "peak_pm25": 78.1,
+    "duration_seconds": 773
+  },
+  {
+    "event_id": "ev_210",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-15T07:33:22.157Z",
+    "end_time": "2026-10-15T07:34:02.157Z",
+    "class": "spray",
+    "peak_pm25": 80.7,
+    "duration_seconds": 40
+  },
+  {
+    "event_id": "ev_123",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-15T07:38:22.157Z",
+    "end_time": "2026-10-15T07:57:01.157Z",
+    "class": "cigarette",
+    "peak_pm25": 71.3,
+    "duration_seconds": 1119
+  },
+  {
+    "event_id": "ev_219",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-15T07:51:22.157Z",
+    "end_time": "2026-10-15T07:58:57.157Z",
+    "class": "dust",
+    "peak_pm25": 61.2,
+    "duration_seconds": 455
+  },
+  {
+    "event_id": "ev_46",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-15T08:21:22.157Z",
+    "end_time": "2026-10-15T08:42:52.157Z",
+    "class": "steam",
+    "peak_pm25": 52,
+    "duration_seconds": 1290
+  },
+  {
+    "event_id": "ev_114",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-15T08:50:22.157Z",
+    "end_time": "2026-10-15T08:52:16.157Z",
+    "class": "vape",
+    "peak_pm25": 75.9,
+    "duration_seconds": 114
+  },
+  {
+    "event_id": "ev_192",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-15T20:35:22.157Z",
+    "end_time": "2026-10-15T20:42:10.157Z",
+    "class": "dust",
+    "peak_pm25": 62.5,
+    "duration_seconds": 408
+  },
+  {
+    "event_id": "ev_220",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-15T22:02:22.157Z",
+    "end_time": "2026-10-15T22:19:54.157Z",
+    "class": "steam",
+    "peak_pm25": 50.5,
+    "duration_seconds": 1052
+  },
+  {
+    "event_id": "ev_92",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-16T06:51:22.157Z",
+    "end_time": "2026-10-16T07:09:58.157Z",
+    "class": "steam",
+    "peak_pm25": 61.1,
+    "duration_seconds": 1116
+  },
+  {
+    "event_id": "ev_110",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-16T08:14:22.157Z",
+    "end_time": "2026-10-16T08:16:10.157Z",
+    "class": "vape",
+    "peak_pm25": 96,
+    "duration_seconds": 108
+  },
+  {
+    "event_id": "ev_48",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-16T20:15:22.157Z",
+    "end_time": "2026-10-16T20:29:18.157Z",
+    "class": "cigarette",
+    "peak_pm25": 75.3,
+    "duration_seconds": 836
+  },
+  {
+    "event_id": "ev_43",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-16T22:22:22.157Z",
+    "end_time": "2026-10-16T22:25:39.157Z",
+    "class": "vape",
+    "peak_pm25": 133.3,
+    "duration_seconds": 197
+  },
+  {
+    "event_id": "ev_245",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-17T07:36:22.157Z",
+    "end_time": "2026-10-17T07:46:24.157Z",
+    "class": "cigarette",
+    "peak_pm25": 94.7,
+    "duration_seconds": 602
+  },
+  {
+    "event_id": "ev_184",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-17T20:24:22.157Z",
+    "end_time": "2026-10-17T20:39:40.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.6,
+    "duration_seconds": 918
+  },
+  {
+    "event_id": "ev_27",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-17T21:20:22.157Z",
+    "end_time": "2026-10-17T21:23:30.157Z",
+    "class": "vape",
+    "peak_pm25": 89.6,
+    "duration_seconds": 188
+  },
+  {
+    "event_id": "ev_7",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-17T21:36:22.157Z",
+    "end_time": "2026-10-17T21:55:10.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.8,
+    "duration_seconds": 1128
+  },
+  {
+    "event_id": "ev_217",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-18T07:51:22.157Z",
+    "end_time": "2026-10-18T08:06:04.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77.4,
+    "duration_seconds": 882
+  },
+  {
+    "event_id": "ev_250",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-18T08:18:22.157Z",
+    "end_time": "2026-10-18T08:19:00.157Z",
+    "class": "spray",
+    "peak_pm25": 81.1,
+    "duration_seconds": 38
+  },
+  {
+    "event_id": "ev_191",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-18T08:58:22.157Z",
+    "end_time": "2026-10-18T09:13:13.157Z",
+    "class": "cigarette",
+    "peak_pm25": 84.2,
+    "duration_seconds": 891
+  },
+  {
+    "event_id": "ev_237",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-18T20:32:22.157Z",
+    "end_time": "2026-10-18T20:35:20.157Z",
+    "class": "vape",
+    "peak_pm25": 82.2,
+    "duration_seconds": 178
+  },
+  {
+    "event_id": "ev_86",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-19T07:23:22.157Z",
+    "end_time": "2026-10-19T07:42:04.157Z",
+    "class": "cigarette",
+    "peak_pm25": 73.9,
+    "duration_seconds": 1122
+  },
+  {
+    "event_id": "ev_227",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-19T07:56:22.157Z",
+    "end_time": "2026-10-19T08:13:45.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57,
+    "duration_seconds": 1043
+  },
+  {
+    "event_id": "ev_134",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-19T08:13:22.157Z",
+    "end_time": "2026-10-19T08:33:01.157Z",
+    "class": "cigarette",
+    "peak_pm25": 76.6,
+    "duration_seconds": 1179
+  },
+  {
+    "event_id": "ev_76",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-19T20:23:22.157Z",
+    "end_time": "2026-10-19T20:25:42.157Z",
+    "class": "vape",
+    "peak_pm25": 91.3,
+    "duration_seconds": 140
+  },
+  {
+    "event_id": "ev_260",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-19T21:33:22.157Z",
+    "end_time": "2026-10-19T21:53:04.157Z",
+    "class": "cigarette",
+    "peak_pm25": 75.1,
+    "duration_seconds": 1182
+  },
+  {
+    "event_id": "ev_126",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-19T22:32:22.157Z",
+    "end_time": "2026-10-19T22:34:33.157Z",
+    "class": "vape",
+    "peak_pm25": 103.9,
+    "duration_seconds": 131
+  },
+  {
+    "event_id": "ev_98",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-19T23:02:22.157Z",
+    "end_time": "2026-10-19T23:05:11.157Z",
+    "class": "vape",
+    "peak_pm25": 104.6,
+    "duration_seconds": 169
+  },
+  {
+    "event_id": "ev_13",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-20T07:24:22.157Z",
+    "end_time": "2026-10-20T07:41:11.157Z",
+    "class": "cigarette",
+    "peak_pm25": 89.6,
+    "duration_seconds": 1009
+  },
+  {
+    "event_id": "ev_79",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-20T07:43:22.157Z",
+    "end_time": "2026-10-20T07:57:43.157Z",
+    "class": "cigarette",
+    "peak_pm25": 94,
+    "duration_seconds": 861
+  },
+  {
+    "event_id": "ev_172",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-21T06:57:22.157Z",
+    "end_time": "2026-10-21T07:08:46.157Z",
+    "class": "cigarette",
+    "peak_pm25": 78.3,
+    "duration_seconds": 684
+  },
+  {
+    "event_id": "ev_243",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-21T08:22:22.157Z",
+    "end_time": "2026-10-21T08:35:11.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.2,
+    "duration_seconds": 769
+  },
+  {
+    "event_id": "ev_90",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-21T08:23:22.157Z",
+    "end_time": "2026-10-21T08:28:24.157Z",
+    "class": "dust",
+    "peak_pm25": 64.9,
+    "duration_seconds": 302
+  },
+  {
+    "event_id": "ev_102",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-21T22:33:22.157Z",
+    "end_time": "2026-10-21T22:44:03.157Z",
+    "class": "cigarette",
+    "peak_pm25": 77,
+    "duration_seconds": 641
+  },
+  {
+    "event_id": "ev_151",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-21T23:00:22.157Z",
+    "end_time": "2026-10-21T23:18:18.157Z",
+    "class": "cigarette",
+    "peak_pm25": 83.7,
+    "duration_seconds": 1076
+  },
+  {
+    "event_id": "ev_199",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-22T06:22:22.157Z",
+    "end_time": "2026-10-22T06:42:05.157Z",
+    "class": "cigarette",
+    "peak_pm25": 61.3,
+    "duration_seconds": 1183
+  },
+  {
+    "event_id": "ev_78",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-22T06:49:22.157Z",
+    "end_time": "2026-10-22T07:00:58.157Z",
+    "class": "cigarette",
+    "peak_pm25": 80.4,
+    "duration_seconds": 696
+  },
+  {
+    "event_id": "ev_154",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-22T08:11:22.157Z",
+    "end_time": "2026-10-22T08:25:00.157Z",
+    "class": "cigarette",
+    "peak_pm25": 55.1,
+    "duration_seconds": 818
+  },
+  {
+    "event_id": "ev_226",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-22T21:11:22.157Z",
+    "end_time": "2026-10-22T21:14:47.157Z",
+    "class": "vape",
+    "peak_pm25": 80.5,
+    "duration_seconds": 205
+  },
+  {
+    "event_id": "ev_25",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-22T21:37:22.157Z",
+    "end_time": "2026-10-22T21:39:40.157Z",
+    "class": "vape",
+    "peak_pm25": 86.8,
+    "duration_seconds": 138
+  },
+  {
+    "event_id": "ev_127",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-22T22:01:22.157Z",
+    "end_time": "2026-10-22T22:22:42.157Z",
+    "class": "steam",
+    "peak_pm25": 47.1,
+    "duration_seconds": 1280
+  },
+  {
+    "event_id": "ev_268",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-22T23:02:22.157Z",
+    "end_time": "2026-10-22T23:13:09.157Z",
+    "class": "cigarette",
+    "peak_pm25": 72.9,
+    "duration_seconds": 647
+  },
+  {
+    "event_id": "ev_9",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-23T06:35:22.157Z",
+    "end_time": "2026-10-23T06:50:48.157Z",
+    "class": "cigarette",
+    "peak_pm25": 57.9,
+    "duration_seconds": 926
+  },
+  {
+    "event_id": "ev_19",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-23T06:48:22.157Z",
+    "end_time": "2026-10-23T06:49:20.157Z",
+    "class": "spray",
+    "peak_pm25": 124.4,
+    "duration_seconds": 58
+  },
+  {
+    "event_id": "ev_264",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-23T07:16:22.157Z",
+    "end_time": "2026-10-23T07:17:20.157Z",
+    "class": "spray",
+    "peak_pm25": 110.9,
+    "duration_seconds": 58
+  },
+  {
+    "event_id": "ev_274",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-23T07:54:22.157Z",
+    "end_time": "2026-10-23T07:57:40.157Z",
+    "class": "vape",
+    "peak_pm25": 103.9,
+    "duration_seconds": 198
+  },
+  {
+    "event_id": "ev_244",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-23T07:59:22.157Z",
+    "end_time": "2026-10-23T08:02:15.157Z",
+    "class": "vape",
+    "peak_pm25": 87.6,
+    "duration_seconds": 173
+  },
+  {
+    "event_id": "ev_105",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-23T09:02:22.157Z",
+    "end_time": "2026-10-23T09:26:25.157Z",
+    "class": "steam",
+    "peak_pm25": 48.5,
+    "duration_seconds": 1443
+  },
+  {
+    "event_id": "ev_83",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-23T20:48:22.157Z",
+    "end_time": "2026-10-23T20:59:11.157Z",
+    "class": "cigarette",
+    "peak_pm25": 60.7,
+    "duration_seconds": 649
+  },
+  {
+    "event_id": "ev_59",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-23T21:10:22.157Z",
+    "end_time": "2026-10-23T21:15:47.157Z",
+    "class": "dust",
+    "peak_pm25": 46.3,
+    "duration_seconds": 325
+  },
+  {
+    "event_id": "ev_178",
+    "node_id": "UET4-3CT",
+    "start_time": "2026-10-23T21:11:22.157Z",
+    "end_time": "2026-10-23T21:23:34.157Z",
+    "class": "cigarette",
+    "peak_pm25": 65.9,
+    "duration_seconds": 732
+  },
+  {
+    "event_id": "ev_112",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-23T22:03:22.157Z",
+    "end_time": "2026-10-23T22:22:01.157Z",
+    "class": "steam",
+    "peak_pm25": 59.1,
+    "duration_seconds": 1119
+  },
+  {
+    "event_id": "ev_221",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-23T22:18:22.157Z",
+    "end_time": "2026-10-23T22:36:43.157Z",
+    "class": "cigarette",
+    "peak_pm25": 60.9,
+    "duration_seconds": 1101
+  },
+  {
+    "event_id": "ev_116",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-23T22:51:22.157Z",
+    "end_time": "2026-10-23T23:04:38.157Z",
+    "class": "cigarette",
+    "peak_pm25": 89.3,
+    "duration_seconds": 796
+  },
+  {
+    "event_id": "ev_225",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-24T06:16:22.157Z",
+    "end_time": "2026-10-24T06:30:56.157Z",
+    "class": "cigarette",
+    "peak_pm25": 91.9,
+    "duration_seconds": 874
+  },
+  {
+    "event_id": "ev_49",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-24T07:19:22.157Z",
+    "end_time": "2026-10-24T07:36:48.157Z",
+    "class": "cigarette",
+    "peak_pm25": 73.3,
+    "duration_seconds": 1046
+  },
+  {
+    "event_id": "ev_173",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-24T07:59:22.157Z",
+    "end_time": "2026-10-24T08:02:00.157Z",
+    "class": "vape",
+    "peak_pm25": 122.2,
+    "duration_seconds": 158
+  },
+  {
+    "event_id": "ev_149",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-24T08:15:22.157Z",
+    "end_time": "2026-10-24T08:17:06.157Z",
+    "class": "vape",
+    "peak_pm25": 116.9,
+    "duration_seconds": 104
+  },
+  {
+    "event_id": "ev_8",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-24T08:21:22.157Z",
+    "end_time": "2026-10-24T08:23:08.157Z",
+    "class": "vape",
+    "peak_pm25": 77.2,
+    "duration_seconds": 106
+  },
+  {
+    "event_id": "ev_269",
+    "node_id": "G2-WC-F2",
+    "start_time": "2026-10-24T08:21:22.157Z",
+    "end_time": "2026-10-24T08:23:49.157Z",
+    "class": "vape",
+    "peak_pm25": 106.6,
+    "duration_seconds": 147
+  },
+  {
+    "event_id": "ev_64",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-24T08:44:22.157Z",
+    "end_time": "2026-10-24T08:46:27.157Z",
+    "class": "vape",
+    "peak_pm25": 91.5,
+    "duration_seconds": 125
+  },
+  {
+    "event_id": "ev_94",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-24T22:33:22.157Z",
+    "end_time": "2026-10-24T22:35:09.157Z",
+    "class": "vape",
+    "peak_pm25": 110.7,
+    "duration_seconds": 107
+  },
+  {
+    "event_id": "ev_143",
+    "node_id": "UET3-2WC",
+    "start_time": "2026-10-24T22:35:22.157Z",
+    "end_time": "2026-10-24T22:38:27.157Z",
+    "class": "vape",
+    "peak_pm25": 128.8,
+    "duration_seconds": 185
+  },
+  {
+    "event_id": "ev_14",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-25T07:36:22.157Z",
+    "end_time": "2026-10-25T07:54:15.157Z",
+    "class": "cigarette",
+    "peak_pm25": 73.2,
+    "duration_seconds": 1073
+  },
+  {
+    "event_id": "ev_50",
+    "node_id": "UET1-4WC",
+    "start_time": "2026-10-25T07:53:22.157Z",
+    "end_time": "2026-10-25T08:01:13.157Z",
+    "class": "dust",
+    "peak_pm25": 59.1,
+    "duration_seconds": 471
+  },
+  {
+    "event_id": "ev_254",
+    "node_id": "G2-WC-F1",
+    "start_time": "2026-10-25T08:03:22.157Z",
+    "end_time": "2026-10-25T08:19:40.157Z",
+    "class": "steam",
+    "peak_pm25": 49.1,
+    "duration_seconds": 978
+  },
+  {
+    "event_id": "ev_61",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-25T08:54:22.157Z",
+    "end_time": "2026-10-25T09:16:51.157Z",
+    "class": "steam",
+    "peak_pm25": 44.7,
+    "duration_seconds": 1349
+  },
+  {
+    "event_id": "ev_162",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-25T09:03:22.157Z",
+    "end_time": "2026-10-25T09:23:04.157Z",
+    "class": "cigarette",
+    "peak_pm25": 85.9,
+    "duration_seconds": 1182
+  },
+  {
+    "event_id": "ev_17",
+    "node_id": "UET1-3CT",
+    "start_time": "2026-10-25T09:05:22.157Z",
+    "end_time": "2026-10-25T09:07:18.157Z",
+    "class": "vape",
+    "peak_pm25": 98,
+    "duration_seconds": 116
+  },
+  {
+    "event_id": "ev_73",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-26T06:16:22.157Z",
+    "end_time": "2026-10-26T06:33:55.157Z",
+    "class": "cigarette",
+    "peak_pm25": 70.1,
+    "duration_seconds": 1053
+  },
+  {
+    "event_id": "ev_70",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-26T06:47:22.157Z",
+    "end_time": "2026-10-26T06:50:21.157Z",
+    "class": "vape",
+    "peak_pm25": 111.1,
+    "duration_seconds": 179
+  },
+  {
+    "event_id": "ev_68",
+    "node_id": "UET2-2HL",
+    "start_time": "2026-10-26T06:57:22.157Z",
+    "end_time": "2026-10-26T07:14:57.157Z",
+    "class": "cigarette",
+    "peak_pm25": 68.7,
+    "duration_seconds": 1055
+  },
+  {
+    "event_id": "ev_84",
+    "node_id": "UET2-4ST",
+    "start_time": "2026-10-26T07:03:22.157Z",
+    "end_time": "2026-10-26T07:09:43.157Z",
+    "class": "dust",
+    "peak_pm25": 45.6,
+    "duration_seconds": 381
+  },
+  {
+    "event_id": "ev_159",
+    "node_id": "UET3-5CTD",
+    "start_time": "2026-10-26T08:04:22.157Z",
+    "end_time": "2026-10-26T08:17:54.157Z",
+    "class": "cigarette",
+    "peak_pm25": 68.7,
+    "duration_seconds": 812
+  },
+  {
+    "event_id": "ev_232",
+    "node_id": "UET4-4ST",
+    "start_time": "2026-10-26T08:29:22.157Z",
+    "end_time": "2026-10-26T08:43:08.157Z",
+    "class": "cigarette",
+    "peak_pm25": 85.8,
+    "duration_seconds": 826
+  }
+]

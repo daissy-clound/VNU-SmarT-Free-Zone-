@@ -127,6 +127,23 @@ export const api = {
       method: "POST",
       body: JSON.stringify(body),
     }),
+  /** Các API Analytics, AI & Infographics cho BQL và BGK */
+  heatmapStats: (token?: string, building?: string) =>
+    request(`/stats/heatmap${building ? `?building=${encodeURIComponent(building)}` : ""}`, token),
+  forecast: (token?: string) => request("/stats/forecast", token),
+  transparency: (token?: string) => request("/stats/transparency", token),
+  weeklyReport: (token?: string) => request("/stats/weekly-report", token),
+  infographics: (token?: string) => request("/infographics", token),
+  uploadInfographic: (
+    token: string,
+    body: { title: string; image_data?: string; image_url?: string; building?: string; zone_code?: string },
+  ) =>
+    request("/infographics", token, {
+      method: "POST",
+      body: JSON.stringify(body),
+    }),
+  resetSandbox: (token: string) =>
+    request("/sandbox/reset", token, { method: "POST" }),
 };
 export function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message;

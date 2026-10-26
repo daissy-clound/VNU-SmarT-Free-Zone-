@@ -165,11 +165,12 @@ test("PWA ca trực: manifest cài được, bấm thông báo mở thẳng phi�
 
   // Web Push từ máy chủ (giả lập qua CDP) → service worker hiện thông báo trỏ tới phiếu
   const cdp = await context.newCDPSession(page);
-  await cdp.send("ServiceWorker.enable");
-  const regs = await new Promise<{ registrationId: string; scopeURL: string }[]>((resolve) => {
+  const regsPromise = new Promise<{ registrationId: string; scopeURL: string }[]>((resolve) => {
     cdp.on("ServiceWorker.workerRegistrationUpdated", (e) => e.registrations.length && resolve(e.registrations));
-    setTimeout(() => resolve([]), 3000);
+    setTimeout(() => resolve([]), 5000);
   });
+  await cdp.send("ServiceWorker.enable");
+  const regs = await regsPromise;
   const reg = regs.find((r) => r.scopeURL.startsWith(baseURL!));
   expect(reg, "service worker đã đăng ký").toBeTruthy();
   await cdp.send("ServiceWorker.deliverPushMessage", {

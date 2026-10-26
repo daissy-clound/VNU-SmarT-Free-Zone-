@@ -502,7 +502,7 @@ function Dashboard({
             />
             <Route
               path="/analytics"
-              element={protect("/analytics", <Analytics />)}
+              element={protect("/analytics", <Analytics token={token} user={user} />)}
             />
             <Route
               path="/shift"
