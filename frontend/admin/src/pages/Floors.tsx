@@ -5,12 +5,12 @@ import { FloorMap } from "../components/FloorMap";
 import type { DashboardData } from "../useDashboard";
 
 const buildingOptions = [
+  { label: "Khuôn viên", value: "CONG" },
   { label: "UET1", value: "UET1" },
   { label: "UET2", value: "UET2" },
   { label: "UET3", value: "UET3" },
   { label: "UET4", value: "UET4" },
   { label: "Nhà ĐN", value: "DN" },
-  { label: "Khuôn viên", value: "CONG" },
 ];
 
 const buildingMaxFloors: Record<string, number> = {
@@ -24,7 +24,7 @@ const buildingMaxFloors: Record<string, number> = {
 
 export function Floors({ data }: { data: DashboardData }) {
   const [params, setParams] = useSearchParams();
-  const [chosenBuilding, setBuilding] = useState("UET1");
+  const [chosenBuilding, setBuilding] = useState("CONG");
   const [chosenFloor, setFloor] = useState(1);
   const selected = params.get("zone") || undefined;
   const zone = data.zones.find((item) => item.code === selected);
@@ -40,6 +40,15 @@ export function Floors({ data }: { data: DashboardData }) {
     }
     setParams(code ? { zone: code } : {}, { replace: true });
   };
+  /** Bấm toà trên mặt bằng khuôn viên: mở thẳng điểm đang nghi vấn nếu có, không thì tầng 1 */
+  const openBuilding = (code: string) => {
+    const hot = data.zones.find((item) => item.building === code && item.sensor_state === "suspected");
+    if (hot) return setSelected(hot.code);
+    setBuilding(code);
+    setFloor(1);
+    setSelected(undefined);
+  };
+  const campus = building === "CONG";
   const floorZones = data.zones.filter(
     (item) => item.building === building && item.floor === floor,
   );
@@ -107,10 +116,10 @@ export function Floors({ data }: { data: DashboardData }) {
       <div className="map-grid">
         <Card className="map-card">
           <div className="floor-point-list" aria-label="Khu vực trên tầng">
-            <strong>
-              Toà {building} · Tầng {floor}
-            </strong>
-            <span className="muted">{floorZones.length} khu vực</span>
+            <strong>{campus ? "Mặt bằng khuôn viên" : `Toà ${building} · Tầng ${floor}`}</strong>
+            <span className="muted">
+              {campus ? "Bấm vào toà nhà để mở sơ đồ tầng" : `${floorZones.length} khu vực`}
+            </span>
             <div>
               {floorZones.map((item) => (
                 <Button
@@ -130,13 +139,23 @@ export function Floors({ data }: { data: DashboardData }) {
             floor={floor}
             selected={selected}
             onSelect={(zone) => setSelected(zone.code)}
+            onSelectBuilding={openBuilding}
           />
-          <div className="map-legend">
-            <Tag color="green">Bình thường</Tag>
-            <Tag color="orange">Nghi vấn</Tag>
-            <Tag>Mất kết nối / chưa rõ</Tag>
-            <span>QR là ký hiệu vị trí, không phải mã để quét.</span>
-          </div>
+          {campus ? (
+            <div className="map-legend">
+              <Tag color="green">Toà ổn định</Tag>
+              <Tag color="orange">Toà có điểm nghi vấn</Tag>
+              <Tag>Cổng / chốt bảo vệ</Tag>
+              <span>Mặt bằng vector hoá từ bản vẽ quy hoạch khuôn viên UET Hoà Lạc.</span>
+            </div>
+          ) : (
+            <div className="map-legend">
+              <Tag color="green">Bình thường</Tag>
+              <Tag color="orange">Nghi vấn</Tag>
+              <Tag>Mất kết nối / chưa rõ</Tag>
+              <span>QR là ký hiệu vị trí, không phải mã để quét.</span>
+            </div>
+          )}
         </Card>
         <Card title="Thông tin khu vực">
           {zone ? (
@@ -144,7 +163,7 @@ export function Floors({ data }: { data: DashboardData }) {
               <Tag color="green">{zone.code}</Tag>
               <h2>{zone.name}</h2>
               <p>
-                Toà {zone.building} · Tầng {zone.floor}
+                {zone.building === "CONG" ? "Cổng trường" : `Toà ${zone.building} · Tầng ${zone.floor}`}
               </p>
               <dl>
                 <dt>Cảm biến</dt>
@@ -171,7 +190,7 @@ export function Floors({ data }: { data: DashboardData }) {
               </Link>
             </div>
           ) : (
-            <Empty description="Chọn một điểm trên sơ đồ" />
+            <Empty description={campus ? "Chọn một toà nhà hoặc cổng trên sơ đồ" : "Chọn một điểm trên sơ đồ"} />
           )}
         </Card>
       </div>

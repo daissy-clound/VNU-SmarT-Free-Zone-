@@ -6,6 +6,10 @@ import viVN from "antd/locale/vi_VN";
 import App from "./App";
 import "antd/dist/reset.css";
 import "./styles.css";
+import { registerServiceWorker } from "./push";
+
+// Service worker cho PWA ca trực: nhận Web Push, bấm thông báo mở thẳng phiếu
+void registerServiceWorker();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>

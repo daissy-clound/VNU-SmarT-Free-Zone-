@@ -1,12 +1,12 @@
-import { useCallback, useEffect, useState } from "react";
-import { Link, Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Link, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import {
   Alert,
+  App as AntApp,
   Avatar,
   Badge,
   Button,
   Card,
-  Descriptions,
   Drawer,
   Form,
   Input,
@@ -21,37 +21,55 @@ import {
 import {
   AppstoreOutlined,
   ApartmentOutlined,
+  FireOutlined,
   BarChartOutlined,
   FileTextOutlined,
   LogoutOutlined,
   MenuOutlined,
   ReloadOutlined,
   SafetyCertificateOutlined,
+  SendOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
 import {
   roleLabels,
-  sourceLabels,
-  statusLabels,
-  priorityLabels,
   type Ticket,
   type User,
 } from "../../../backend/src/contracts";
 import { api, errorMessage } from "./api";
-import { useDashboard } from "./useDashboard";
+import { useDashboard, type LiveAlert } from "./useDashboard";
+import { TicketDetailPage } from "./pages/TicketDetail";
+import { HeatmapPage } from "./pages/HeatmapPage";
+import { isStandalone, logAlert, onOpenFromNotification, showAlertNotification } from "./push";
 import { TicketTable } from "./components/TicketTable";
 import { Overview } from "./pages/Overview";
 import { Floors } from "./pages/Floors";
 import { Analytics } from "./pages/analytics/Analytics";
 import { Shift } from "./pages/Shift";
+import { DispatchPage } from "./pages/Dispatch";
 
 const storageKey = "sfz-session-token";
+/** App ca trực đã cài (PWA) giữ phiên trên máy để bấm thông báo là vào thẳng phiếu */
+const sessionStore = () => (isStandalone() ? localStorage : sessionStorage);
+const readToken = () => sessionStorage.getItem(storageKey) ?? localStorage.getItem(storageKey);
+const clearToken = () => {
+  sessionStorage.removeItem(storageKey);
+  localStorage.removeItem(storageKey);
+};
+/** Đặt VITE_DATA_MODE=live khi nối dữ liệu thật để bỏ nhãn "Dữ liệu mô phỏng" */
+export const SIMULATED = (import.meta.env.VITE_DATA_MODE || "simulated") !== "live";
 const navigation = [
   {
     key: "/",
     label: "Tổng quan",
     icon: <AppstoreOutlined />,
     roles: ["manager", "analyst", "viewer"],
+  },
+  {
+    key: "/dispatch",
+    label: "Điều phối",
+    icon: <SendOutlined />,
+    roles: ["manager"],
   },
   {
     key: "/floors",
@@ -66,6 +84,12 @@ const navigation = [
     roles: ["manager", "guard", "analyst", "viewer"],
   },
   {
+    key: "/heatmap",
+    label: "Bản đồ nhiệt",
+    icon: <FireOutlined />,
+    roles: ["manager", "analyst", "viewer"],
+  },
+  {
     key: "/analytics",
     label: "Phân tích",
     icon: <BarChartOutlined />,
@@ -73,9 +97,9 @@ const navigation = [
   },
   {
     key: "/shift",
-    label: "Ca trực",
+    label: "Phòng trực",
     icon: <TeamOutlined />,
-    roles: ["manager", "guard"],
+    roles: ["guard"],
   },
 ];
 
@@ -107,7 +131,7 @@ function Login({
             <br />
             Bắt đầu từ sự quan tâm.
           </h1>
-          <p>Không gian vận hành dành cho ban quản lý và ca trực ký túc xá.</p>
+          <p>Không gian vận hành dành cho ban quản lý và phòng trực khuôn viên UET Hoà Lạc.</p>
           <div className="login-steps">
             <span>01 · Phát hiện</span>
             <span>02 · Phản hồi</span>
@@ -191,12 +215,75 @@ function Dashboard({
 }) {
   const { user, token } = session;
   const expire = useCallback(() => onLogout(true), [onLogout]);
-  const data = useDashboard(token, expire);
+  const navigate = useNavigate();
+  const { notification } = AntApp.useApp();
+  const fieldRole = user.role === "guard" || user.role === "manager";
+  const zonesRef = useRef<Record<string, string>>({});
+  // Cảnh báo phiếu mới: hiện ngay trên dashboard (không tải lại trang) + thông báo hệ thống cho ca trực
+  const onAlert = useCallback(
+    (alert: LiveAlert) => {
+      const zoneName = zonesRef.current[alert.zone_code] ?? alert.zone_code;
+      const presence =
+        alert.presence === null ? "hiện diện không rõ" : alert.presence ? "có người tại chỗ" : "không còn ai";
+      const title =
+        alert.kind === "dispatched"
+          ? `Ban quản lý điều phối kiểm tra · ${alert.zone_code}`
+          : alert.kind === "overdue"
+            ? `Quá 3 phút chưa nhận · ${alert.room_name ?? ""}`
+            : alert.source === "sensor"
+              ? `Cảm biến báo nghi vấn · ${alert.zone_code}`
+              : `Phiếu mới · ${alert.zone_code}`;
+      const body =
+        alert.kind === "overdue"
+          ? `${zoneName} · gọi ${alert.room_phone ?? "phòng trực"} (số giả lập)`
+          : alert.kind === "dispatched"
+            ? `${zoneName} · ${presence} · bấm Đang đến trong 3 phút`
+            : `${zoneName} · ${presence}${user.role === "manager" ? " · cần xác minh và điều phối" : ""}`;
+      const key = `${alert.kind}:${alert.ticket_code}`;
+      logAlert({
+        ticket_code: alert.ticket_code,
+        channel: "socket",
+        dispatched_at: alert.dispatched_at,
+        received_at: alert.received_at,
+      });
+      const open = () => {
+        notification.destroy(key);
+        navigate(`/tickets/${encodeURIComponent(alert.ticket_code)}`);
+      };
+      notification[alert.kind === "overdue" ? "error" : "warning"]({
+        key,
+        title,
+        description: `${alert.ticket_code} · ${body}`,
+        placement: "topRight",
+        duration: 0,
+        actions: (
+          <Button type="primary" size="small" onClick={open}>
+            Mở phiếu
+          </Button>
+        ),
+      });
+      // App ở nền / màn hình tắt: hiện thông báo hệ thống, bấm vào mở thẳng phiếu
+      if (fieldRole && document.visibilityState === "hidden")
+        void showAlertNotification({
+          ticket_code: alert.ticket_code,
+          title,
+          body,
+          dispatched_at: alert.dispatched_at,
+        });
+    },
+    [fieldRole, navigate, notification, user.role],
+  );
+  const data = useDashboard(token, expire, onAlert, user);
+  zonesRef.current = Object.fromEntries(data.zones.map((z) => [z.code, z.name]));
+  useEffect(() => onOpenFromNotification((url) => navigate(url)), [navigate]);
   const [mobileMenu, setMobileMenu] = useState(false);
-  const [selectedCode, setSelectedCode] = useState<string>();
-  const selected = data.tickets.find((ticket) => ticket.code === selectedCode);
-  const selectTicket = (ticket: Ticket) => setSelectedCode(ticket.code);
+  const selectTicket = (ticket: Ticket) =>
+    navigate(`/tickets/${encodeURIComponent(ticket.code)}`);
   const location = useLocation();
+  const section =
+    navigation.find(
+      (item) => item.key !== "/" && location.pathname.startsWith(item.key),
+    )?.key ?? location.pathname;
   const items = navigation
     .filter((item) => item.roles.includes(user.role))
     .map((item) => ({
@@ -222,16 +309,16 @@ function Dashboard({
         </div>
       </Link>
       <div className="sidebar-caption">KHÔNG GIAN LÀM VIỆC</div>
-      <Menu mode="inline" selectedKeys={[location.pathname]} items={items} />
+      <Menu mode="inline" selectedKeys={[section]} items={items} />
       <div className="sidebar-footer">
-        <div className="campus-mark">KTX</div>
-        <strong>Ký túc xá VNU</strong>
+        <div className="campus-mark">UET</div>
+        <strong>Khuôn viên UET Hoà Lạc</strong>
         <p>
           Phát hiện · Phản hồi
           <br />
           Phòng ngừa · Hỗ trợ
         </p>
-        <Tag>Dữ liệu KTX giả lập</Tag>
+        {SIMULATED && <Tag color="gold">Dữ liệu mô phỏng</Tag>}
       </div>
     </>
   );
@@ -276,9 +363,9 @@ function Dashboard({
               onClick={() => setMobileMenu(true)}
             />
             <span className="header-location">
-              Ký túc xá <span>/</span>{" "}
-              {navigation.find((item) => item.key === location.pathname)
-                ?.label || "Dashboard"}
+              Khuôn viên UET <span>/</span>{" "}
+              {navigation.find((item) => item.key === section)?.label ||
+                "Dashboard"}
             </span>
           </Space>
           <Space size="middle">
@@ -316,7 +403,16 @@ function Dashboard({
           <div className="sync-strip">
             <span>
               <span className="live-dot" />
-              Bản dùng thử · Dữ liệu KTX giả lập
+              {SIMULATED ? (
+                <>
+                  Bản dùng thử ·{" "}
+                  <Tag color="gold" className="sim-tag">
+                    Dữ liệu mô phỏng
+                  </Tag>
+                </>
+              ) : (
+                "Dữ liệu vận hành"
+              )}
             </span>
             <Space>
               <small>
@@ -361,6 +457,10 @@ function Dashboard({
               }
             />
             <Route
+              path="/dispatch"
+              element={protect("/dispatch", <DispatchPage data={data} user={user} token={token} />)}
+            />
+            <Route
               path="/floors"
               element={protect("/floors", <Floors data={data} />)}
             />
@@ -387,6 +487,20 @@ function Dashboard({
               )}
             />
             <Route
+              path="/tickets/:code"
+              element={protect(
+                "/tickets",
+                <TicketDetailPage data={data} user={user} token={token} />,
+              )}
+            />
+            <Route
+              path="/heatmap"
+              element={protect(
+                "/heatmap",
+                <HeatmapPage data={data} token={token} />,
+              )}
+            />
+            <Route
               path="/analytics"
               element={protect("/analytics", <Analytics />)}
             />
@@ -394,7 +508,7 @@ function Dashboard({
               path="/shift"
               element={protect(
                 "/shift",
-                <Shift data={data} user={user} onSelect={selectTicket} />,
+                <Shift data={data} user={user} token={token} />,
               )}
             />
             <Route
@@ -421,90 +535,13 @@ function Dashboard({
             <Link
               key={item.key}
               to={item.key}
-              aria-current={location.pathname === item.key ? "page" : undefined}
+              aria-current={section === item.key ? "page" : undefined}
             >
               <span aria-hidden>{item.icon}</span>
               <span>{item.label}</span>
             </Link>
           ))}
       </nav>
-      <Drawer
-        title="Thông tin phiếu"
-        open={!!selectedCode}
-        onClose={() => setSelectedCode(undefined)}
-        size={440}
-      >
-        {selected ? (
-          <>
-            <h2>{selected.code}</h2>
-            <Descriptions
-              column={1}
-              items={[
-                {
-                  key: "zone",
-                  label: "Khu vực",
-                  children: `${data.zones.find((zone) => zone.code === selected.zone_code)?.name || ""} (${selected.zone_code})`,
-                },
-                {
-                  key: "priority",
-                  label: "Mức ưu tiên",
-                  children: priorityLabels[selected.priority],
-                },
-                {
-                  key: "source",
-                  label: "Nguồn tin",
-                  children: sourceLabels[selected.source],
-                },
-                {
-                  key: "status",
-                  label: "Trạng thái",
-                  children: statusLabels[selected.status],
-                },
-                {
-                  key: "presence",
-                  label: "Hiện diện",
-                  children:
-                    selected.presence === null
-                      ? "Không rõ"
-                      : selected.presence
-                        ? "Có người tại chỗ"
-                        : "Không còn ai",
-                },
-                {
-                  key: "created",
-                  label: "Tiếp nhận",
-                  children: new Date(selected.created_at).toLocaleString(
-                    "vi-VN",
-                  ),
-                },
-                {
-                  key: "due",
-                  label: "Hạn xử lý",
-                  children: selected.due_at
-                    ? new Date(selected.due_at).toLocaleString("vi-VN")
-                    : "Không có",
-                },
-              ]}
-            />
-            <Alert
-              type="info"
-              showIcon
-              title="Phiếu đang ở chế độ chỉ xem. Lịch sử và thao tác xử lý sẽ được bổ sung sau."
-            />
-            <Link
-              to={`/floors?zone=${encodeURIComponent(selected.zone_code)}`}
-              onClick={() => setSelectedCode(undefined)}
-              className="drawer-map-link"
-            >
-              <Button block type="primary">
-                Xem vị trí trên sơ đồ
-              </Button>
-            </Link>
-          </>
-        ) : (
-          <p>Phiếu không còn trong danh sách hiện tại.</p>
-        )}
-      </Drawer>
     </Layout>
   );
 }
@@ -515,7 +552,7 @@ export default function App() {
   const [reason, setReason] = useState("");
   useEffect(() => {
     let active = true;
-    const token = sessionStorage.getItem(storageKey);
+    const token = readToken();
     if (!token) {
       setChecking(false);
       return;
@@ -527,7 +564,7 @@ export default function App() {
       })
       .catch((error) => {
         if (active) {
-          sessionStorage.removeItem(storageKey);
+          clearToken();
           setReason(errorMessage(error));
         }
       })
@@ -539,7 +576,7 @@ export default function App() {
     };
   }, []);
   const logout = useCallback((expired = false) => {
-    sessionStorage.removeItem(storageKey);
+    clearToken();
     setSession(undefined);
     setReason(
       expired ? "Phiên đăng nhập hết hạn. Vui lòng đăng nhập lại." : "",
@@ -557,7 +594,7 @@ export default function App() {
       <Login
         reason={reason}
         onLogin={(session) => {
-          sessionStorage.setItem(storageKey, session.token);
+          sessionStore().setItem(storageKey, session.token);
           setSession(session);
           setReason("");
         }}
