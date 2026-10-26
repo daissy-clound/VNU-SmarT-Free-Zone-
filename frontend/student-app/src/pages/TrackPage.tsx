@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { platform, TrackingDetail } from "../platform";
+import {
+  SearchIcon,
+  MapPinIcon,
+  ClockIcon,
+  CheckCircleIcon,
+  ChevronRightIcon,
+  InfoIcon,
+} from "../components/Icons";
 
 interface TrackPageProps {
   initialCode?: string;
@@ -42,12 +50,12 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
   };
 
   const STEPS: { key: TrackingDetail["status"]; label: string; desc: string }[] = [
-    { key: "received", label: "Tiếp nhận phản ánh", desc: "Hệ thống đã ghi nhận tin báo và gán mã xử lý" },
-    { key: "assigned", label: "Điều phối ca trực", desc: "Đã phân công cán bộ trực toà nhà phụ trách" },
-    { key: "verifying", label: "Có mặt & Xác minh", desc: "Cán bộ trực đã đến hiện trường kiểm tra" },
-    { key: "handled", label: "Xử lý vi phạm", desc: "Thực hiện nhắc nhở, lập biên bản hoặc giải tỏa" },
-    { key: "responded", label: "Ban Quản lý phản hồi", desc: "Gửi thông tin kết quả tới người phản ánh" },
-    { key: "closed", label: "Đóng phiếu hoàn tất", desc: "Khu vực đã được làm sạch, hoàn tất quy trình" },
+    { key: "received", label: "Tiếp nhận phản ánh", desc: "Hệ thống đã ghi nhận tin báo và sinh mã xử lý" },
+    { key: "assigned", label: "Điều phối ca trực", desc: "Đã giao cán bộ trực toà nhà phụ trách" },
+    { key: "verifying", label: "Có mặt & Xác minh", desc: "Cán bộ trực đã tới hiện trường kiểm tra" },
+    { key: "handled", label: "Xử lý vi phạm", desc: "Thực hiện giải toả, lập biên bản hoặc nhắc nhở" },
+    { key: "responded", label: "Ban Quản lý phản hồi", desc: "Ghi nhận kết luận và thông báo kết quả" },
+    { key: "closed", label: "Đóng phiếu hoàn tất", desc: "Khu vực đã được làm sạch, kết thúc quy trình" },
   ];
 
   const getStepStatus = (stepKey: TrackingDetail["status"], currentStatus: TrackingDetail["status"]) => {
@@ -63,9 +71,14 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
   return (
     <div className="page-track">
       <div className="card">
-        <div className="card-title">🔍 Tra cứu Tiến độ Xử lý Phản ánh</div>
-        <p style={{ fontSize: 13, color: "#64748b", marginBottom: 12 }}>
-          Nhập mã tra cứu (8 ký tự) bạn nhận được khi gửi phản ánh để theo dõi quy trình can thiệp 6 bước của Nhà trường.
+        <div className="card-title">
+          <div className="card-title-left">
+            <SearchIcon size={18} color="var(--primary)" />
+            <span>Tra cứu tiến độ xử lý</span>
+          </div>
+        </div>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12 }}>
+          Nhập mã tra cứu 8 ký tự (hoặc bấm chọn phản ánh gần đây) để theo dõi quy trình can thiệp 6 bước.
         </p>
 
         <div style={{ display: "flex", gap: 8 }}>
@@ -75,12 +88,12 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
             placeholder="VD: K7Q2-9XMA"
             value={code}
             onChange={(e) => setCode(e.target.value.toUpperCase())}
-            style={{ fontWeight: 700, letterSpacing: 1 }}
+            style={{ fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase" }}
           />
           <button
             type="button"
             className="btn-primary"
-            style={{ width: "auto", padding: "0 18px" }}
+            style={{ width: "auto", padding: "0 20px", flexShrink: 0 }}
             onClick={() => handleSearch()}
             disabled={loading}
           >
@@ -89,63 +102,132 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
         </div>
 
         {error && (
-          <div style={{ background: "#fee2e2", color: "#991b1b", padding: 10, borderRadius: 8, fontSize: 13, marginTop: 12 }}>
-            {error}
+          <div
+            style={{
+              background: "var(--accent-rose-subtle)",
+              color: "var(--accent-rose)",
+              padding: "10px 12px",
+              borderRadius: "var(--radius-sm)",
+              fontSize: 12,
+              marginTop: 10,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+            }}
+          >
+            <InfoIcon size={15} />
+            <span>{error}</span>
           </div>
         )}
       </div>
 
       {/* Kết quả chi tiết phiếu */}
       {detail && (
-        <div className="card" style={{ borderLeft: "4px solid #17634c" }}>
+        <div className="card" style={{ borderLeft: "4px solid var(--primary)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
             <div>
-              <span style={{ fontSize: 11, color: "#64748b" }}>Mã tra cứu:</span>
-              <div style={{ fontSize: 20, fontWeight: 800, color: "#17634c" }}>{detail.tracking_code}</div>
+              <span style={{ fontSize: 11, color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>
+                Mã tra cứu phản ánh
+              </span>
+              <div style={{ fontSize: 20, fontWeight: 800, color: "var(--primary-dark)", letterSpacing: "0.05em" }}>
+                {detail.tracking_code}
+              </div>
             </div>
             <span
-              style={{
-                fontSize: 12,
-                fontWeight: 700,
-                padding: "4px 10px",
-                borderRadius: 20,
-                background: detail.status === "closed" ? "#dcfce7" : "#fef3c7",
-                color: detail.status === "closed" ? "#15803d" : "#b45309",
-              }}
+              className={`badge-pill ${
+                detail.status === "closed" ? "badge-emerald" : "badge-amber"
+              }`}
             >
               {detail.status_label || detail.status}
             </span>
           </div>
 
-          <div style={{ marginTop: 10, fontSize: 13, color: "#475569" }}>
-            <div>📍 <strong>Vị trí:</strong> {detail.zone_name}</div>
-            <div>⏱️ <strong>Thời gian gửi:</strong> {new Date(detail.created_at).toLocaleString("vi-VN")}</div>
+          <div style={{ marginTop: 12, fontSize: 13, color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <MapPinIcon size={15} color="var(--primary)" />
+              <span><strong>Vị trí:</strong> {detail.zone_name}</span>
+            </div>
+            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <ClockIcon size={15} color="var(--primary)" />
+              <span><strong>Thời gian gửi:</strong> {new Date(detail.created_at).toLocaleString("vi-VN")}</span>
+            </div>
             {detail.arrived_at && (
-              <div>🏃 <strong>Cán bộ có mặt lúc:</strong> {new Date(detail.arrived_at).toLocaleTimeString("vi-VN")}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <CheckCircleIcon size={15} color="var(--primary)" />
+                <span><strong>Cán bộ có mặt:</strong> {new Date(detail.arrived_at).toLocaleTimeString("vi-VN")}</span>
+              </div>
             )}
           </div>
 
           {/* Phản hồi từ Ban Quản lý */}
           {detail.response_note && (
-            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: 12, borderRadius: 8, marginTop: 14 }}>
-              <strong style={{ color: "#166534", fontSize: 13 }}>💬 Phản hồi từ Ban Quản lý KTX / Trường:</strong>
-              <p style={{ fontSize: 13, color: "#15803d", marginTop: 4 }}>
+            <div
+              style={{
+                background: "var(--primary-subtle)",
+                border: "1px solid var(--primary-border)",
+                padding: "12px 14px",
+                borderRadius: "var(--radius-sm)",
+                marginTop: 14,
+              }}
+            >
+              <strong style={{ color: "var(--primary-dark)", fontSize: 12, textTransform: "uppercase" }}>
+                Phản hồi từ Ban Quản lý / Phòng trực:
+              </strong>
+              <p style={{ fontSize: 13, color: "var(--primary-dark)", marginTop: 4, lineHeight: 1.5 }}>
                 {detail.response_note}
               </p>
             </div>
           )}
 
           {/* 6 Bước tiến độ */}
-          <div style={{ marginTop: 20 }}>
-            <strong style={{ fontSize: 14, color: "#1e293b" }}>Quy trình Can thiệp 6 Bước:</strong>
-            <div className="timeline">
+          <div style={{ marginTop: 18 }}>
+            <strong style={{ fontSize: 13, color: "var(--text-primary)", display: "block", marginBottom: 12 }}>
+              Quy trình can thiệp 6 bước:
+            </strong>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
               {STEPS.map((s, idx) => {
                 const status = getStepStatus(s.key, detail.status);
+                const isDone = status === "done";
+                const isActive = status === "active";
                 return (
-                  <div key={s.key} className={`timeline-step ${status}`}>
-                    <div className="step-dot">{status === "done" ? "✓" : idx + 1}</div>
-                    <div className="step-title">{s.label}</div>
-                    <div className="step-desc">{s.desc}</div>
+                  <div
+                    key={s.key}
+                    style={{
+                      display: "flex",
+                      alignItems: "flex-start",
+                      gap: 12,
+                      opacity: status === "pending" ? 0.45 : 1,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: 24,
+                        height: 24,
+                        borderRadius: "50%",
+                        background: isDone
+                          ? "var(--primary)"
+                          : isActive
+                          ? "var(--accent-amber)"
+                          : "var(--border-subtle)",
+                        color: "#ffffff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: 11,
+                        fontWeight: 700,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {isDone ? <CheckCircleIcon size={14} strokeWidth={2.8} /> : idx + 1}
+                    </div>
+                    <div>
+                      <div style={{ fontSize: 13, fontWeight: 700, color: "var(--text-primary)" }}>
+                        {s.label}
+                      </div>
+                      <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>
+                        {s.desc}
+                      </div>
+                    </div>
                   </div>
                 );
               })}
@@ -154,15 +236,18 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
         </div>
       )}
 
-      {/* Lịch sử tra cứu cục bộ */}
+      {/* Lịch sử tra cứu gần đây */}
       {history.length > 0 && (
         <div className="card">
-          <div className="card-title">🕒 Các phản ánh gần đây của bạn</div>
-          <p style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-            Được lưu riêng tư trên thiết bị của bạn để bạn tiện theo dõi lại:
-          </p>
+          <div className="card-title">
+            <div className="card-title-left">
+              <ClockIcon size={16} color="var(--primary)" />
+              <span>Phản ánh gần đây của bạn</span>
+            </div>
+            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Lưu cục bộ</span>
+          </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 8 }}>
             {history.map((item) => (
               <div
                 key={item.code}
@@ -171,29 +256,40 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
                   handleSearch(item.code);
                 }}
                 style={{
-                  padding: 10,
-                  borderRadius: 8,
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
+                  padding: "10px 12px",
+                  borderRadius: "var(--radius-sm)",
+                  background: "var(--bg-muted)",
+                  border: "1px solid var(--border-subtle)",
                   cursor: "pointer",
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
+                  transition: "background-color 0.15s ease",
                 }}
               >
                 <div>
-                  <strong style={{ color: "#17634c" }}>{item.code}</strong>
-                  <div style={{ fontSize: 11, color: "#64748b" }}>Khu vực: {item.zone}</div>
+                  <strong style={{ color: "var(--primary-dark)", fontSize: 13 }}>{item.code}</strong>
+                  <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 1 }}>
+                    {item.zone}
+                  </div>
                 </div>
-                <span style={{ fontSize: 12, color: "#17634c", fontWeight: 600 }}>Xem tiến độ ›</span>
+                <div style={{ display: "flex", alignItems: "center", gap: 4, color: "var(--primary)", fontSize: 12, fontWeight: 600 }}>
+                  <span>Xem</span>
+                  <ChevronRightIcon size={14} />
+                </div>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <button type="button" className="btn-secondary" onClick={onBackToReport}>
-        + Gửi phản ánh mới
+      <button
+        type="button"
+        className="btn-secondary"
+        onClick={onBackToReport}
+        style={{ marginTop: 6 }}
+      >
+        <span>+ Gửi phản ánh vị trí khác</span>
       </button>
     </div>
   );

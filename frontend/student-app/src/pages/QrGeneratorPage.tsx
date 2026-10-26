@@ -19,8 +19,10 @@ export function QrGeneratorPage() {
   return (
     <div className="page-qr-gen">
       <div className="card no-print">
-        <div className="card-title">🖨️ Xuất bản & In Poster QR Hàng loạt</div>
-        <p style={{ fontSize: 13, color: "#64748b", marginBottom: 12 }}>
+        <div className="card-title">
+          <span>Xuất bản & In Poster QR Toạ độ</span>
+        </div>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12 }}>
           Công cụ dành cho Ban Quản lý toà nhà: Tự động sinh poster khổ chuẩn A4 có mã QR phản ánh ẩn danh, số hotline và cam kết quyền riêng tư để dán thực địa.
         </p>
 
@@ -41,7 +43,7 @@ export function QrGeneratorPage() {
         </div>
 
         <button type="button" className="btn-primary" onClick={handlePrint}>
-          🖨️ BẤM VÀO ĐÂY ĐỂ IN HOẶC LƯU PDF (A4)
+          <span>In ấn hoặc Lưu tệp PDF (Chuẩn khổ A4)</span>
         </button>
       </div>
 
