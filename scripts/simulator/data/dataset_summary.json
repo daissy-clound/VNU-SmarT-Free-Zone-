@@ -1,0 +1,68 @@
+{
+  "generated_at": "2026-10-26T09:11:22.161Z",
+  "weeks": 6,
+  "total_nodes": 10,
+  "total_events": 278,
+  "events_by_class": {
+    "cigarette": 129,
+    "vape": 89,
+    "steam": 32,
+    "dust": 15,
+    "spray": 13,
+    "ambient": 0
+  },
+  "training_set_events": 190,
+  "test_set_events": 88,
+  "nodes_summary": [
+    {
+      "node_id": "UET1-3CT",
+      "total_records": 725760,
+      "events_count": 22
+    },
+    {
+      "node_id": "UET1-4WC",
+      "total_records": 725760,
+      "events_count": 31
+    },
+    {
+      "node_id": "UET2-2HL",
+      "total_records": 725760,
+      "events_count": 30
+    },
+    {
+      "node_id": "UET2-4ST",
+      "total_records": 725760,
+      "events_count": 32
+    },
+    {
+      "node_id": "UET3-2WC",
+      "total_records": 725760,
+      "events_count": 28
+    },
+    {
+      "node_id": "UET3-5CTD",
+      "total_records": 725760,
+      "events_count": 31
+    },
+    {
+      "node_id": "UET4-3CT",
+      "total_records": 725760,
+      "events_count": 27
+    },
+    {
+      "node_id": "UET4-4ST",
+      "total_records": 725760,
+      "events_count": 32
+    },
+    {
+      "node_id": "G2-WC-F1",
+      "total_records": 725760,
+      "events_count": 22
+    },
+    {
+      "node_id": "G2-WC-F2",
+      "total_records": 725760,
+      "events_count": 23
+    }
+  ]
+}

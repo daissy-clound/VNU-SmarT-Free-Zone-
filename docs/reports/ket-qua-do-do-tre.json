@@ -1,0 +1,16 @@
+{
+  "measured_at": "2026-10-26T09:16:19.046Z",
+  "iterations": 100,
+  "metrics_ms": {
+    "mean": 1.44,
+    "median_p50": 1,
+    "p90": 2.06,
+    "p95": 2.31,
+    "max": 29.05
+  },
+  "target_criteria": {
+    "alert_dispatch_sla_seconds": 5,
+    "achieved_p95_seconds": 0.002,
+    "status": "PASS"
+  }
+}

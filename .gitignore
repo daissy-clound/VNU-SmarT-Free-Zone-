@@ -8,3 +8,6 @@ test-results/
 *.log
 *.db
 *.db-journal
+.vercel/
+.DS_Store
+Thumbs.db

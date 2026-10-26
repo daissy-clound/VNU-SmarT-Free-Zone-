@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "author": "Đội BND - VNU SmarT-Free Zone",
+  "editor": "wokwi",
+  "parts": [
+    { "type": "board-esp32-devkit-c-v4", "id": "esp", "top": 0, "left": 0, "attrs": {} },
+    { "type": "wokwi-dht22", "id": "dht", "top": -80, "left": 140, "attrs": { "temperature": "27.5", "humidity": "65" } },
+    { "type": "wokwi-potentiometer", "id": "pot_sps30", "top": 120, "left": 140, "attrs": { "value": "120" } },
+    { "type": "wokwi-pir-motion-sensor", "id": "pir", "top": -80, "left": -100, "attrs": {} },
+    { "type": "wokwi-buzzer", "id": "buzzer", "top": 120, "left": -100, "attrs": { "volume": "0.1" } },
+    { "type": "wokwi-led", "id": "led", "top": 190, "left": 40, "attrs": { "color": "green" } }
+  ],
+  "connections": [
+    [ "esp:TX", "$serialMonitor:RX", "", [] ],
+    [ "esp:RX", "$serialMonitor:TX", "", [] ],
+    [ "dht:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "dht:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "dht:SDA", "esp:15", "green", [ "v0" ] ],
+    [ "pot_sps30:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "pot_sps30:GND", "esp:GND.2", "black", [ "v0" ] ],
+    [ "pot_sps30:SIG", "esp:34", "blue", [ "v0" ] ],
+    [ "pir:VCC", "esp:3V3", "red", [ "v0" ] ],
+    [ "pir:GND", "esp:GND.1", "black", [ "v0" ] ],
+    [ "pir:OUT", "esp:13", "purple", [ "v0" ] ],
+    [ "buzzer:1", "esp:GND.2", "black", [ "v0" ] ],
+    [ "buzzer:2", "esp:23", "orange", [ "v0" ] ],
+    [ "led:A", "esp:2", "green", [ "v0" ] ],
+    [ "led:C", "esp:GND.2", "black", [ "v0" ] ]
+  ],
+  "dependencies": {}
+}

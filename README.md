@@ -1,21 +1,58 @@
-## Chạy dashboard C — D2 (16/10/2026)
+# VNU SmarT-Free Zone — Hệ sinh thái Giám sát & Quản trị Không gian Không khói thuốc
 
-Yêu cầu Node.js >= 22.12. Từ thư mục gốc:
+> **Dự án tham dự Cuộc thi Sáng tạo vì một thế hệ không khói thuốc — Đội BND (Trường ĐH Công nghệ, ĐHQGHN)**  
+> *Hệ sinh thái toàn diện kết hợp: Mạch cảm biến IoT (ESP32/SPS30), Mô hình AI 2 tầng (Edge Filter & Analytics Service), Web App Sinh viên (PWA) và Dashboard Quản trị & Điều phối 6 bước.*
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue.svg)]()
+[![React](https://img.shields.io/badge/React-19.2-cyan.svg)]()
+[![Node](https://img.shields.io/badge/Node.js-%3E%3D22.12-green.svg)]()
+[![Wokwi Simulation](https://img.shields.io/badge/Wokwi-ESP32%20Live-orange.svg)](https://wokwi.com/projects/478273736679993345)
+
+---
+
+## 📌 Các liên kết & Hướng dẫn quan trọng
+- 📖 [Hướng dẫn trải nghiệm dành cho Ban Giám khảo (Live Demo & Sandbox)](docs/thuyet-minh/HUONG-DAN-BAN-GIAM-KHAO.md)
+- 📝 [Thuyết minh sản phẩm Vòng 2](docs/thuyet-minh/THUYET-MINH-SAN-PHAM-VONG-2.md)
+- 📊 [Bảng tổng hợp minh chứng tiến độ & cam kết](docs/thuyet-minh/BANG-TONG-HOP-MINH-CHUNG-TIEN-DO.md)
+- ⚡ [Mạch mô phỏng phần cứng ESP32 trên Wokwi (Chạy trực tiếp)](https://wokwi.com/projects/478273736679993345)
+- 🔒 [Quy chế dữ liệu & Quyền riêng tư (Zero-PII)](docs/quy-che-du-lieu-va-quyen-rieng-tu.md)
+
+---
+
+## 🚀 Khởi chạy hệ thống cục bộ (Local Development)
+
+Yêu cầu môi trường: **Node.js >= 22.12**. Từ thư mục gốc:
 
 ```sh
+# Cài đặt dependencies cho toàn bộ monorepo
 npm ci
+
+# Khởi chạy đồng thời Backend API (3001), Admin Dashboard (5173) và Student App (5174)
 npm run dev
 ```
 
-Mở **http://127.0.0.1:5173**, đăng nhập `bql` / `Demo@2026`. Các tài khoản thử khác: `catruc`, `phantich`, `bgk`; phòng trực giảng `trucuet1`…`trucuet4` (thêm `trucuet1b`…`trucuet4b`), Phòng bảo vệ `catruc`, `baove` (cùng mật khẩu). API cục bộ chạy tại cổng 3001, dữ liệu RAM được đặt lại khi khởi động.
+### Ứng dụng & Tài khoản truy cập:
+- **Ứng dụng Sinh viên (Quét QR & Hỗ trợ cai thuốc):** [http://127.0.0.1:5174](http://127.0.0.1:5174) (hoặc giả lập quét điểm nóng: [http://127.0.0.1:5174/?zone=UET1-3CT](http://127.0.0.1:5174/?zone=UET1-3CT))
+- **Dashboard Quản lý & Ca trực:** [http://127.0.0.1:5173](http://127.0.0.1:5173)
+- **Tài liệu API Swagger UI:** [http://127.0.0.1:3001/docs](http://127.0.0.1:3001/docs)
 
-Mở trang **Phiếu**, chạy `npm run report:demo -- B5-CTD` trong terminal thứ hai: phiếu từ HTTP API tự xuất hiện trên dashboard. Phạm vi bàn giao hiện tại là localhost theo yêu cầu; có hướng dẫn nối máy chủ A/B khi sẵn sàng.
+### Danh sách tài khoản thử nghiệm theo 4 vai trò (Mật khẩu: `Demo@2026`):
+- `bgk`: Chế độ Sandbox độc lập dành riêng cho Ban Giám khảo.
+- `bql`: Ban Quản lý (xem toàn cảnh, điều phối, đăng infographic, xem KPI).
+- `trucuet1` … `trucuet4`: Phòng trực các toà nhà (giao diện 3 nút tinh gọn trên mobile: Đang đến / Đã đến / Báo nhầm).
+- `baove` / `catruc`: Phòng bảo vệ 24/7 (tiếp nhận ca ngoài giờ, tuần tra đêm).
+- `phantich`: Chuyên viên phân tích (minh bạch thuật toán, dự báo điểm nóng, báo cáo tuần).
 
-- [Bàn giao C 21/10 — mục II: trang phiếu, ca trực điện thoại 3 nút, tổng quan realtime, bản đồ nhiệt, PWA](docs/ban-giao-C-2026-10-21.md) · [Hướng dẫn cài app ca trực trên iPhone](docs/huong-dan-ca-truc-iphone.md).
-- [Wireframe 5 trang và sơ đồ 12 tầng](docs/assets/c-d2/index.html).
-- [Bàn giao C cho A/E: hợp đồng API, tài khoản, cách tích hợp và giới hạn D2](docs/ban-giao-C-2026-10-16.md).
-- Kiểm tra: `npm run typecheck`, `npm run build`, `npm test`; kiểm thử trình duyệt: `npx playwright install chromium` rồi `npm run test:e2e`.
-- Toạ độ khu vực hiện là bản đề xuất, chờ A xác nhận. Máy chủ thử nằm riêng tại `scripts/test-server/`.
+---
+
+## 🛠 Kiểm tra chất lượng & Test Suites
+```sh
+npm run typecheck      # Kiểm tra 100% Type-safety toàn dự án
+npm run build          # Đóng gói sản phẩm cả 2 ứng dụng Frontend
+npm test               # Chạy 27/27 bài kiểm thử tích hợp & hợp đồng
+```
+
+---
 
 ## Cấu trúc thư mục dự án
 
