@@ -1,3 +1,4 @@
+import mqtt from "mqtt";
 import { Telemetry, telemetrySchema } from "../contracts/telemetry";
 import { Ticket, Event } from "../contracts/ticket";
 import { store } from "../db/store";
@@ -282,6 +283,43 @@ class TelemetryIngestService {
 
   public getRecentTelemetries(nodeId: string): Telemetry[] {
     return this.recentTelemetries.get(nodeId) || [];
+  }
+
+  /**
+   * Kết nối và lắng nghe broker MQTT tự động (HiveMQ / Private Broker)
+   */
+  public startMqttSubscriber(brokerUrl = process.env.MQTT_BROKER_URL || "mqtt://broker.hivemq.com:1883") {
+    try {
+      const client = mqtt.connect(brokerUrl, {
+        clientId: `sfz-backend-${Math.random().toString(16).substring(2, 8)}`,
+        clean: true,
+        connectTimeout: 5000,
+        reconnectPeriod: 8000,
+      });
+
+      client.on("connect", () => {
+        console.log(`📡 [MQTT] Đã kết nối thành công tới broker: ${brokerUrl}`);
+        client.subscribe(["sfz/#", "sfz/+/+/telemetry"], (err) => {
+          if (err) console.error("❌ [MQTT] Lỗi subscribe:", err);
+          else console.log("✅ [MQTT] Đã đăng ký lắng nghe các topic: sfz/#");
+        });
+      });
+
+      client.on("message", async (topic, message) => {
+        try {
+          const payload = JSON.parse(message.toString());
+          await this.processTelemetry(payload);
+        } catch {
+          // Bỏ qua gói tin không phải JSON
+        }
+      });
+
+      client.on("error", (err) => {
+        console.warn("⚠️ [MQTT] Thông báo kết nối:", err.message);
+      });
+    } catch (err: any) {
+      console.warn("⚠️ [MQTT] Không thể khởi tạo MQTT client:", err.message);
+    }
   }
 }
 

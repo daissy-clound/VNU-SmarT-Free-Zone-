@@ -150,6 +150,9 @@ if (isMainModule) {
     console.log(` Auth:    POST http://127.0.0.1:${PORT}/api/auth/login`);
     console.log(` Docs:    http://127.0.0.1:${PORT}/docs (Swagger UI)`);
     console.log(`=======================================================`);
+
+    // Khởi động kết nối MQTT tự động để thu thập dữ liệu từ cảm biến ESP32/Wokwi
+    telemetryIngestService.startMqttSubscriber();
   });
 }
 

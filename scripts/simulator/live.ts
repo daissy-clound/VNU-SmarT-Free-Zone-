@@ -1,7 +1,10 @@
 import { Telemetry } from "../../backend/src/contracts/telemetry";
 import { DEFAULT_ZONES } from "../../backend/src/contracts/zones";
 
-const API_ENDPOINT = process.env.SFZ_API_URL || "http://127.0.0.1:3001/api/telemetry";
+const rawUrl = process.env.SFZ_API_URL || process.env.API_URL || "http://127.0.0.1:3001";
+const API_ENDPOINT = rawUrl.endsWith("/api/telemetry")
+  ? rawUrl
+  : `${rawUrl.replace(/\/$/, "")}/api/telemetry`;
 
 /** 10 nút cảm biến theo danh mục khu vực dùng chung (backend/src/contracts/zones.ts) */
 const SENSOR_NODES = DEFAULT_ZONES.flatMap((zone) => (zone.sensor_id ? [zone.sensor_id] : []));

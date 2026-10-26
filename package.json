@@ -17,6 +17,8 @@
     "dev:mock-api": "tsx scripts/test-server/server.ts",
     "dev:admin": "npm run dev --workspace @sfz/admin",
     "dev:student": "npm run dev --workspace @sfz/student-app",
+    "start": "tsx backend/src/server.ts",
+    "build:backend": "npx prisma generate --schema=backend/prisma/schema.prisma",
     "build": "npm run build --workspace @sfz/admin && npm run build --workspace @sfz/student-app",
     "build:admin": "npm run build --workspace @sfz/admin",
     "build:student": "npm run build --workspace @sfz/student-app",

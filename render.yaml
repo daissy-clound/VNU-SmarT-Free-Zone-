@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: vnu-smart-free-zone-backend
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install && npm run build:backend
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: DATABASE_URL
+        value: file:./dev.db
+      - key: MQTT_BROKER_URL
+        value: mqtt://broker.hivemq.com:1883
