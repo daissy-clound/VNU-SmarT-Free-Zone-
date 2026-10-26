@@ -1,4 +1,3 @@
-import { readFileSync } from "node:fs";
 import { DEFAULT_ZONES } from "../src/contracts/zones";
 import { DUTY_STAFF_ACCOUNTS } from "../src/contracts/dispatch";
 
@@ -124,24 +123,12 @@ export const SEED_TICKETS = [
   },
 ];
 
-/** Poster mẫu nhúng dạng data URI để hiện được ở mọi origin (dashboard, app SV, bản triển khai) */
-function svgDataUri(file: string) {
-  const svg = readFileSync(new URL(`./assets/${file}`, import.meta.url));
-  return `data:image/svg+xml;base64,${svg.toString("base64")}`;
-}
-
 export const SEED_INFOGRAPHICS = [
   {
     id: "info_001",
-<<<<<<< Updated upstream
     title: "Áp phích: Không Khói Thuốc Trọn Tương Lai — VNU UET",
     image_url: "/infographics/no-smoking-poster.png",
     building: "Toàn trường",
-=======
-    title: "Vì môi trường Trường ĐH Công nghệ (UET) Hoà Lạc không khói thuốc",
-    image_url: svgDataUri("poster-uet-khong-khoi-thuoc.svg"),
-    building: "UET1",
->>>>>>> Stashed changes
     zone_code: "UET1-3CT",
     created_by_id: "usr_bql",
     is_active: true,

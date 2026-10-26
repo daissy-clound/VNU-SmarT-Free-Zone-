@@ -123,11 +123,7 @@ export function QuitSupportPage() {
         </div>
         <a
           href="tel:18006606"
-<<<<<<< Updated upstream
-          style={{ background: "var(--primary)", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: "var(--radius-full)", fontSize: 12, fontWeight: 700 }}
-=======
-          style={{ background: "#15803d", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: 20, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}
->>>>>>> Stashed changes
+          style={{ background: "var(--primary)", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: "var(--radius-full)", fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}
         >
           Gọi miễn cước
         </a>
@@ -136,17 +132,10 @@ export function QuitSupportPage() {
       {/* Điều hướng sub-tabs */}
       <div className="chip-row" style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 4 }}>
         {[
-<<<<<<< Updated upstream
-          { id: "craving", label: "Vượt cơn thèm (4D)" },
+          { id: "craving", label: "Dừng hút thuốc" },
           { id: "plan", label: "Kế hoạch cai thuốc" },
           { id: "fagerstrom", label: "Đo mức nghiện" },
           { id: "chat", label: "Trợ lý đồng hành" },
-=======
-          { id: "craving", label: "⚡ Dừng hút thuốc" },
-          { id: "plan", label: "🎯 Kế hoạch của tôi" },
-          { id: "fagerstrom", label: "📊 Đo mức nghiện" },
-          { id: "chat", label: "💬 Trợ lý" },
->>>>>>> Stashed changes
         ].map((tab) => (
           <button
             key={tab.id}
@@ -441,7 +430,7 @@ export function QuitSupportPage() {
                 {fScore <= 2
                   ? "Bạn chủ yếu hút thuốc theo thói quen tâm lý xã hội. Việc bỏ thuốc hoàn toàn khả thi chỉ bằng ý chí và thay đổi môi trường."
                   : fScore <= 5
-                  ? "Cơ thể bạn đã bắt đầu quen với nồng độ nicotine. Bạn nên áp dụng kế hoạch cai giảm dần kết hợp liệu pháp tâm lý 4D."
+                  ? "Cơ thể bạn đã bắt đầu quen với nồng độ nicotine. Bạn nên áp dụng kế hoạch cai giảm dần kết hợp 4 bước dừng hút thuốc."
                   : "Mức độ phụ thuộc nicotine cao. Bạn nên liên hệ Tổng đài 1800 6606 để được bác sĩ hướng dẫn phác đồ hỗ trợ phù hợp."}
               </p>
             </div>

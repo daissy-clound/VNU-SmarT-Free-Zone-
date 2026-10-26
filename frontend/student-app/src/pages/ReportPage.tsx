@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-<<<<<<< Updated upstream
-import { platform, ZoneItem, ReportResponse } from "../platform";
+import { platform, ZoneItem, ReportResponse, RateLimitedError } from "../platform";
 import {
   MapPinIcon,
   QrCodeIcon,
@@ -13,10 +12,8 @@ import {
   SendIcon,
   CheckCircleIcon,
   InfoIcon,
+  PhoneIcon,
 } from "../components/Icons";
-=======
-import { platform, ZoneItem, ReportResponse, RateLimitedError } from "../platform";
->>>>>>> Stashed changes
 
 interface ReportPageProps {
   onSuccess: (code: string) => void;
@@ -78,26 +75,13 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
       }
     } finally {
       setLoading(false);
+      setEmergency(false);
     }
   };
 
-<<<<<<< Updated upstream
-  const handleToggleEmergency = () => {
-    if (!emergency) {
-      const confirmEmergency = window.confirm(
-        "KÍCH HOẠT CẢNH BÁO KHẨN CẤP:\nBạn có chắc chắn muốn phát tín hiệu KHẨN CẤP (Nguy cơ cháy nổ, hoả hoạn, sự cố nghiêm trọng)?\n\nHệ thống sẽ phát còi báo động tại phòng trực và kích hoạt đường dây nóng bảo vệ 24/7."
-      );
-      if (confirmEmergency) {
-        setEmergency(true);
-        setReportType("smoke_now");
-        setOngoing(true);
-      }
-    } else {
-      setEmergency(false);
-=======
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    void send(emergency);
+    void send(false);
   };
 
   const handleEmergencyClick = () => {
@@ -107,7 +91,6 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
     if (confirmEmergency) {
       setEmergency(true);
       void send(true);
->>>>>>> Stashed changes
     }
   };
 
@@ -122,8 +105,8 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
     },
     {
       key: "vape" as ReportTypeOption,
-      title: "Pod / Vape điện tử",
-      desc: "Khói thơm, khói dày pod/vape",
+      title: "Thuốc lá điện tử",
+      desc: "Hơi thơm, dày từ thiết bị điện tử",
       Icon: VapeIcon,
     },
     {
@@ -142,29 +125,33 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
   return (
     <div className="page-report">
-<<<<<<< Updated upstream
-      {/* Banner Khẩn cấp tinh tế */}
+      {/* Khẩn cấp: xác nhận rồi gửi ngay phiếu ưu tiên cao nhất */}
       <div className="emergency-callout">
         <div className="emergency-info">
           <div className="emergency-icon">
             <AlertTriangleIcon size={20} strokeWidth={2.2} />
           </div>
           <div>
-            <div className="emergency-title">Tình huống hoả hoạn hoặc nguy hiểm?</div>
-            <div className="emergency-sub">Kích hoạt cảnh báo đỏ tới đội bảo vệ 24/7 & PCCC</div>
+            <div className="emergency-title">Khẩn cấp (cháy, có người ngất)</div>
+            <div className="emergency-sub">Gửi ngay tới phòng trực, ưu tiên cao nhất</div>
           </div>
         </div>
-        <button
-          type="button"
-          className="btn-emergency-action"
-          onClick={handleToggleEmergency}
-        >
-          {emergency ? "Tắt báo động" : "Báo khẩn cấp"}
+        <button type="button" className="btn-emergency-action" onClick={handleEmergencyClick} disabled={loading}>
+          Báo khẩn cấp
         </button>
       </div>
+      <div className="emergency-calls">
+        <a href="tel:114">
+          <PhoneIcon size={14} /> Gọi 114 · Cứu hoả
+        </a>
+        <a href="tel:115">
+          <PhoneIcon size={14} /> Gọi 115 · Cấp cứu
+        </a>
+      </div>
 
-      {emergency && (
+      {emergency && loading && (
         <div
+          role="status"
           style={{
             background: "var(--accent-rose-subtle)",
             border: "1px solid var(--accent-rose-border)",
@@ -178,22 +165,8 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
         >
           <AlertTriangleIcon size={18} color="var(--accent-rose)" />
           <span style={{ fontSize: 12, color: "var(--accent-rose)", fontWeight: 600 }}>
-            Chế độ Khẩn cấp đang BẬT: Phiếu sẽ chuyển thẳng mức ưu tiên cao nhất.
+            Đang gửi tín hiệu khẩn cấp…
           </span>
-=======
-      {/* Nút Khẩn cấp */}
-      <button type="button" className="btn-emergency" onClick={handleEmergencyClick} disabled={loading}>
-        🚨 <strong>Khẩn cấp (cháy, có người ngất)</strong>
-      </button>
-      <div className="emergency-calls">
-        <a href="tel:114">📞 Gọi 114 · Cứu hoả</a>
-        <a href="tel:115">📞 Gọi 115 · Cấp cứu</a>
-      </div>
-
-      {emergency && (
-        <div style={{ background: "#fef2f2", border: "1.5px solid #dc2626", borderRadius: 8, padding: 12, marginBottom: 14 }}>
-          <strong style={{ color: "#dc2626" }}>⚠️ Chế độ khẩn cấp</strong>
->>>>>>> Stashed changes
         </div>
       )}
 
@@ -216,7 +189,6 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
           </div>
 
           {isUrlZone && selectedZoneObj ? (
-<<<<<<< Updated upstream
             <div
               style={{
                 background: "var(--primary-subtle)",
@@ -233,7 +205,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
                   {selectedZoneObj.name}
                 </strong>
                 <div style={{ fontSize: 11, color: "var(--primary-light)", marginTop: 2 }}>
-                  Mã khu vực: {selectedZoneObj.code} · Tầng {selectedZoneObj.floor}
+                  {selectedZoneObj.code}
                 </div>
               </div>
               <button
@@ -255,15 +227,6 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
             </div>
           ) : (
             <div className="form-group" style={{ marginBottom: 0 }}>
-=======
-            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "10px 14px", borderRadius: 8 }}>
-              <strong style={{ color: "#166534", fontSize: 15 }}>{selectedZoneObj.name}</strong>
-              <div style={{ fontSize: 12, color: "#15803d", marginTop: 2 }}>{selectedZoneObj.code}</div>
-            </div>
-          ) : (
-            <div className="form-group" style={{ marginBottom: 0 }}>
-              <label className="form-label">Khu vực</label>
->>>>>>> Stashed changes
               <select
                 className="form-select"
                 value={selectedZone}
@@ -283,36 +246,10 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
         {/* 4 Thẻ Phân loại hiện tượng */}
         <div className="card">
-<<<<<<< Updated upstream
           <div className="card-title">
             <div className="card-title-left">
-              <span>Hiện tượng ghi nhận</span>
+              <span>Bạn thấy gì?</span>
             </div>
-            <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 500 }}>
-              Chạm để chọn 1 loại
-            </span>
-=======
-          <div className="card-title">🔍 Bạn thấy gì?</div>
-          <div className="type-grid">
-            {[
-              { id: "smoke_now", icon: "🚬", label: "Thuốc lá điếu", sub: "Khói đang bốc lên" },
-              { id: "vape", icon: "💨", label: "Thuốc lá điện tử", sub: "Hơi từ thiết bị điện tử" },
-              { id: "smell", icon: "👃", label: "Mùi khói nồng", sub: "Mùi đặc quánh" },
-              { id: "butts", icon: "🗑️", label: "Tàn thuốc / Rác", sub: "Đầu lọc, tàn vương vãi" },
-              { id: "other", icon: "❓", label: "Khác", sub: "Hành vi vi phạm khác" },
-            ].map((t) => (
-              <button
-                type="button"
-                key={t.id}
-                className={`type-btn ${reportType === t.id ? "active" : ""}`}
-                onClick={() => setReportType(t.id as any)}
-              >
-                <span className="icon">{t.icon}</span>
-                <span className="label">{t.label}</span>
-                <span className="sub">{t.sub}</span>
-              </button>
-            ))}
->>>>>>> Stashed changes
           </div>
 
           <div className="type-grid">
@@ -355,7 +292,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
                 Hành vi đang diễn ra tại chỗ
               </div>
               <div style={{ fontSize: 11, color: "var(--text-muted)", marginTop: 2 }}>
-                Bật để phòng trực ưu tiên xuất phát can thiệp tức thời (SLA ≤ 3 phút)
+                Bật để phòng trực ưu tiên đến ngay
               </div>
             </div>
             <div className={`toggle-switch ${ongoing ? "on" : ""}`}>
@@ -366,43 +303,26 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
         {/* Ghi chú tuỳ chọn */}
         <div className="card">
-<<<<<<< Updated upstream
           <div className="card-title">
             <div className="card-title-left">
-              <span>Ghi chú bổ sung (Tuỳ chọn)</span>
+              <span>Ghi chú (không bắt buộc)</span>
             </div>
-            <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Không bắt buộc</span>
           </div>
-=======
-          <div className="card-title">📝 Ghi chú (không bắt buộc)</div>
-          
->>>>>>> Stashed changes
           <textarea
             className="form-textarea"
-            placeholder="Mô tả nhanh vị trí cụ thể (VD: góc sau thang máy, chiếu nghỉ tầng 3... - Vui lòng không ghi tên cá nhân)."
+            placeholder="VD: góc sau thang máy, chiếu nghỉ tầng 3…"
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={300}
             aria-describedby="note-privacy"
           />
-<<<<<<< Updated upstream
 
-          {/* Cam kết bảo mật Zero-PII */}
-          <div className="privacy-assurance">
+          {/* Nhắc ngay dưới ô ghi chú */}
+          <div className="privacy-assurance" id="note-privacy">
             <ShieldCheckIcon size={18} color="var(--primary)" style={{ flexShrink: 0, marginTop: 1 }} />
             <div className="privacy-assurance-text">
-              <strong>Bảo mật danh tính 100%:</strong> Hệ thống tuân thủ quy chuẩn Zero-PII. Chúng tôi không lưu số điện thoại, tài khoản hay địa chỉ IP của bạn.
-            </div>
-=======
-          <div className="privacy-notice" id="note-privacy">
-            <span>🛡️</span>
-            <div>
               <strong>Không ghi tên, số phòng của người khác.</strong>
             </div>
-          </div>
-          <div style={{ textAlign: "right", fontSize: 11, color: "#94a3b8", marginTop: 4 }}>
-            {note.length} / 300 ký tự
->>>>>>> Stashed changes
           </div>
         </div>
 
@@ -432,7 +352,6 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
           </div>
         )}
 
-<<<<<<< Updated upstream
         {/* Nút gửi phản ánh chính */}
         <button
           type="submit"
@@ -451,30 +370,19 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
                 }}
                 className="animate-spin"
               />
-              <span>Đang gửi phản ánh...</span>
+              <span>Đang gửi...</span>
             </>
           ) : (
             <>
               <SendIcon size={17} strokeWidth={2.2} />
-              <span>GỬI PHẢN ÁNH ẨN DANH (≤ 30s)</span>
+              <span>Gửi phản ánh ẩn danh</span>
             </>
           )}
         </button>
-=======
-        <button type="submit" className="btn-primary" disabled={loading}>
-          {loading ? "Đang gửi..." : "Gửi phản ánh ẩn danh"}
-        </button>
 
-        <div style={{ textAlign: "center", marginTop: 14 }}>
-          <button
-            type="button"
-            onClick={onOpenTrack}
-            style={{ background: "none", border: "none", color: "#17634c", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "underline" }}
-          >
-            Tra cứu phản ánh đã gửi
-          </button>
-        </div>
->>>>>>> Stashed changes
+        <button type="button" className="btn-link" onClick={onOpenTrack}>
+          Tra cứu phản ánh đã gửi
+        </button>
       </form>
     </div>
   );

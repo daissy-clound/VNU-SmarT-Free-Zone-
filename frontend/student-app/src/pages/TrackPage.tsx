@@ -71,19 +71,12 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
   return (
     <div className="page-track">
       <div className="card">
-<<<<<<< Updated upstream
         <div className="card-title">
           <div className="card-title-left">
             <SearchIcon size={18} color="var(--primary)" />
-            <span>Tra cứu tiến độ xử lý</span>
+            <span>Tra cứu phản ánh</span>
           </div>
         </div>
-        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12 }}>
-          Nhập mã tra cứu 8 ký tự (hoặc bấm chọn phản ánh gần đây) để theo dõi quy trình can thiệp 6 bước.
-        </p>
-=======
-        <div className="card-title">🔍 Tra cứu phản ánh</div>
->>>>>>> Stashed changes
 
         <div style={{ display: "flex", gap: 8 }}>
           <input
@@ -97,11 +90,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
           <button
             type="button"
             className="btn-primary"
-<<<<<<< Updated upstream
-            style={{ width: "auto", padding: "0 20px", flexShrink: 0 }}
-=======
-            style={{ width: "auto", padding: "0 18px", whiteSpace: "nowrap" }}
->>>>>>> Stashed changes
+            style={{ width: "auto", padding: "0 20px", flexShrink: 0, whiteSpace: "nowrap" }}
             onClick={() => handleSearch()}
             disabled={loading}
           >
@@ -168,8 +157,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
           </div>
 
           {/* Phản hồi từ Ban Quản lý */}
-<<<<<<< Updated upstream
-          {detail.response_note && (
+          {detail.feedback && (
             <div
               style={{
                 background: "var(--primary-subtle)",
@@ -180,17 +168,10 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
               }}
             >
               <strong style={{ color: "var(--primary-dark)", fontSize: 12, textTransform: "uppercase" }}>
-                Phản hồi từ Ban Quản lý / Phòng trực:
+                Phản hồi từ Nhà trường:
               </strong>
               <p style={{ fontSize: 13, color: "var(--primary-dark)", marginTop: 4, lineHeight: 1.5 }}>
-                {detail.response_note}
-=======
-          {detail.feedback && (
-            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: 12, borderRadius: 8, marginTop: 14 }}>
-              <strong style={{ color: "#166534", fontSize: 13 }}>💬 Phản hồi từ Nhà trường:</strong>
-              <p style={{ fontSize: 13, color: "#15803d", marginTop: 4 }}>
                 {detail.feedback}
->>>>>>> Stashed changes
               </p>
             </div>
           )}
