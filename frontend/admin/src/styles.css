@@ -1796,3 +1796,23 @@ button:focus-visible {
 .infographic-frame figcaption {
   overflow-wrap: anywhere;
 }
+
+
+/* Hard limit the dashboard infographic image to its card, overriding intrinsic image sizing. */
+.overview-grid > .infographic-card,
+.overview-grid > .infographic-card .ant-card-body,
+.overview-grid > .infographic-card .infographic-frame {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+}
+.overview-grid > .infographic-card .infographic-frame img {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
