@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Alert, Card, Segmented, Tag } from "antd";
+import { Alert, Card, Segmented } from "antd";
 import { Heatmap, type HeatRow } from "../components/Heatmap";
 import { api } from "../api";
 import type { DashboardData } from "../useDashboard";
@@ -72,11 +72,8 @@ export function HeatmapPage({ data, token }: { data: DashboardData; token: strin
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">PHÒNG NGỪA THEO DỮ LIỆU</div>
           <h1>Bản đồ nhiệt</h1>
-          <p>Khu vực nào, giờ nào hay có khói thuốc, để bố trí tuần tra và đặt infographic đúng chỗ.</p>
         </div>
-        <Tag color="gold">Dữ liệu mô phỏng</Tag>
       </div>
       <Card>
         <div className="heat-filters" role="group" aria-label="Bộ lọc bản đồ nhiệt">
@@ -108,12 +105,12 @@ export function HeatmapPage({ data, token }: { data: DashboardData; token: strin
         </div>
         <p className="muted">
           {layer === "suspected"
-            ? "Mỗi ô là số tin báo (cảm biến hoặc sinh viên) theo giờ tạo phiếu, kể cả tin chưa xác minh."
-            : "Chỉ tính phiếu ca trực đã xác minh và xử lý; phiếu đánh dấu báo nhầm bị loại."}{" "}
+            ? "Số tin báo theo giờ, gồm cả tin chưa xác minh."
+            : "Chỉ phiếu đã xác minh; phiếu đánh dấu báo nhầm bị loại."}{" "}
           {loadingConfirmed ? "Đang đọc kết quả xác minh…" : `Tổng: ${total} phiếu.`}
         </p>
         {!loadingConfirmed && rows.length === 0 ? (
-          <Alert type="info" showIcon title="Chưa có phiếu nào trong khoảng thời gian và lớp đã chọn." />
+          <Alert type="info" showIcon title="Chưa có phiếu trong khoảng này." />
         ) : (
           !loadingConfirmed && (
             <Heatmap
@@ -124,10 +121,6 @@ export function HeatmapPage({ data, token }: { data: DashboardData; token: strin
           )
         )}
       </Card>
-      <p className="muted">
-        Giờ theo múi giờ của máy đang xem. Bản đồ dựng từ danh sách phiếu hiện có trên máy chủ; dữ liệu 6 tuần của bộ giả lập sẽ hiện khi
-        máy chủ cung cấp API thống kê theo khu vực × giờ.
-      </p>
     </>
   );
 }

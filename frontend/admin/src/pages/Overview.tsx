@@ -7,20 +7,56 @@ import {
   PictureOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import { Button, Card, Tag } from "antd";
+import { Button, Card } from "antd";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import type { Ticket, User } from "../../../../backend/src/contracts";
+import { api } from "../api";
 import { TicketTable } from "../components/TicketTable";
 import { SensorBoard } from "../components/SensorBoard";
+import { SandboxPanel } from "../components/SandboxPanel";
 import type { DashboardData } from "../useDashboard";
+
+type Infographic = { id: string; title: string; image_url: string; building: string | null; created_at: string };
+
+function imageLoads(src: string) {
+  return new Promise<boolean>((resolve) => {
+    const img = new Image();
+    img.onload = () => resolve(img.naturalWidth > 1);
+    img.onerror = () => resolve(false);
+    img.src = src;
+  });
+}
+
+/** Infographic mới nhất do BQL đăng (API công khai); null khi chưa có hoặc máy chủ chưa sẵn sàng */
+function useLatestInfographic() {
+  const [item, setItem] = useState<Infographic | null>(null);
+  useEffect(() => {
+    let alive = true;
+    api
+      .infographics()
+      .then(async (res: { items?: Infographic[] }) => {
+        for (const info of res.items ?? []) {
+          if (await imageLoads(info.image_url)) return alive && setItem(info);
+        }
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
+  return item;
+}
 
 export function Overview({
   data,
   user,
+  token,
   onSelect,
 }: {
   data: DashboardData;
   user: User;
+  token: string;
   onSelect: (ticket: Ticket) => void;
 }) {
   const active = data.tickets.filter((ticket) =>
@@ -38,13 +74,12 @@ export function Overview({
   const toDispatch = data.tickets.filter(
     (t) => t.status === "received" && !t.is_sandbox && !data.dispatches.some((d) => d.ticket_code === t.code),
   );
+  const latestInfographic = useLatestInfographic();
   return (
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">KHÔNG GIAN SỐNG KHÔNG KHÓI THUỐC</div>
-          <h1>Tổng quan vận hành</h1>
-          <p>Theo dõi phản ánh. Phối hợp xử lý. Chủ động phòng ngừa.</p>
+          <h1>Tổng quan</h1>
         </div>
         <Link to="/tickets">
           <Button
@@ -56,12 +91,12 @@ export function Overview({
           </Button>
         </Link>
       </div>
+      {user.role === "viewer" && <SandboxPanel data={data} token={token} />}
       {user.role === "manager" && !data.loading && data.lastSync && toDispatch.length > 0 && (
         <div className="attention-banner dispatch-banner">
           <SendOutlined aria-hidden />
           <div>
-            <strong>{toDispatch.length} phiếu mới chờ xác minh và điều phối</strong>
-            <p>Giao cho phòng trực của toà; phòng trực có 3 phút để nhận.</p>
+            <strong>{toDispatch.length} phiếu mới chờ điều phối</strong>
           </div>
           <Link to="/dispatch">
             <Button type="primary">
@@ -74,8 +109,7 @@ export function Overview({
         <div className="attention-banner">
           <ClockCircleOutlined aria-hidden />
           <div>
-            <strong>{overdue.length} phiếu đã quá hạn cần được kiểm tra</strong>
-            <p>Mở danh sách để xem khu vực và tình trạng xử lý.</p>
+            <strong>{overdue.length} phiếu đã quá hạn</strong>
           </div>
           <Link to="/tickets?scope=overdue">
             <Button>
@@ -153,52 +187,30 @@ export function Overview({
         >
           <TicketTable {...data} onSelect={onSelect} compact />
         </Card>
-        <Card className="prevention-card">
-          <div className="eyebrow">PHÒNG NGỪA & HỖ TRỢ</div>
-          <h2>
-            Một không gian chung,
-            <br />
-            một bầu không khí sạch.
-          </h2>
-          <div className="infographic-placeholder">
-            <PictureOutlined />
-            <strong>Góc truyền thông</strong>
-            <span>Chưa có infographic được đăng</span>
-          </div>
-          <p>
-            Thông điệp dành cho sinh viên sẽ xuất hiện tại đây và trong lớp
-            Phòng ngừa của ứng dụng sinh viên.
-          </p>
-          <Tag>Nội dung sắp được cập nhật</Tag>
-          {user.role === "manager" && (
-            <p className="muted">
-              Tại đây sẽ hiển thị infographic do ban quản lý lựa chọn cho sinh
-              viên.
-            </p>
+        <Card
+          className="infographic-card"
+          title="Infographic"
+          extra={user.role === "manager" && <Link to="/analytics?tab=infographics">Đăng mới →</Link>}
+        >
+          {latestInfographic ? (
+            <figure className="infographic-frame">
+              <img src={latestInfographic.image_url} alt={latestInfographic.title} />
+              <figcaption>
+                {latestInfographic.title}
+                <span>
+                  {latestInfographic.building || "Toàn trường"} ·{" "}
+                  {new Date(latestInfographic.created_at).toLocaleDateString("vi-VN")}
+                </span>
+              </figcaption>
+            </figure>
+          ) : (
+            <div className="infographic-placeholder">
+              <PictureOutlined />
+              <span>Chưa có infographic</span>
+            </div>
           )}
         </Card>
       </div>
-      <Card className="flow-card">
-        <span className="eyebrow">QUY TRÌNH PHỐI HỢP</span>
-        <div className="process-flow">
-          {[
-            "Tiếp nhận",
-            "Phân công",
-            "Xác minh",
-            "Xử lý",
-            "Phản hồi",
-            "Đóng phiếu",
-          ].map((label, index) => (
-            <div key={label}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              {label}
-            </div>
-          ))}
-        </div>
-        <p className="muted">
-          Cảnh báo cảm biến là nghi vấn; kết luận cần người xác minh.
-        </p>
-      </Card>
     </>
   );
 }

@@ -81,6 +81,8 @@ export const reportTrackingSchema = z.object({
   status_label: z.string(),
   created_at: z.string(),
   updated_at: z.string(),
+  /** Thời điểm ca trực tới hiện trường; null nếu chưa tới */
+  arrived_at: z.string().nullable().optional(),
   feedback: z.string().nullable(),
 });
 

@@ -95,7 +95,7 @@ export function Heatmap({ rows, unit, onSelect }: { rows: HeatRow[]; unit: strin
               </strong>
             </>
           ) : (
-            <span className="muted">Rê chuột hoặc chạm vào một ô để xem chi tiết.</span>
+            <span className="muted">Chạm vào ô để xem chi tiết</span>
           )}
         </div>
         {max > 0 && (

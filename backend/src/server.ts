@@ -56,12 +56,13 @@ setDispatchSocketEmitter(broadcastSocketEvent);
 telemetryIngestService.setSocketEmitter(broadcastSocketEvent);
 
 import { PrismaClient } from "@prisma/client";
-import { sandboxRouter, cleanupExpiredSandboxTickets } from "./api/sandbox";
+import { sandboxRouter, cleanupExpiredSandboxTickets, setSandboxSocketEmitter } from "./api/sandbox";
 import { rollingDatesRouter } from "./api/rolling-dates";
 
 import { docsRouter } from "./api/docs";
 
 export const prisma = new PrismaClient();
+setSandboxSocketEmitter(broadcastSocketEvent);
 
 // Thiết lập định kỳ mỗi 5 phút dọn dẹp các phiếu Sandbox cũ hơn 30 phút (unref để không block test process)
 const cleanupTimer = setInterval(() => {

@@ -19,7 +19,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         token: {
           colorPrimary: "#17634c",
           borderRadius: 10,
-          fontFamily: '"Segoe UI", Arial, sans-serif',
+          fontFamily: '"Be Vietnam Pro", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif',
           colorText: "#223c33",
           fontSize: 15,
           controlHeight: 40,

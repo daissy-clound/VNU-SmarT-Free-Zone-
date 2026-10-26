@@ -111,7 +111,7 @@ export function CampusMap({
     <svg
       className="floor-svg campus-svg"
       viewBox={`0 0 ${CAMPUS_SIZE.width} ${CAMPUS_SIZE.height}`}
-      fontFamily="Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      fontFamily="Be Vietnam Pro, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
       role="group"
       aria-label="Mặt bằng khuôn viên UET Hoà Lạc"
     >

@@ -8,6 +8,9 @@
     "frontend/student-app"
   ],
   "scripts": {
+    "setup": "node scripts/setup-db.mjs",
+    "predev": "node scripts/setup-db.mjs --if-missing",
+    "pretest:backend": "node scripts/setup-db.mjs --if-missing",
     "dev": "concurrently -k -n api,admin,student \"npm run dev:api\" \"npm run dev:admin\" \"npm run dev:student\"",
     "dev:api": "tsx backend/src/server.ts",
     "dev:backend": "tsx backend/src/server.ts",

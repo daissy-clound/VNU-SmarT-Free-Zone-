@@ -1,4 +1,4 @@
-import { TelemetryMessage } from "../../contracts/telemetry";
+import { Telemetry } from "../../contracts/telemetry";
 
 export interface SmokeEventFeatures {
   duration_seconds: number;
@@ -38,7 +38,7 @@ export class SmokeEventClassifier {
   /**
    * Trích xuất vector đặc trưng từ chuỗi bản tin telemetry trong đợt khói
    */
-  public extractFeatures(telemetries: TelemetryMessage[]): SmokeEventFeatures {
+  public extractFeatures(telemetries: Telemetry[]): SmokeEventFeatures {
     if (telemetries.length === 0) {
       return {
         duration_seconds: 0,
@@ -118,7 +118,7 @@ export class SmokeEventClassifier {
   /**
    * Phân loại sự kiện dựa trên vector đặc trưng
    */
-  public classify(telemetries: TelemetryMessage[]): ClassificationResult {
+  public classify(telemetries: Telemetry[]): ClassificationResult {
     const feat = this.extractFeatures(telemetries);
 
     const probs: Record<EventClass, number> = {

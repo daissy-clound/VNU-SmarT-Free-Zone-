@@ -74,15 +74,13 @@ export function DispatchPage({ data, user, token }: { data: DashboardData; user:
     <div className="dispatch-page">
       <div className="page-heading">
         <div>
-          <div className="eyebrow">BAN QUẢN LÝ · ĐIỀU PHỐI KIỂM TRA</div>
           <h1>Điều phối phòng trực</h1>
-          <p>Xác minh thông tin phiếu mới rồi giao cho phòng trực của toà. Phòng trực có 3 phút để nhận.</p>
         </div>
         {data.rooms && (
           <Tag color={data.rooms.in_office_hours ? "green" : "gold"}>
             {data.rooms.in_office_hours
               ? `Trong giờ hành chính (${data.rooms.office_hours_label})`
-              : "Ngoài giờ hành chính: phòng trực giảng nghỉ, đề xuất Phòng bảo vệ"}
+              : "Ngoài giờ hành chính · ưu tiên Phòng bảo vệ"}
           </Tag>
         )}
       </div>
@@ -181,7 +179,7 @@ export function DispatchPage({ data, user, token }: { data: DashboardData; user:
                 {room.location}
               </p>
               <p className="room-phone">
-                {room.phone} <Tag>số giả lập</Tag>
+                {room.phone}
               </p>
               <ul className="room-staff">
                 {room.staff.map((s) => (

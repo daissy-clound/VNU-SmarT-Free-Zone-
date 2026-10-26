@@ -172,7 +172,7 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
             <Tag color={priorityColor[ticket.priority]}>Ưu tiên: {priorityLabels[ticket.priority]}</Tag>
             <Tag>{sourceLabels[ticket.source]}</Tag>
             <Tag color={ticket.presence ? "orange" : undefined}>{presenceText(ticket.presence)}</Tag>
-            {ticket.is_sandbox && <Tag color="purple">Phiếu thử (sandbox)</Tag>}
+            {ticket.is_sandbox && <Tag color="purple">Phiếu thử</Tag>}
             {falseAlarm && <Tag>Báo nhầm</Tag>}
           </div>
           <p>
@@ -317,7 +317,7 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
                     onChange={(e) => setReply(e.target.value)}
                     placeholder="VD: Ca trực đã có mặt và xử lý. Cảm ơn bạn đã phản ánh."
                   />
-                  <p className="muted small">Sinh viên thấy nội dung này khi tra cứu mã. Không ghi thông tin cá nhân.</p>
+                  <p className="muted small">Sinh viên thấy nội dung này khi tra cứu.</p>
                   <Button type="primary" disabled={!reply.trim() || !!busy} loading={busy === "respond"} onClick={() => run("respond", reply.trim())}>
                     Gửi phản hồi
                   </Button>
@@ -398,22 +398,18 @@ export function TicketDetailPage({ data, user, token }: { data: DashboardData; u
               <li>Phản ánh của sinh viên: {signals.report || (ticket.source === "report" || ticket.source === "both" ? "có" : 0)}</li>
               <li>Hiện diện khi tiếp nhận: {presenceText(ticket.presence)}</li>
             </ul>
-            <p className="muted small">Cảnh báo cảm biến là nghi vấn; kết luận cần người xác minh.</p>
           </Card>
-          <Card title="Bụi mịn tại khu vực" extra={<Tag>Dữ liệu mô phỏng</Tag>}>
+          <Card title="Bụi mịn tại khu vực">
             {!zone?.sensor_id ? (
-              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Khu vực này không đặt cảm biến (chỉ có mã QR)." />
+              <Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description="Khu vực chỉ có mã QR, không có cảm biến." />
             ) : dust === null ? (
               <Skeleton active paragraph={{ rows: 3 }} />
             ) : dust.length >= 2 ? (
-              <>
-                <DustChart items={dust} />
-                <p className="muted small">Máy chủ hiện giữ khoảng 60 giây bản tin gần nhất của {zone.sensor_id}.</p>
-              </>
+              <DustChart items={dust} />
             ) : (
               <Empty
                 image={Empty.PRESENTED_IMAGE_SIMPLE}
-                description={`Chưa có bản tin gần đây từ ${zone.sensor_id}. Biểu đồ quanh thời điểm sự việc cần máy chủ lưu tóm tắt theo phút.`}
+                description={`Chưa có số đo gần đây từ ${zone.sensor_id}.`}
               />
             )}
           </Card>

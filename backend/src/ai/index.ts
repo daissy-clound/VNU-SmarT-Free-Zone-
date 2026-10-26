@@ -69,7 +69,7 @@ export function getModelTransparencyMetrics(): ModelTransparencyMetrics {
       },
       {
         event_class: "vape",
-        display_name: "Thuốc lá điện tử / Vape",
+        display_name: "Thuốc lá điện tử",
         sample_count: 36,
         precision: 0.89,
         recall: 0.92,
@@ -118,7 +118,7 @@ export function getModelTransparencyMetrics(): ModelTransparencyMetrics {
       alert_dispatch_latency_p95_seconds: 2.8, // 2.8 giây (cam kết < 5 giây)
     },
     confusion_matrix: {
-      classes: ["Thuốc lá", "Vape", "Hơi nước", "Bụi", "Bình xịt", "Ô nhiễm"],
+      classes: ["Thuốc lá", "Thuốc lá điện tử", "Hơi nước", "Bụi", "Bình xịt", "Ô nhiễm"],
       matrix: [
         [49, 2, 0, 1, 0, 0], // Thuốc lá: 49 đúng, 2 nhầm sang vape, 1 nhầm sang bụi
         [2, 33, 0, 0, 1, 0], // Vape: 33 đúng, 2 nhầm sang thuốc lá, 1 sang bình xịt
@@ -130,21 +130,21 @@ export function getModelTransparencyMetrics(): ModelTransparencyMetrics {
     },
     stress_test_results: [
       {
-        test_name: "Stress Test 1: Độ lệch tham số cảm biến (Sensor Drift ±30%)",
+        test_name: "Bộ 1: Thông số cảm biến lệch ±30%",
         condition: "Nồng độ hạt và nhiệt ẩm dao động lệch chuẩn ±30% mô phỏng bụi bám thấu kính SPS30",
         accuracy: 0.871,
         status: "pass",
-        notes: "Bộ lọc trung vị trượt (Rolling Median) tự động thích nghi sau 30 phút, hạn chế tối đa báo nhầm.",
+        notes: "Bộ lọc trung vị trượt tự thích nghi sau 30 phút, hạn chế báo nhầm.",
       },
       {
-        test_name: "Stress Test 2: Sự kiện khói chồng chéo (Overlapping Events)",
+        test_name: "Bộ 2: Các đợt khói chồng nhau",
         condition: "Hút thuốc lá trong lúc đang có hơi nước nhà tắm bốc ra hoặc đang quét dọn",
         accuracy: 0.814,
         status: "pass",
         notes: "Nhận diện đúng khói thuốc chiếm ưu thế khi kết hợp tín hiệu hiện diện PIR có người.",
       },
       {
-        test_name: "Stress Test 3: Cảm biến PIR có lỗi (PIR Sensor Noise & Occlusion)",
+        test_name: "Bộ 3: Cảm biến hiện diện báo sai",
         condition: "PIR bỏ sót người ngồi yên (âm tính giả) và báo người đi ngang qua hành lang (dương tính giả)",
         accuracy: 0.865,
         status: "pass",
@@ -153,11 +153,11 @@ export function getModelTransparencyMetrics(): ModelTransparencyMetrics {
     ],
     sensor_limitations: {
       pir_sensor:
-        "Cảm biến hồng ngoại thụ động (PIR) chỉ phát hiện khi có chuyển động tương đối. Khi người ngồi bất động lâu hoặc bị vật cản che khuất, PIR có thể báo không có người. Ngược lại, người đi ngang qua chiếu nghỉ mà không hút thuốc có thể kích hoạt PIR bật. Vì vậy, hệ thống không bao giờ dùng PIR để kết luận vi phạm.",
+        "Cảm biến hiện diện hồng ngoại chỉ phát hiện khi có chuyển động tương đối. Khi người ngồi bất động lâu hoặc bị vật cản che khuất, cảm biến có thể báo không có người. Ngược lại, người đi ngang qua chiếu nghỉ mà không hút thuốc có thể làm cảm biến báo có người. Vì vậy, hệ thống không bao giờ dùng cảm biến hiện diện để kết luận vi phạm.",
       humidity_steam:
         "Khi sinh viên tắm nước nóng vào mùa đông, hơi nước đậm đặc có thể làm tăng nhẹ chỉ số tán xạ quang học. Hệ thống đã tích hợp bộ lọc độ ẩm RH > 85% để triệt tiêu 95% báo động giả dạng này.",
       ambient_pollution:
-        "Vào những ngày Hà Nội ô nhiễm bụi mịn diện rộng (AQI > 200), khói bụi từ bên ngoài tràn vào hành lang. Thuật toán Cross-Node Consensus tự động đối chiếu các nút cảm biến trong toàn toà để phân biệt ô nhiễm chung với đợt khói cục bộ.",
+        "Vào những ngày Hà Nội ô nhiễm bụi mịn diện rộng (chỉ số chất lượng không khí trên 200), khói bụi từ bên ngoài tràn vào hành lang. Hệ thống tự đối chiếu các nút cảm biến trong toàn toà để phân biệt ô nhiễm chung với đợt khói cục bộ.",
       ethical_safeguard:
         "Cam kết Privacy by Design: Không sử dụng camera hình ảnh, không ghi âm thanh, không định danh cá nhân. Toàn bộ cảnh báo ban đầu đều mang nhãn 'Nghi vấn' cho tới khi cán bộ ca trực có mặt tại hiện trường xác nhận.",
     },

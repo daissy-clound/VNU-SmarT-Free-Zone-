@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import http from "node:http";
 import { app } from "../src/server";
 import { smokeDetector, smokeClassifier, hotspotForecast, llmAnalytics, getModelTransparencyMetrics } from "../src/ai";
-import { TelemetryMessage } from "../src/contracts/telemetry";
+import { Telemetry } from "../src/contracts/telemetry";
 
 let testServer: http.Server;
 let testPort: number;
@@ -66,7 +66,7 @@ function makeRequest(
 test("AI Tầng 1: SmokeAnomalyDetector phát hiện khói bất thường và lọc nhiễu", () => {
   smokeDetector.reset();
 
-  const normalMsg: TelemetryMessage = {
+  const normalMsg: Telemetry = {
     node_id: "UET1-3CT",
     ts: new Date().toISOString(),
     seq: 1,
@@ -88,7 +88,7 @@ test("AI Tầng 1: SmokeAnomalyDetector phát hiện khói bất thường và l
   assert.equal(res1.is_anomaly, false);
 
   // Giả lập khói thuốc lá tăng vọt + PIR bật
-  const smokeMsg: TelemetryMessage = {
+  const smokeMsg: Telemetry = {
     ...normalMsg,
     seq: 2,
     pm1: 45.0,
@@ -104,7 +104,7 @@ test("AI Tầng 1: SmokeAnomalyDetector phát hiện khói bất thường và l
   assert.ok(res2.confidence >= 0.7);
 
   // Lọc hơi nước: RH > 85%
-  const steamMsg: TelemetryMessage = {
+  const steamMsg: Telemetry = {
     ...normalMsg,
     seq: 3,
     pm25: 55.0,
@@ -118,7 +118,7 @@ test("AI Tầng 1: SmokeAnomalyDetector phát hiện khói bất thường và l
 test("AI Tầng 2: SmokeEventClassifier phân loại đợt khói chính xác", () => {
   const baseTime = Date.now();
 
-  const vapeTelemetries: TelemetryMessage[] = Array.from({ length: 8 }, (_, i) => ({
+  const vapeTelemetries: Telemetry[] = Array.from({ length: 8 }, (_, i) => ({
     node_id: "UET2-4ST",
     ts: new Date(baseTime + i * 15 * 1000).toISOString(),
     seq: i,

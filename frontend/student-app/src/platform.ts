@@ -18,6 +18,8 @@ export interface ReportPayload {
   emergency: boolean;
   note?: string;
   device_token?: string;
+  source?: "qr_app" | "form2_trial";
+  is_trial?: boolean;
 }
 
 export interface ReportResponse {
@@ -26,18 +28,26 @@ export interface ReportResponse {
   message?: string;
 }
 
+/** Theo hợp đồng reportTrackingSchema của backend (backend/src/contracts/report.ts) */
 export interface TrackingDetail {
   tracking_code: string;
-  ticket_code: string;
   status: "received" | "assigned" | "verifying" | "handled" | "responded" | "closed";
   status_label: string;
   created_at: string;
+  updated_at: string;
   zone_name: string;
-  arrived_at?: string;
-  handled_at?: string;
-  response_note?: string;
-  is_false_alarm?: boolean;
+  type_label: string;
+  arrived_at?: string | null;
+  feedback: string | null;
 }
+
+/** Gửi quá nhiều lần trong thời gian ngắn: hiện thông báo nhẹ nhàng thay vì báo lỗi */
+export class RateLimitedError extends Error {
+  name = "RateLimitedError";
+}
+
+/** Production: VITE_API_URL trỏ tới API; để trống khi dùng proxy cùng origin (dev/preview) */
+const API_URL = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
 const DEVICE_KEY = "sfz_anon_device_token";
 const TRACK_HISTORY_KEY = "sfz_my_reports";
@@ -50,6 +60,15 @@ export const platform = {
   getZoneFromUrl(): string | null {
     const params = new URLSearchParams(window.location.search);
     return params.get("zone") || params.get("z") || params.get("qr") || null;
+  },
+
+  /**
+   * Link dùng thử của Form 2 (?trial=1 hoặc ?src=form2): phản ánh được đánh dấu riêng,
+   * không tính vào số liệu vận hành
+   */
+  isTrialLink(): boolean {
+    const params = new URLSearchParams(window.location.search);
+    return params.get("trial") === "1" || params.get("src") === "form2";
   },
 
   /**
@@ -70,13 +89,24 @@ export const platform = {
    */
   async submitReport(payload: ReportPayload): Promise<ReportResponse> {
     const token = this.getAnonymousDeviceToken();
-    const res = await fetch("/api/reports", {
+    const trial = this.isTrialLink();
+    const res = await fetch(`${API_URL}/api/reports`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ ...payload, device_token: token }),
+      body: JSON.stringify({
+        ...payload,
+        device_token: token,
+        ...(trial ? { source: "form2_trial", is_trial: true } : {}),
+      }),
     });
 
     const data = await res.json().catch(() => ({}));
+    if (res.status === 429) {
+      throw new RateLimitedError(
+        data.error ||
+          "Bạn vừa gửi nhiều phản ánh liên tiếp. Cảm ơn bạn! Hãy thử lại sau ít phút; nếu nguy hiểm, dùng nút Khẩn cấp.",
+      );
+    }
     if (!res.ok) {
       throw new Error(data.error || data.message || "Lỗi khi gửi phản ánh");
     }
@@ -93,7 +123,7 @@ export const platform = {
    * Tra cứu tiến độ xử lý theo mã phiếu
    */
   async trackReport(trackingCode: string): Promise<TrackingDetail> {
-    const res = await fetch(`/api/reports/track/${encodeURIComponent(trackingCode.trim())}`);
+    const res = await fetch(`${API_URL}/api/reports/track/${encodeURIComponent(trackingCode.trim())}`);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) {
       throw new Error(data.error || "Không tìm thấy thông tin phản ánh với mã này.");
@@ -106,7 +136,7 @@ export const platform = {
    */
   async getZones(): Promise<ZoneItem[]> {
     try {
-      const res = await fetch("/api/zones");
+      const res = await fetch(`${API_URL}/api/zones`);
       const data = await res.json();
       return Array.isArray(data) ? data : data.items || [];
     } catch {
@@ -136,7 +166,7 @@ export const platform = {
       },
     ];
     try {
-      const res = await fetch("/api/infographics");
+      const res = await fetch(`${API_URL}/api/infographics`);
       const data = await res.json();
       if (Array.isArray(data.items) && data.items.length > 0) {
         const hasOfficial = data.items.some((i: any) => i.image_url?.includes("no-smoking-poster"));

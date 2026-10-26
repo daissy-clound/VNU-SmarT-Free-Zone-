@@ -125,26 +125,16 @@ function Login({
           </div>
         </div>
         <div>
-          <div className="eyebrow">KẾT NỐI ĐỂ CÙNG CHĂM SÓC</div>
           <h1>
             Một môi trường tốt hơn.
             <br />
             Bắt đầu từ sự quan tâm.
           </h1>
-          <p>Không gian vận hành dành cho ban quản lý và phòng trực khuôn viên UET Hoà Lạc.</p>
-          <div className="login-steps">
-            <span>01 · Phát hiện</span>
-            <span>02 · Phản hồi</span>
-            <span>03 · Phòng ngừa</span>
-            <span>04 · Hỗ trợ</span>
-          </div>
         </div>
-        <small>Đội BND · VNU SmarT-Free Zone</small>
+        <span />
       </section>
       <section className="login-form">
-        <div className="eyebrow">DASHBOARD QUẢN LÝ</div>
-        <h2>Chào mừng trở lại</h2>
-        <p className="muted">Đăng nhập để theo dõi và phối hợp xử lý phiếu.</p>
+        <h2>Đăng nhập</h2>
         {(error || reason) && (
           <Alert type="error" showIcon title={error || reason} />
         )}
@@ -198,7 +188,7 @@ function Login({
         <div className="login-note">
           <SafetyCertificateOutlined />
           <span>
-            Hệ thống không thu hình ảnh, âm thanh hoặc nhận dạng sinh viên.
+            Không thu hình ảnh, âm thanh hay danh tính sinh viên.
           </span>
         </div>
       </section>
@@ -235,7 +225,7 @@ function Dashboard({
               : `Phiếu mới · ${alert.zone_code}`;
       const body =
         alert.kind === "overdue"
-          ? `${zoneName} · gọi ${alert.room_phone ?? "phòng trực"} (số giả lập)`
+          ? `${zoneName} · gọi ${alert.room_phone ?? "phòng trực"}`
           : alert.kind === "dispatched"
             ? `${zoneName} · ${presence} · bấm Đang đến trong 3 phút`
             : `${zoneName} · ${presence}${user.role === "manager" ? " · cần xác minh và điều phối" : ""}`;
@@ -308,18 +298,7 @@ function Dashboard({
           VNU <strong>SmarT-Free Zone</strong>
         </div>
       </Link>
-      <div className="sidebar-caption">KHÔNG GIAN LÀM VIỆC</div>
       <Menu mode="inline" selectedKeys={[section]} items={items} />
-      <div className="sidebar-footer">
-        <div className="campus-mark">UET</div>
-        <strong>Khuôn viên UET Hoà Lạc</strong>
-        <p>
-          Phát hiện · Phản hồi
-          <br />
-          Phòng ngừa · Hỗ trợ
-        </p>
-        {SIMULATED && <Tag color="gold">Dữ liệu mô phỏng</Tag>}
-      </div>
     </>
   );
   const protect = (path: string, content: React.ReactNode) =>
@@ -346,7 +325,7 @@ function Dashboard({
         {nav}
       </Layout.Sider>
       <Drawer
-        title="Menu điều hướng"
+        title="Menu"
         placement="left"
         open={mobileMenu}
         onClose={() => setMobileMenu(false)}
@@ -363,7 +342,6 @@ function Dashboard({
               onClick={() => setMobileMenu(true)}
             />
             <span className="header-location">
-              Khuôn viên UET <span>/</span>{" "}
               {navigation.find((item) => item.key === section)?.label ||
                 "Dashboard"}
             </span>
@@ -404,12 +382,9 @@ function Dashboard({
             <span>
               <span className="live-dot" />
               {SIMULATED ? (
-                <>
-                  Bản dùng thử ·{" "}
-                  <Tag color="gold" className="sim-tag">
-                    Dữ liệu mô phỏng
-                  </Tag>
-                </>
+                <Tag color="gold" className="sim-tag">
+                  Dữ liệu mô phỏng
+                </Tag>
               ) : (
                 "Dữ liệu vận hành"
               )}
@@ -452,7 +427,7 @@ function Dashboard({
                 user.role === "guard" ? (
                   <Navigate to="/shift" replace />
                 ) : (
-                  <Overview data={data} user={user} onSelect={selectTicket} />
+                  <Overview data={data} user={user} token={token} onSelect={selectTicket} />
                 )
               }
             />
@@ -471,14 +446,8 @@ function Dashboard({
                 <>
                   <div className="page-heading">
                     <div>
-                      <div className="eyebrow">TIẾP NHẬN & PHỐI HỢP</div>
                       <h1>Danh sách phiếu</h1>
-                      <p>
-                        Tìm phiếu, theo dõi thời hạn và xem thông tin xử lý tại
-                        từng khu vực.
-                      </p>
                     </div>
-                    <Tag color="green">Tự động cập nhật</Tag>
                   </div>
                   <Card>
                     <TicketTable {...data} onSelect={selectTicket} />
@@ -522,10 +491,6 @@ function Dashboard({
               }
             />
           </Routes>
-          <footer className="page-footer">
-            VNU SmarT-Free Zone{" "}
-            <span>Phát hiện là nghi vấn. Xác minh bởi con người.</span>
-          </footer>
         </main>
       </Layout>
       <nav className="mobile-bottom-nav" aria-label="Điều hướng nhanh">

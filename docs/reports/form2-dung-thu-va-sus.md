@@ -5,6 +5,8 @@
 **Thời gian thử nghiệm:** 21/10/2026 – 23/10/2026 (chia làm 2 đợt trước và sau tối ưu UX)  
 **Quy mô thử nghiệm:** **34 sinh viên** trực tiếp thực hiện 3 tác vụ trên bản ứng dụng đang chạy thật.
 
+**Nguồn dữ liệu:** Google Forms của đội. Cần đính kèm bản xuất CSV đã ẩn danh tại `docs/reports/form2-ket-qua-an-danh.csv` để mọi con số trong báo cáo truy được về dữ liệu gốc.
+
 ---
 
 ## I. THIẾT KẾ THỬ NGHIỆM VÀ 3 TÁC VỤ THỰC TẾ

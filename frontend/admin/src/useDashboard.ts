@@ -172,6 +172,8 @@ export function useDashboard(
         });
     });
     socket.on("ticket:updated", () => void refresh());
+    socket.on("ticket:deleted", () => void refresh());
+    socket.on("sandbox:reset", () => void refresh());
     socket.on("zone:updated", () => void refresh());
     // Đối soát định kỳ cả khi socket đang nối: bù sự kiện bị mất khi mất mạng.
     const poll = window.setInterval(() => {

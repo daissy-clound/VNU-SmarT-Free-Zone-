@@ -125,10 +125,6 @@ function NotificationSetup({ user, token, sampleCode }: { user: User; token: str
           items={[{ key: "ios", label: "Hướng dẫn cho iPhone", children: <IphoneGuide /> }]}
         />
       )}
-      <p className="muted small">
-        Thông báo hiện khi Ban quản lý điều phối phiếu cho phòng của bạn; bấm vào là mở thẳng phiếu với 3 nút Đang đến /
-        Đã đến / Báo nhầm.
-      </p>
     </Card>
   );
 }
@@ -142,6 +138,7 @@ function AlertLog() {
   }, []);
   const latencies = items.map((i) => i.latency_ms).filter((v): v is number => v !== null).sort((a, b) => a - b);
   const median = latencies.length ? latencies[Math.floor(latencies.length / 2)] : null;
+  if (!items.length) return null;
   return (
     <Card
       size="small"
@@ -164,28 +161,45 @@ function AlertLog() {
         )
       }
     >
-      {!items.length ? (
-        <p className="muted">Chưa nhận cảnh báo nào trên máy này.</p>
-      ) : (
-        <>
-          <p className="muted small">
-            {items.length} lần nhận · độ trễ trung vị {median !== null ? `${(median / 1000).toFixed(1)} giây` : "—"} (theo đồng hồ máy này).
-          </p>
-          <ul className="alert-log">
-            {items.slice(0, 8).map((i) => (
-              <li key={i.ticket_code + i.received_at}>
-                <Link to={`/tickets/${encodeURIComponent(i.ticket_code)}`}>{i.ticket_code}</Link>
-                <span>{new Date(i.received_at).toLocaleTimeString("vi-VN")}</span>
-                <span>{i.channel === "webpush" ? "Web Push" : "Realtime"}</span>
-                <span>{i.latency_ms !== null ? `${(i.latency_ms / 1000).toFixed(1)} s` : "—"}</span>
-              </li>
-            ))}
-          </ul>
-          <Button size="small" type="text" onClick={clearAlertLog}>
-            Xoá nhật ký
-          </Button>
-        </>
-      )}
+      <p className="muted small">
+        {items.length} lần nhận · độ trễ trung vị {median !== null ? `${(median / 1000).toFixed(1)} giây` : "—"}
+      </p>
+      <ul className="alert-log">
+        {items.slice(0, 8).map((i) => (
+          <li key={i.ticket_code + i.received_at}>
+            <Link to={`/tickets/${encodeURIComponent(i.ticket_code)}`}>{i.ticket_code}</Link>
+            <span>{new Date(i.received_at).toLocaleTimeString("vi-VN")}</span>
+            <span>{i.channel === "webpush" ? "Thông báo đẩy" : "Trực tiếp"}</span>
+            <span>{i.latency_ms !== null ? `${(i.latency_ms / 1000).toFixed(1)} s` : "—"}</span>
+          </li>
+        ))}
+      </ul>
+      <Button size="small" type="text" onClick={clearAlertLog}>
+        Xoá nhật ký
+      </Button>
+    </Card>
+  );
+}
+
+/** Lịch sử ca trực: phiếu chính người này đã nhận và đi qua bước xác minh */
+function ShiftHistory({ data, user }: { data: DashboardData; user: User }) {
+  const done = data.tickets
+    .filter((t) => t.assignee_id === user.id && ["handled", "responded", "closed"].includes(t.status))
+    .sort((a, b) => b.updated_at.localeCompare(a.updated_at))
+    .slice(0, 10);
+  if (!done.length) return null;
+  return (
+    <Card className="shift-history" title="Lịch sử phiếu của tôi">
+      <ul className="alert-log">
+        {done.map((t) => (
+          <li key={t.code}>
+            <Link to={`/tickets/${encodeURIComponent(t.code)}`}>{t.code}</Link>
+            <span>{data.zones.find((z) => z.code === t.zone_code)?.name ?? t.zone_code}</span>
+            <span>{statusLabels[t.status]}</span>
+            <span>{new Date(t.updated_at).toLocaleString("vi-VN", { hour: "2-digit", minute: "2-digit", day: "2-digit", month: "2-digit" })}</span>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }
@@ -210,11 +224,7 @@ export function Shift({ data, user, token }: { data: DashboardData; user: User; 
         <div>
           <div className="eyebrow">{room ? room.name.toUpperCase() : "CA TRỰC"}</div>
           <h1>Phiếu cần xử lý</h1>
-          <p>
-            {active.length
-              ? `${active.length} phiếu Ban quản lý đã điều phối cho phòng`
-              : "Chưa có phiếu nào được điều phối cho phòng."}
-          </p>
+          {active.length > 0 && <p>{active.length} phiếu được giao cho phòng</p>}
           {roomStatus && (
             <p className="muted small">
               <Tag color={roomStatus.on_duty ? "green" : undefined}>
@@ -227,7 +237,7 @@ export function Shift({ data, user, token }: { data: DashboardData; user: User; 
       </div>
       {!active.length && (
         <Card>
-          <Empty description="Khi Ban quản lý điều phối phiếu cho phòng, thông báo sẽ hiện trên điện thoại và tại đây. Có 3 phút để nhận." />
+          <Empty description="Chưa có phiếu được giao" />
         </Card>
       )}
       {active.map((ticket) => {
@@ -265,6 +275,7 @@ export function Shift({ data, user, token }: { data: DashboardData; user: User; 
           </Link>
         );
       })}
+      <ShiftHistory data={data} user={user} />
       <NotificationSetup user={user} token={token} sampleCode={active[0]?.code} />
       <AlertLog />
     </div>

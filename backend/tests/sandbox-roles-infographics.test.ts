@@ -1,7 +1,7 @@
 import test, { before, after } from "node:test";
 import assert from "node:assert/strict";
 import http from "node:http";
-import { app } from "../src/server";
+import { app, prisma } from "../src/server";
 import { stripExifFromJpeg } from "../src/api/infographics";
 import { rollDataDates } from "../src/api/rolling-dates";
 
@@ -94,13 +94,63 @@ test("Sandbox: BGK tạo phiếu thử nghiệm và đặt lại không ảnh h�
   assert.equal(createRes.data.ok, true);
   assert.match(createRes.data.ticket.code, /^SF-SBX-/);
   assert.equal(createRes.data.ticket.is_sandbox, true);
+  assert.ok(createRes.data.ticket.due_at, "phiếu sandbox có hạn xử lý");
+  const sandboxCode = createRes.data.ticket.code;
+  const auth = { Authorization: `Bearer ${token}` };
+
+  // Phiếu hiện trên dashboard của BGK kèm lịch sử bước tiếp nhận
+  const detail = await makeRequest("GET", `/api/tickets/${sandboxCode}`, undefined, auth);
+  assert.equal(detail.status, 200);
+  assert.equal(detail.data.history[0]?.to_status, "received");
+
+  // Khu vực không tồn tại → 400, không phải lỗi máy chủ
+  const badZone = await makeRequest("POST", "/api/sandbox/ticket", { zone_code: "X99" }, auth);
+  assert.equal(badZone.status, 400);
+
+  // Ban quản lý không thấy phiếu sandbox trong số liệu chính
+  const bqlLogin = await makeRequest("POST", "/api/auth/login", { username: "bql", password: "Demo@2026" });
+  const mainBefore = await makeRequest("GET", "/api/tickets", undefined, {
+    Authorization: `Bearer ${bqlLogin.data.token}`,
+  });
+  assert.ok(!mainBefore.data.items.some((t: any) => t.code === sandboxCode));
 
   // 3. BGK bấm "Đặt lại" Sandbox
-  const resetRes = await makeRequest("POST", "/api/sandbox/reset", {}, {
-    Authorization: `Bearer ${token}`,
-  });
+  const resetRes = await makeRequest("POST", "/api/sandbox/reset", {}, auth);
   assert.equal(resetRes.status, 200);
   assert.equal(resetRes.data.ok, true);
+  assert.ok(resetRes.data.deleted_tickets >= 1);
+
+  const afterReset = await makeRequest("GET", "/api/tickets", undefined, auth);
+  assert.ok(!afterReset.data.items.some((t: any) => t.code === sandboxCode));
+  const mainAfter = await makeRequest("GET", "/api/tickets", undefined, {
+    Authorization: `Bearer ${bqlLogin.data.token}`,
+  });
+  assert.equal(mainAfter.data.items.length, mainBefore.data.items.length);
+});
+
+test("Phản ánh: tối đa 3 lần / 10 phút mỗi thiết bị, khẩn cấp không bị chặn; tra cứu trả phản hồi", async () => {
+  const report = {
+    zone_code: "UET2-3CT",
+    type: "smell",
+    device_token: `rate-limit-${Date.now()}`,
+  };
+  const first = await makeRequest("POST", "/api/reports", report);
+  assert.equal(first.status, 201);
+  assert.equal((await makeRequest("POST", "/api/reports", report)).status, 201);
+  assert.equal((await makeRequest("POST", "/api/reports", report)).status, 201);
+
+  const limited = await makeRequest("POST", "/api/reports", report);
+  assert.equal(limited.status, 429);
+  assert.equal(limited.data.code, "rate_limited");
+  assert.match(limited.data.error, /Khẩn cấp/);
+
+  const emergency = await makeRequest("POST", "/api/reports", { ...report, emergency: true });
+  assert.equal(emergency.status, 201);
+
+  const track = await makeRequest("GET", `/api/reports/track/${first.data.tracking_code}`);
+  assert.equal(track.status, 200);
+  assert.equal(typeof track.data.feedback, "string");
+  assert.equal(track.data.arrived_at, null);
 });
 
 test("Phân quyền: BGK không thể sửa phiếu thật và Analyst không thể đổi trạng thái", async () => {
@@ -178,6 +228,9 @@ test("Infographics: Xoá siêu dữ liệu EXIF và kiểm tra quyền BQL đăn
   const listRes = await makeRequest("GET", "/api/infographics");
   assert.equal(listRes.status, 200);
   assert.ok(Array.isArray(listRes.data.items));
+
+  // Dọn bản ghi thử để không lẫn vào dữ liệu demo
+  await prisma.infographic.delete({ where: { id: uploadRes.data.item.id } });
 });
 
 test("Rolling Dates: Dời ngày dữ liệu thành công", async () => {

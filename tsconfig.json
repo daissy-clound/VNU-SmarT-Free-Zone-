@@ -12,9 +12,10 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "scripts/test-server/**/*.ts",
-    "scripts/generate-design-assets.ts",
-    "backend/src/contracts/**/*.ts",
+    "scripts/**/*.ts",
+    "backend/src/**/*.ts",
+    "backend/tests/**/*.ts",
+    "backend/prisma/seed.ts",
     "tests/**/*.ts",
     "playwright.config.ts"
   ]

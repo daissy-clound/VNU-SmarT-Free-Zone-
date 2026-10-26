@@ -43,7 +43,7 @@ export function FloorMap({
     <svg
       className="floor-svg"
       viewBox="0 0 1000 560"
-      fontFamily="Segoe UI, Roboto, Helvetica, Arial, sans-serif"
+      fontFamily="Be Vietnam Pro, Segoe UI, Roboto, Helvetica, Arial, sans-serif"
       role="group"
       aria-label={`Sơ đồ toà ${building}, tầng ${floor}`}
     >
@@ -74,7 +74,7 @@ export function FloorMap({
 
           {/* Khu WC phía Đông */}
           <rect x="740" y="110" width="160" height="340" rx="6" fill="#eff6ff" stroke="#93c5fd" />
-          <text x="820" y="170" textAnchor="middle" fill="#1e40af" fontSize="15" fontWeight="bold">KHU VỆ SINH (WC)</text>
+          <text x="820" y="170" textAnchor="middle" fill="#1e40af" fontSize="15" fontWeight="bold">KHU VỆ SINH</text>
           <text x="820" y="195" textAnchor="middle" fill="#3b82f6" fontSize="13">Nam / Nữ</text>
 
           {/* Phòng học & Giảng đường */}
@@ -236,7 +236,7 @@ export function FloorMap({
             />
           )}
 
-          {/* NÚT CẢM BIẾN IOT (Nếu có) */}
+          {/* NÚT CẢM BIẾN (NẾU CÓ) */}
           {zone.sensor_id && (
             <g
               id={`sensor-${zone.sensor_id}`}

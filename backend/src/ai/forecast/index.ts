@@ -149,7 +149,7 @@ export class HotspotForecastService {
     const patrolShifts: PatrolShift[] = [
       {
         id: "shift-01",
-        name: "Ca sáng giải lao (Morning Break)",
+        name: "Ca sáng giải lao",
         start_time: "09:45",
         end_time: "10:15",
         target_building: "UET1 & UET2",
@@ -159,7 +159,7 @@ export class HotspotForecastService {
       },
       {
         id: "shift-02",
-        name: "Ca trưa cao điểm (Lunch Peak)",
+        name: "Ca trưa cao điểm",
         start_time: "11:45",
         end_time: "12:15",
         target_building: "UET3 & UET4",
@@ -169,7 +169,7 @@ export class HotspotForecastService {
       },
       {
         id: "shift-03",
-        name: "Ca chiều nghỉ tiết (Afternoon Break)",
+        name: "Ca chiều nghỉ tiết",
         start_time: "15:00",
         end_time: "15:30",
         target_building: "UET1 & Nhà đa năng",
@@ -179,7 +179,7 @@ export class HotspotForecastService {
       },
       {
         id: "shift-04",
-        name: "Ca tan học / Giao ca (Dusk Transition)",
+        name: "Ca tan học / giao ca",
         start_time: "17:30",
         end_time: "18:00",
         target_building: "Toàn khuôn viên & Nhà đa năng",
@@ -189,7 +189,7 @@ export class HotspotForecastService {
       },
       {
         id: "shift-05",
-        name: "Ca tối trọng điểm 1 (Evening Hotspot 1)",
+        name: "Ca tối trọng điểm 1",
         start_time: "21:15",
         end_time: "21:45",
         target_building: "UET2 & UET1",
@@ -199,7 +199,7 @@ export class HotspotForecastService {
       },
       {
         id: "shift-06",
-        name: "Ca đêm trọng điểm 2 (Night Hotspot 2)",
+        name: "Ca đêm trọng điểm 2",
         start_time: "22:45",
         end_time: "23:15",
         target_building: "UET3 & UET4",

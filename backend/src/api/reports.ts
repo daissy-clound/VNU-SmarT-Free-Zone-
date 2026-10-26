@@ -15,6 +15,20 @@ import {
 
 export const reportsRouter = Router();
 
+// Chống spam: tối đa 3 phản ánh / 10 phút cho mỗi thiết bị ẩn danh.
+// Phản ánh khẩn cấp không bao giờ bị chặn.
+const RATE_LIMIT_MAX = 3;
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const recentAttempts = new Map<string, number[]>();
+
+function isRateLimited(deviceToken: string, now: number): boolean {
+  const recent = (recentAttempts.get(deviceToken) || []).filter(
+    (time) => now - time < RATE_LIMIT_WINDOW_MS
+  );
+  recentAttempts.set(deviceToken, recent);
+  return recent.length >= RATE_LIMIT_MAX;
+}
+
 // Hook phát sự kiện realtime qua Socket.IO
 let emitSocketEvent: ((event: string, data: any) => void) | null = null;
 export function setReportsSocketEmitter(emitter: (event: string, data: any) => void) {
@@ -36,12 +50,25 @@ reportsRouter.post("/", (req: Request, res: Response) => {
 
   const data = parseResult.data;
 
+  const attemptAt = Date.now();
+  if (!data.emergency && isRateLimited(data.device_token, attemptAt)) {
+    return res.status(429).json({
+      code: "rate_limited",
+      error:
+        "Bạn vừa gửi nhiều phản ánh liên tiếp. Cảm ơn bạn! Hệ thống đã ghi nhận, bạn có thể gửi tiếp sau ít phút. Nếu nguy hiểm, hãy dùng nút Khẩn cấp.",
+      retry_after_seconds: Math.ceil(RATE_LIMIT_WINDOW_MS / 1000),
+    });
+  }
+
   // Kiểm tra khu vực có tồn tại không
   const zone = store.getZone(data.zone_code);
   if (!zone) {
     return res.status(400).json({
       error: `Mã khu vực '${data.zone_code}' không tồn tại trong danh mục`,
     });
+  }
+  if (!data.emergency) {
+    recentAttempts.get(data.device_token)!.push(attemptAt);
   }
 
   // 1. Che thông tin định danh bằng quy tắc regex
@@ -208,6 +235,9 @@ reportsRouter.get("/track/:code", (req: Request, res: Response) => {
     status_label: statusLabel,
     created_at: report.created_at,
     updated_at: ticket ? ticket.updated_at : report.created_at,
+    // Thời điểm ca trực tới hiện trường (lần đầu chuyển sang Đang xác minh), không kèm tên cán bộ
+    arrived_at:
+      store.getHistory(report.ticket_code).find((h) => h.to_status === "verifying")?.created_at ?? null,
     feedback,
   });
 });

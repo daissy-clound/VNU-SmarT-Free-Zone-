@@ -2,6 +2,7 @@
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <DHT.h>
+#include <time.h>
 
 // Định nghĩa chân phần cứng
 #define DHTPIN 15
@@ -32,17 +33,25 @@ unsigned long lastPIRDetectionTime = 0;
 long seqNumber = 1000;
 const int TELEMETRY_INTERVAL_MS = 5000; // Chu kỳ phát 5 giây/lần theo hợp đồng
 
-// Bộ đệm lưu trữ tạm thời khi mất kết nối mạng (Offline buffer)
-struct OfflinePacket {
-  long seq;
-  float pm25;
-  float temp;
-  float rh;
-  bool presence;
-  unsigned long timestamp_sec;
-};
-OfflinePacket offlineBuffer[20];
+// Bộ đệm lưu trữ tạm thời khi mất kết nối mạng (Offline buffer):
+// giữ nguyên bản tin đã đóng gói (kèm ts gốc) để gửi bù đúng giờ đo. 60 bản tin = 5 phút.
+#define OFFLINE_CAPACITY 60
+#define PACKET_SIZE 320
+char offlineBuffer[OFFLINE_CAPACITY][PACKET_SIZE];
 int offlineCount = 0;
+
+// Giờ Việt Nam (UTC+7) lấy qua NTP để gắn trường ts theo hợp đồng
+bool timeSynced() {
+  return time(nullptr) > 1700000000;
+}
+
+// Thời điểm hiện tại dạng ISO 8601, VD 2026-10-20T22:10:05+07:00
+void isoNow(char* out, size_t len) {
+  time_t t = time(nullptr);
+  struct tm local;
+  localtime_r(&t, &local);
+  strftime(out, len, "%Y-%m-%dT%H:%M:%S+07:00", &local);
+}
 
 void setup_wifi() {
   delay(10);
@@ -65,6 +74,9 @@ void setup_wifi() {
     Serial.print("[WiFi] Địa chỉ IP: ");
     Serial.println(WiFi.localIP());
     digitalWrite(LED_PIN, HIGH);
+    configTime(7 * 3600, 0, "pool.ntp.org", "time.google.com");
+    for (int i = 0; i < 20 && !timeSynced(); i++) delay(500);
+    Serial.println(timeSynced() ? "[NTP] Đã đồng bộ giờ" : "[NTP] Chưa đồng bộ được giờ");
   } else {
     Serial.println("\n[WiFi] Không thể kết nối. Chuyển sang chế độ lưu đệm Offline.");
   }
@@ -76,12 +88,15 @@ void reconnect_mqtt() {
     if (client.connect(mqtt_client_id)) {
       Serial.println(" Thành công!");
       // Gửi bản tin Heartbeat Online
-      StaticJsonDocument<128> doc;
+      StaticJsonDocument<192> doc;
+      char statusTs[32];
+      isoNow(statusTs, sizeof(statusTs));
       doc["node_id"] = "UET1-3CT";
       doc["status"] = "online";
+      doc["ts"] = statusTs;
       doc["fw"] = "0.3.0";
       doc["ip"] = WiFi.localIP().toString();
-      char buffer[128];
+      char buffer[192];
       serializeJson(doc, buffer);
       client.publish(mqtt_topic_status, buffer);
 
@@ -89,16 +104,11 @@ void reconnect_mqtt() {
       if (offlineCount > 0) {
         Serial.printf("[Buffer] Bắt đầu gửi bù %d bản tin tồn đọng...\n", offlineCount);
         for (int i = 0; i < offlineCount; i++) {
-          StaticJsonDocument<256> bDoc;
-          bDoc["node_id"] = "UET1-3CT";
-          bDoc["seq"] = offlineBuffer[i].seq;
-          bDoc["pm25"] = offlineBuffer[i].pm25;
-          bDoc["temp"] = offlineBuffer[i].temp;
-          bDoc["rh"] = offlineBuffer[i].rh;
-          bDoc["presence"] = offlineBuffer[i].presence;
-          bDoc["late"] = true; // Đánh dấu bản tin gửi bù
-          bDoc["fw"] = "0.3.0";
-          char bBuffer[256];
+          // Giữ nguyên ts gốc lúc đo, chỉ bật cờ late
+          StaticJsonDocument<PACKET_SIZE> bDoc;
+          deserializeJson(bDoc, offlineBuffer[i]);
+          bDoc["late"] = true;
+          char bBuffer[PACKET_SIZE];
           serializeJson(bDoc, bBuffer);
           client.publish(mqtt_topic_telemetry, bBuffer);
           delay(50);
@@ -177,8 +187,15 @@ void loop() {
     }
 
     // 4. Đóng gói JSON theo đúng Hợp đồng 1 (Telemetry Contract)
-    StaticJsonDocument<300> doc;
+    if (!timeSynced()) {
+      Serial.println("[Telemetry] Chờ đồng bộ giờ NTP, bỏ qua bản tin này");
+      return;
+    }
+    char ts[32];
+    isoNow(ts, sizeof(ts));
+    StaticJsonDocument<PACKET_SIZE> doc;
     doc["node_id"] = "UET1-3CT";
+    doc["ts"] = ts;
     doc["seq"] = seqNumber;
     doc["pm1"] = round(pm1 * 10) / 10.0;
     doc["pm25"] = round(pm25 * 10) / 10.0;
@@ -193,7 +210,7 @@ void loop() {
     doc["fw"] = "0.3.0";
     doc["late"] = false;
 
-    char jsonBuffer[300];
+    char jsonBuffer[PACKET_SIZE];
     serializeJson(doc, jsonBuffer);
 
     if (client.connected()) {
@@ -202,13 +219,9 @@ void loop() {
                     seqNumber, pm25, currentPIR ? "Có người" : "Không", pm25 >= 60.0 ? "BẬT" : "Tắt");
     } else {
       // Mất mạng -> Lưu vào bộ nhớ đệm
-      if (offlineCount < 20) {
-        offlineBuffer[offlineCount].seq = seqNumber;
-        offlineBuffer[offlineCount].pm25 = pm25;
-        offlineBuffer[offlineCount].temp = temperature;
-        offlineBuffer[offlineCount].rh = humidity;
-        offlineBuffer[offlineCount].presence = currentPIR;
-        offlineBuffer[offlineCount].timestamp_sec = now / 1000;
+      if (offlineCount < OFFLINE_CAPACITY) {
+        strncpy(offlineBuffer[offlineCount], jsonBuffer, PACKET_SIZE - 1);
+        offlineBuffer[offlineCount][PACKET_SIZE - 1] = '\0';
         offlineCount++;
         Serial.printf("[Offline Buffer] Đã lưu bản tin %ld vào bộ đệm (Hiện có %d bản tin)\n", seqNumber, offlineCount);
       }

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Alert, Button, Card, Empty, Segmented, Select, Tag } from "antd";
+import { Button, Card, Empty, Segmented, Select, Tag } from "antd";
 import { Link, useSearchParams } from "react-router-dom";
 import { FloorMap } from "../components/FloorMap";
 import type { DashboardData } from "../useDashboard";
@@ -56,19 +56,9 @@ export function Floors({ data }: { data: DashboardData }) {
     <>
       <div className="page-heading">
         <div>
-          <div className="eyebrow">KHUÔN VIÊN ĐẠI HỌC CÔNG NGHỆ (UET) — ĐHQGHN TẠI HOÀ LẠC</div>
           <h1>Sơ đồ mặt bằng &amp; tầng</h1>
-          <p>Sơ đồ kiến trúc thực tế các toà nhà UET1-4, Nhà đa năng, hồ nước trung tâm và 3 cổng trường.</p>
         </div>
-        <Tag color="blue">Khuôn viên UET Hoà Lạc · 5 toà nhà + 3 cổng</Tag>
       </div>
-      {data.provisional && (
-        <Alert
-          type="info"
-          showIcon
-          title="Sơ đồ kiến trúc thực tế khuôn viên UET Hoà Lạc theo bản vẽ quy hoạch."
-        />
-      )}
       <div className="map-controls">
         <label className="filter-field map-search">
           <span>Tìm nhanh khu vực</span>
@@ -146,7 +136,6 @@ export function Floors({ data }: { data: DashboardData }) {
               <Tag color="green">Toà ổn định</Tag>
               <Tag color="orange">Toà có điểm nghi vấn</Tag>
               <Tag>Cổng / chốt bảo vệ</Tag>
-              <span>Mặt bằng vector hoá từ bản vẽ quy hoạch khuôn viên UET Hoà Lạc.</span>
             </div>
           ) : (
             <div className="map-legend">
@@ -179,10 +168,6 @@ export function Floors({ data }: { data: DashboardData }) {
                       : "Không còn ai"}
                 </dd>
               </dl>
-              <p className="muted">
-                Hiện diện chỉ đo có/không có người; không nhận dạng và không
-                dùng làm bằng chứng vi phạm.
-              </p>
               <Link to={`/tickets?zone_code=${encodeURIComponent(zone.code)}`}>
                 <Button block type="primary">
                   Xem phiếu khu vực này

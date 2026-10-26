@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { TelemetryMessage } from "../../backend/src/contracts/telemetry";
+import { Telemetry } from "../../backend/src/contracts/telemetry";
 
 const SENSOR_NODES = [
   { id: "UET1-3CT", zone: "UET1-3CT", building: "UET1", floor: 3 },

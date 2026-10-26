@@ -1,4 +1,4 @@
-import { TelemetryMessage } from "../../contracts/telemetry";
+import { Telemetry } from "../../contracts/telemetry";
 
 export interface AnomalyResult {
   is_anomaly: boolean;
@@ -22,13 +22,13 @@ export interface AnomalyResult {
  * - Tích hợp trọng số cảm biến chuyển động PIR (presence)
  */
 export class SmokeAnomalyDetector {
-  private historyByNode: Map<string, TelemetryMessage[]> = new Map();
+  private historyByNode: Map<string, Telemetry[]> = new Map();
   private maxHistoryLength = 360; // 360 bản tin 5s = 30 phút
 
   /**
    * Đưa bản tin mới vào bộ đệm trượt
    */
-  public pushTelemetry(msg: TelemetryMessage): void {
+  public pushTelemetry(msg: Telemetry): void {
     const list = this.historyByNode.get(msg.node_id) || [];
     list.push(msg);
     if (list.length > this.maxHistoryLength) {
@@ -50,7 +50,7 @@ export class SmokeAnomalyDetector {
   /**
    * Đánh giá bản tin hiện tại
    */
-  public evaluate(msg: TelemetryMessage, allRecentNodes?: TelemetryMessage[]): AnomalyResult {
+  public evaluate(msg: Telemetry, allRecentNodes?: Telemetry[]): AnomalyResult {
     this.pushTelemetry(msg);
     const history = this.historyByNode.get(msg.node_id) || [msg];
 

@@ -6,6 +6,8 @@
 **Phương thức:** Khảo sát trực tuyến qua Google Forms (Ẩn danh 100%, tự nguyện)  
 **Quy mô mẫu:** **128 sinh viên** (trong đó **82 sinh viên nội trú KTX**, 46 sinh viên ngoại trú)
 
+**Nguồn dữ liệu:** Google Forms của đội. Cần đính kèm bản xuất CSV đã ẩn danh tại `docs/reports/form1-ket-qua-an-danh.csv` để mọi con số trong báo cáo truy được về dữ liệu gốc.
+
 ---
 
 ## I. MỤC TIÊU VÀ PHƯƠNG PHÁP KHẢO SÁT

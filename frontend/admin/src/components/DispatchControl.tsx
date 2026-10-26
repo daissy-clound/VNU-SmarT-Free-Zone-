@@ -223,7 +223,7 @@ export function DispatchControl({
           icon={<PhoneOutlined />}
           title={
             <>
-              Gọi {room.name}: <strong className="phone">{room.phone}</strong> <Tag>số giả lập</Tag>
+              Gọi {room.name}: <strong className="phone">{room.phone}</strong>
             </>
           }
           description={

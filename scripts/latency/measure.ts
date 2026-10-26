@@ -1,6 +1,6 @@
 import http from "node:http";
 import { app } from "../../backend/src/server";
-import { TelemetryMessage } from "../../backend/src/contracts/telemetry";
+import { Telemetry } from "../../backend/src/contracts/telemetry";
 
 /**
  * Công cụ đo đạc kiểm chuẩn độ trễ đầu cuối (End-to-End Alert Latency Benchmark)
@@ -33,7 +33,7 @@ async function runLatencyBenchmark(iterations: number = 100) {
   for (let i = 0; i < iterations; i++) {
     const startTime = performance.now();
 
-    const smokePacket: TelemetryMessage = {
+    const smokePacket: Telemetry = {
       node_id: "UET1-3CT",
       ts: new Date().toISOString(),
       seq: 20000 + i,

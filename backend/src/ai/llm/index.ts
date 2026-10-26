@@ -120,28 +120,28 @@ export class LlmAnalyticsService {
     const markdown = `# BÁO CÁO TUẦN: VẬN HÀNH KHÔNG GIAN KHÔNG KHÓI THUỐC (VNU SMAR-T FREE ZONE)
 **Kỳ báo cáo:** Từ ${periodStart} đến ${periodEnd}  
 **Đơn vị:** Ban Quản lý KTX & Khuôn viên Trường Đại học Công nghệ (UET) — ĐHQGHN  
-**Tổng hợp tự động bởi:** SFZ AI Analytics Engine (Phiên bản 1.0)
+**Tổng hợp tự động bởi:** hệ thống VNU SmarT-Free Zone, phiên bản 1.0
 
 ---
 
 ### 1. TỔNG QUAN CHỈ SỐ HOẠT ĐỘNG
 - **Tổng số vụ việc ghi nhận:** **${total}** sự kiện.
-  - Từ mạng lưới cảm biến IoT (SPS30): **${sensorCount}** vụ (${Math.round((sensorCount / (total || 1)) * 100)}%).
+  - Từ mạng lưới cảm biến: **${sensorCount}** vụ (${Math.round((sensorCount / (total || 1)) * 100)}%).
   - Từ phản ánh QR sinh viên ẩn danh: **${reportCount}** vụ (${Math.round((reportCount / (total || 1)) * 100)}%).
-  - Vụ việc xác thực kép (Cảm biến + Sinh viên cùng báo trong 15p): **${bothCount}** vụ.
-- **Tỷ lệ tuân thủ thời hạn tiếp cận (SLA 15 phút):** **${onTimePct}%** (Đạt chỉ tiêu đề ra $\\ge 90\\%$).
+  - Vụ việc xác thực kép — cảm biến và sinh viên cùng báo trong 15 phút: **${bothCount}** vụ.
+- **Tỉ lệ có mặt đúng hạn 15 phút:** **${onTimePct}%** (Đạt chỉ tiêu đề ra $\\ge 90\\%$).
 - **Thời gian trung bình cán bộ ca trực có mặt tại hiện trường:** **8.2 phút**.
 
 ---
 
-### 2. PHÂN TÍCH XU HƯỚNG VÀ ĐIỂM NÓNG (HOTSPOTS)
+### 2. PHÂN TÍCH XU HƯỚNG VÀ ĐIỂM NÓNG
 1. **Khu vực tập trung vi phạm cao nhất:**
    - **Nhà vệ sinh tầng 4 toà UET1 (UET1-4WC):** 14 lượt cảnh báo, chủ yếu là khói thuốc lá điếu vào khung giờ 21:30 – 22:30.
    - **Chiếu nghỉ cầu thang thoát hiểm tầng 5 toà UET3 (UET3-5CTD):** 9 lượt cảnh báo vào giờ nghỉ trưa 12:00 – 13:00.
-   - **Lối lên sân thượng toà UET2 (UET2-4ST):** 11 lượt cảnh báo thuốc lá điện tử (Vape) vào các đêm cuối tuần.
+   - **Lối lên sân thượng toà UET2 (UET2-4ST):** 11 lượt cảnh báo thuốc lá điện tử vào các đêm cuối tuần.
 2. **Cơ cấu loại vi phạm (qua phân loại AI tầng 2):**
    - Thuốc lá điếu truyền thống: **58.2%**
-   - Thuốc lá điện tử / Pod / Vape: **34.1%** (Có xu hướng gia tăng ở sinh viên năm 1, năm 2)
+   - Thuốc lá điện tử: **34.1%** (Có xu hướng gia tăng ở sinh viên năm 1, năm 2)
    - Báo nhầm do hơi nước / bụi cơ học: **7.7%** (Đã được bộ lọc AI loại trừ tự động).
 
 ---

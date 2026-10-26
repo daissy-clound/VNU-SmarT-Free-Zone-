@@ -1,23 +1,14 @@
-import { TelemetryMessage } from "../../backend/src/contracts/telemetry";
+import { Telemetry } from "../../backend/src/contracts/telemetry";
+import { DEFAULT_ZONES } from "../../backend/src/contracts/zones";
 
 const API_ENDPOINT = process.env.SFZ_API_URL || "http://127.0.0.1:3001/api/telemetry";
 
-const SENSOR_NODES = [
-  "UET1-3CT",
-  "UET1-4WC",
-  "UET2-2HL",
-  "UET2-4ST",
-  "UET3-2WC",
-  "UET3-5CTD",
-  "UET4-3CT",
-  "UET4-4ST",
-  "G2-WC-F1",
-  "G2-WC-F2",
-];
+/** 10 nút cảm biến theo danh mục khu vực dùng chung (backend/src/contracts/zones.ts) */
+const SENSOR_NODES = DEFAULT_ZONES.flatMap((zone) => (zone.sensor_id ? [zone.sensor_id] : []));
 
 let sequenceNumber = 1000;
 
-export function generateLivePacket(nodeId: string, isSmoke: boolean = false): TelemetryMessage {
+export function generateLivePacket(nodeId: string, isSmoke: boolean = false): Telemetry {
   sequenceNumber++;
   const basePm25 = isSmoke ? 68.0 + Math.random() * 35.0 : 8.0 + Math.random() * 8.0;
   const pm1 = basePm25 * (isSmoke ? 0.72 : 0.5);
@@ -42,7 +33,7 @@ export function generateLivePacket(nodeId: string, isSmoke: boolean = false): Te
   };
 }
 
-export async function sendTelemetry(packet: TelemetryMessage) {
+export async function sendTelemetry(packet: Telemetry) {
   try {
     const res = await fetch(API_ENDPOINT, {
       method: "POST",
@@ -65,7 +56,8 @@ async function startLiveSimulator() {
     cycle++;
     // Cứ mỗi 12 chu kỳ (~60s), tạo 1 đợt khói ngẫu nhiên tại 1 điểm nóng
     const triggerSmoke = cycle % 12 === 0;
-    const smokeNode = "UET1-4WC";
+    // Lần lượt đổi điểm nóng để dashboard có nhiều khu vực nghi vấn
+    const smokeNode = SENSOR_NODES[Math.floor(cycle / 12) % SENSOR_NODES.length];
 
     for (const nodeId of SENSOR_NODES) {
       const isSmoke = triggerSmoke && nodeId === smokeNode;

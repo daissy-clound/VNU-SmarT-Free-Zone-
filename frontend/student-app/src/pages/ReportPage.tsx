@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+<<<<<<< Updated upstream
 import { platform, ZoneItem, ReportResponse } from "../platform";
 import {
   MapPinIcon,
@@ -13,6 +14,9 @@ import {
   CheckCircleIcon,
   InfoIcon,
 } from "../components/Icons";
+=======
+import { platform, ZoneItem, ReportResponse, RateLimitedError } from "../platform";
+>>>>>>> Stashed changes
 
 interface ReportPageProps {
   onSuccess: (code: string) => void;
@@ -30,6 +34,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
   const [note, setNote] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [softNotice, setSoftNotice] = useState<string | null>(null);
   const [isUrlZone, setIsUrlZone] = useState<boolean>(false);
 
   useEffect(() => {
@@ -45,8 +50,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
     });
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const send = async (isEmergency: boolean) => {
     if (!selectedZone) {
       setErrorMessage("Vui lòng chọn hoặc quét mã QR khu vực.");
       return;
@@ -54,24 +58,30 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
     setLoading(true);
     setErrorMessage(null);
+    setSoftNotice(null);
 
     try {
       const res: ReportResponse = await platform.submitReport({
         zone_code: selectedZone,
         type: reportType,
-        ongoing,
-        emergency,
-        note: note.trim() || undefined,
+        ongoing: isEmergency || ongoing,
+        emergency: isEmergency,
+        note: (isEmergency ? `KHẨN CẤP. ${note}` : note).trim() || undefined,
       });
 
       onSuccess(res.tracking_code);
     } catch (err: any) {
-      setErrorMessage(err.message || "Đã xảy ra lỗi khi gửi. Vui lòng thử lại.");
+      if (err instanceof RateLimitedError) {
+        setSoftNotice(err.message);
+      } else {
+        setErrorMessage(err.message || "Đã xảy ra lỗi khi gửi. Vui lòng thử lại.");
+      }
     } finally {
       setLoading(false);
     }
   };
 
+<<<<<<< Updated upstream
   const handleToggleEmergency = () => {
     if (!emergency) {
       const confirmEmergency = window.confirm(
@@ -84,6 +94,20 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
       }
     } else {
       setEmergency(false);
+=======
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    void send(emergency);
+  };
+
+  const handleEmergencyClick = () => {
+    const confirmEmergency = window.confirm(
+      "XÁC NHẬN KHẨN CẤP\nCó cháy hoặc có người ngất tại đây?\n\nBấm OK để gửi ngay tín hiệu ưu tiên cao nhất tới ca trực. Nếu nguy hiểm đến tính mạng, hãy gọi 114 (cứu hoả) hoặc 115 (cấp cứu)."
+    );
+    if (confirmEmergency) {
+      setEmergency(true);
+      void send(true);
+>>>>>>> Stashed changes
     }
   };
 
@@ -118,6 +142,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
   return (
     <div className="page-report">
+<<<<<<< Updated upstream
       {/* Banner Khẩn cấp tinh tế */}
       <div className="emergency-callout">
         <div className="emergency-info">
@@ -155,6 +180,20 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
           <span style={{ fontSize: 12, color: "var(--accent-rose)", fontWeight: 600 }}>
             Chế độ Khẩn cấp đang BẬT: Phiếu sẽ chuyển thẳng mức ưu tiên cao nhất.
           </span>
+=======
+      {/* Nút Khẩn cấp */}
+      <button type="button" className="btn-emergency" onClick={handleEmergencyClick} disabled={loading}>
+        🚨 <strong>Khẩn cấp (cháy, có người ngất)</strong>
+      </button>
+      <div className="emergency-calls">
+        <a href="tel:114">📞 Gọi 114 · Cứu hoả</a>
+        <a href="tel:115">📞 Gọi 115 · Cấp cứu</a>
+      </div>
+
+      {emergency && (
+        <div style={{ background: "#fef2f2", border: "1.5px solid #dc2626", borderRadius: 8, padding: 12, marginBottom: 14 }}>
+          <strong style={{ color: "#dc2626" }}>⚠️ Chế độ khẩn cấp</strong>
+>>>>>>> Stashed changes
         </div>
       )}
 
@@ -177,6 +216,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
           </div>
 
           {isUrlZone && selectedZoneObj ? (
+<<<<<<< Updated upstream
             <div
               style={{
                 background: "var(--primary-subtle)",
@@ -215,6 +255,15 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
             </div>
           ) : (
             <div className="form-group" style={{ marginBottom: 0 }}>
+=======
+            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", padding: "10px 14px", borderRadius: 8 }}>
+              <strong style={{ color: "#166534", fontSize: 15 }}>{selectedZoneObj.name}</strong>
+              <div style={{ fontSize: 12, color: "#15803d", marginTop: 2 }}>{selectedZoneObj.code}</div>
+            </div>
+          ) : (
+            <div className="form-group" style={{ marginBottom: 0 }}>
+              <label className="form-label">Khu vực</label>
+>>>>>>> Stashed changes
               <select
                 className="form-select"
                 value={selectedZone}
@@ -234,6 +283,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
         {/* 4 Thẻ Phân loại hiện tượng */}
         <div className="card">
+<<<<<<< Updated upstream
           <div className="card-title">
             <div className="card-title-left">
               <span>Hiện tượng ghi nhận</span>
@@ -241,6 +291,28 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
             <span style={{ fontSize: 11, color: "var(--text-muted)", fontWeight: 500 }}>
               Chạm để chọn 1 loại
             </span>
+=======
+          <div className="card-title">🔍 Bạn thấy gì?</div>
+          <div className="type-grid">
+            {[
+              { id: "smoke_now", icon: "🚬", label: "Thuốc lá điếu", sub: "Khói đang bốc lên" },
+              { id: "vape", icon: "💨", label: "Thuốc lá điện tử", sub: "Hơi từ thiết bị điện tử" },
+              { id: "smell", icon: "👃", label: "Mùi khói nồng", sub: "Mùi đặc quánh" },
+              { id: "butts", icon: "🗑️", label: "Tàn thuốc / Rác", sub: "Đầu lọc, tàn vương vãi" },
+              { id: "other", icon: "❓", label: "Khác", sub: "Hành vi vi phạm khác" },
+            ].map((t) => (
+              <button
+                type="button"
+                key={t.id}
+                className={`type-btn ${reportType === t.id ? "active" : ""}`}
+                onClick={() => setReportType(t.id as any)}
+              >
+                <span className="icon">{t.icon}</span>
+                <span className="label">{t.label}</span>
+                <span className="sub">{t.sub}</span>
+              </button>
+            ))}
+>>>>>>> Stashed changes
           </div>
 
           <div className="type-grid">
@@ -294,19 +366,26 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
 
         {/* Ghi chú tuỳ chọn */}
         <div className="card">
+<<<<<<< Updated upstream
           <div className="card-title">
             <div className="card-title-left">
               <span>Ghi chú bổ sung (Tuỳ chọn)</span>
             </div>
             <span style={{ fontSize: 11, color: "var(--text-muted)" }}>Không bắt buộc</span>
           </div>
+=======
+          <div className="card-title">📝 Ghi chú (không bắt buộc)</div>
+          
+>>>>>>> Stashed changes
           <textarea
             className="form-textarea"
             placeholder="Mô tả nhanh vị trí cụ thể (VD: góc sau thang máy, chiếu nghỉ tầng 3... - Vui lòng không ghi tên cá nhân)."
             value={note}
             onChange={(e) => setNote(e.target.value)}
             maxLength={300}
+            aria-describedby="note-privacy"
           />
+<<<<<<< Updated upstream
 
           {/* Cam kết bảo mật Zero-PII */}
           <div className="privacy-assurance">
@@ -314,8 +393,24 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
             <div className="privacy-assurance-text">
               <strong>Bảo mật danh tính 100%:</strong> Hệ thống tuân thủ quy chuẩn Zero-PII. Chúng tôi không lưu số điện thoại, tài khoản hay địa chỉ IP của bạn.
             </div>
+=======
+          <div className="privacy-notice" id="note-privacy">
+            <span>🛡️</span>
+            <div>
+              <strong>Không ghi tên, số phòng của người khác.</strong>
+            </div>
+          </div>
+          <div style={{ textAlign: "right", fontSize: 11, color: "#94a3b8", marginTop: 4 }}>
+            {note.length} / 300 ký tự
+>>>>>>> Stashed changes
           </div>
         </div>
+
+        {softNotice && (
+          <div role="status" style={{ background: "#fffbeb", color: "#92400e", padding: 12, borderRadius: 8, fontSize: 13, marginBottom: 14 }}>
+            {softNotice}
+          </div>
+        )}
 
         {errorMessage && (
           <div
@@ -337,6 +432,7 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
           </div>
         )}
 
+<<<<<<< Updated upstream
         {/* Nút gửi phản ánh chính */}
         <button
           type="submit"
@@ -364,6 +460,21 @@ export function ReportPage({ onSuccess, onOpenTrack }: ReportPageProps) {
             </>
           )}
         </button>
+=======
+        <button type="submit" className="btn-primary" disabled={loading}>
+          {loading ? "Đang gửi..." : "Gửi phản ánh ẩn danh"}
+        </button>
+
+        <div style={{ textAlign: "center", marginTop: 14 }}>
+          <button
+            type="button"
+            onClick={onOpenTrack}
+            style={{ background: "none", border: "none", color: "#17634c", fontSize: 13, fontWeight: 600, cursor: "pointer", textDecoration: "underline" }}
+          >
+            Tra cứu phản ánh đã gửi
+          </button>
+        </div>
+>>>>>>> Stashed changes
       </form>
     </div>
   );

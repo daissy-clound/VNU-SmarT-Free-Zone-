@@ -180,7 +180,7 @@ async function runMilestone1() {
     await sleep(800);
 
     // ------------------------------------------------------------------------
-    console.log("[BƯỚC 6] Sinh viên mở điện thoại, nhập mã tra cứu [${trackingCode}]...");
+    console.log(`[BƯỚC 6] Sinh viên mở điện thoại, nhập mã tra cứu [${trackingCode}]...`);
     const trackResult = await request(`/api/reports/track/${trackingCode}`);
     console.log(`   ✔ Trạng thái hiển thị: [${trackResult.data.status_label}] (${trackResult.data.status})`);
     console.log(`   ✔ Vị trí: ${trackResult.data.zone_name}`);

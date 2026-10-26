@@ -16,6 +16,8 @@
 - 📊 [Bảng tổng hợp minh chứng tiến độ & cam kết](docs/thuyet-minh/BANG-TONG-HOP-MINH-CHUNG-TIEN-DO.md)
 - ⚡ [Mạch mô phỏng phần cứng ESP32 trên Wokwi (Chạy trực tiếp)](https://wokwi.com/projects/478273736679993345)
 - 🔒 [Quy chế dữ liệu & Quyền riêng tư (Zero-PII)](docs/quy-che-du-lieu-va-quyen-rieng-tu.md)
+- 🎬 [Lời thoại video demo](docs/thuyet-minh/LOI-THOAI-VIDEO.md)
+- 🔍 [Rà soát kỹ thuật 26/10 — việc đã sửa và việc còn mở theo từng thành viên](docs/ra-soat-ky-thuat-2026-10-26.md)
 
 ---
 
@@ -28,8 +30,11 @@ Yêu cầu môi trường: **Node.js >= 22.12**. Từ thư mục gốc:
 npm ci
 
 # Khởi chạy đồng thời Backend API (3001), Admin Dashboard (5173) và Student App (5174)
+# Lần đầu tự tạo backend/.env và CSDL SQLite demo (npm run setup để làm lại từ đầu)
 npm run dev
 ```
+
+Triển khai: đặt `VITE_API_URL` cho cả `frontend/admin` và `frontend/student-app` (xem `.env.example` trong từng thư mục) khi API nằm khác origin.
 
 ### Ứng dụng & Tài khoản truy cập:
 - **Ứng dụng Sinh viên (Quét QR & Hỗ trợ cai thuốc):** [http://127.0.0.1:5174](http://127.0.0.1:5174) (hoặc giả lập quét điểm nóng: [http://127.0.0.1:5174/?zone=UET1-3CT](http://127.0.0.1:5174/?zone=UET1-3CT))
@@ -47,9 +52,11 @@ npm run dev
 
 ## 🛠 Kiểm tra chất lượng & Test Suites
 ```sh
-npm run typecheck      # Kiểm tra 100% Type-safety toàn dự án
-npm run build          # Đóng gói sản phẩm cả 2 ứng dụng Frontend
-npm test               # Chạy 27/27 bài kiểm thử tích hợp & hợp đồng
+npm run typecheck      # Kiểm tra kiểu: backend, scripts, dashboard, app SV
+npm run build          # Đóng gói cả 2 ứng dụng frontend
+npm test               # Kiểm thử hợp đồng, máy chủ thử, điều phối, AI, luồng dashboard
+npm run test:backend   # Kiểm thử backend thật (cần CSDL; tự chạy setup)
+npm run test:e2e       # Kiểm thử trình duyệt (npx playwright install chromium trước)
 ```
 
 ---

@@ -118,24 +118,35 @@ export function QuitSupportPage() {
       {/* Banner Tổng đài Quốc gia & Y tế trường */}
       <div style={{ background: "#f0fdf4", border: "1px solid #86efac", borderRadius: 12, padding: "12px 14px", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div>
-          <strong style={{ color: "#166534", fontSize: 13 }}>Tổng đài Quốc gia Cai thuốc lá (Miễn phí):</strong>
+          <strong style={{ color: "#166534", fontSize: 13 }}>Tổng đài cai thuốc lá (miễn phí)</strong>
           <div style={{ fontSize: 18, fontWeight: 800, color: "#15803d" }}>1800 6606</div>
         </div>
         <a
           href="tel:18006606"
+<<<<<<< Updated upstream
           style={{ background: "var(--primary)", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: "var(--radius-full)", fontSize: 12, fontWeight: 700 }}
+=======
+          style={{ background: "#15803d", color: "#fff", textDecoration: "none", padding: "8px 14px", borderRadius: 20, fontSize: 12, fontWeight: 700, whiteSpace: "nowrap" }}
+>>>>>>> Stashed changes
         >
           Gọi miễn cước
         </a>
       </div>
 
       {/* Điều hướng sub-tabs */}
-      <div style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 4 }}>
+      <div className="chip-row" style={{ display: "flex", gap: 6, marginBottom: 14, overflowX: "auto", paddingBottom: 4 }}>
         {[
+<<<<<<< Updated upstream
           { id: "craving", label: "Vượt cơn thèm (4D)" },
           { id: "plan", label: "Kế hoạch cai thuốc" },
           { id: "fagerstrom", label: "Đo mức nghiện" },
           { id: "chat", label: "Trợ lý đồng hành" },
+=======
+          { id: "craving", label: "⚡ Dừng hút thuốc" },
+          { id: "plan", label: "🎯 Kế hoạch của tôi" },
+          { id: "fagerstrom", label: "📊 Đo mức nghiện" },
+          { id: "chat", label: "💬 Trợ lý" },
+>>>>>>> Stashed changes
         ].map((tab) => (
           <button
             key={tab.id}
@@ -163,7 +174,7 @@ export function QuitSupportPage() {
       {activeSubTab === "craving" && (
         <div>
           <div className="breathing-box">
-            <h2 style={{ fontSize: 18, fontWeight: 800 }}>VƯỢT CƠN THÈM THUỐC 4D</h2>
+            <h2 style={{ fontSize: 18, fontWeight: 800 }}>DỪNG HÚT THUỐC</h2>
             <p style={{ fontSize: 12, opacity: 0.9, marginTop: 4 }}>
               Cơn thèm nicotine sinh lý chỉ kéo dài 3 – 5 phút. Hãy cùng thở sâu để vượt qua!
             </p>
@@ -195,24 +206,24 @@ export function QuitSupportPage() {
                 boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
               }}
             >
-              {cravingActive ? "Tạm dừng" : "BẮT ĐẦU VƯỢT CƠN THÈM (3 PHÚT)"}
+              {cravingActive ? "Tạm dừng" : "BẮT ĐẦU · 3 PHÚT"}
             </button>
           </div>
 
           <div className="card">
-            <div className="card-title">💡 Kỹ thuật 4D Khoa học từ WHO</div>
+            <div className="card-title">💡 4 bước dừng hút thuốc</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, fontSize: 13 }}>
               <div>
-                <strong style={{ color: "#17634c" }}>1. Delay (Trì hoãn):</strong> Đợi ít nhất 5 phút trước khi quyết định. 90% cơn thèm sẽ tự biến mất.
+                <strong style={{ color: "#17634c" }}>1. Trì hoãn:</strong> Đợi ít nhất 5 phút trước khi quyết định. 90% cơn thèm sẽ tự biến mất.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>2. Deep breath (Thở sâu):</strong> Hít vào thật sâu bằng mũi trong 4 giây, giữ 7 giây và thở ra từ từ bằng miệng trong 8 giây.
+                <strong style={{ color: "#17634c" }}>2. Thở sâu:</strong> Hít vào thật sâu bằng mũi trong 4 giây, giữ 7 giây và thở ra từ từ bằng miệng trong 8 giây.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>3. Drink water (Uống nước):</strong> Uống từng ngụm nước lạnh nhỏ để xoa dịu cảm giác bồn chồn ở khoang miệng.
+                <strong style={{ color: "#17634c" }}>3. Uống nước:</strong> Uống từng ngụm nước lạnh nhỏ để xoa dịu cảm giác bồn chồn ở khoang miệng.
               </div>
               <div>
-                <strong style={{ color: "#17634c" }}>4. Distract (Làm việc khác):</strong> Đứng dậy đi bộ, nghe một bản nhạc yêu thích hoặc trò chuyện cùng bạn bè.
+                <strong style={{ color: "#17634c" }}>4. Làm việc khác:</strong> Đứng dậy đi bộ, nghe một bản nhạc yêu thích hoặc trò chuyện cùng bạn bè.
               </div>
             </div>
           </div>
@@ -292,7 +303,7 @@ export function QuitSupportPage() {
             <form onSubmit={handleSavePlan} className="card">
               <div className="card-title">🎯 Thiết lập Kế hoạch Cai thuốc</div>
               <p style={{ fontSize: 12, color: "#64748b", marginBottom: 12 }}>
-                Dữ liệu chỉ lưu riêng tư trên máy của bạn. Không gửi lên máy chủ, không liên quan đến xử lý kỷ luật.
+                Chỉ lưu trên máy của bạn, không gửi lên máy chủ.
               </p>
 
               <div className="form-group">
@@ -307,7 +318,7 @@ export function QuitSupportPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Số điếu thuốc/hơi Pod trung bình mỗi ngày:</label>
+                <label className="form-label">Số điếu (hoặc lần hút thuốc lá điện tử) mỗi ngày:</label>
                 <input
                   type="number"
                   className="form-input"
@@ -319,7 +330,7 @@ export function QuitSupportPage() {
               </div>
 
               <div className="form-group">
-                <label className="form-label">Giá trung bình 1 bao thuốc / 1 đầu Pod (VND):</label>
+                <label className="form-label">Giá trung bình 1 bao thuốc (đồng):</label>
                 <input
                   type="number"
                   className="form-input"
@@ -353,7 +364,7 @@ export function QuitSupportPage() {
         <div className="card">
           <div className="card-title">📊 Đánh giá Mức độ Phụ thuộc Nicotine</div>
           <p style={{ fontSize: 12, color: "#64748b", marginBottom: 14 }}>
-            Thang đo Fagerström Test for Nicotine Dependence (FTND) chuẩn quốc tế gồm 6 câu hỏi:
+            6 câu hỏi theo thang Fagerström.
           </p>
 
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
@@ -441,7 +452,7 @@ export function QuitSupportPage() {
       {/* Tab 4: Trợ lý AI Cai thuốc */}
       {activeSubTab === "chat" && (
         <div className="card" style={{ display: "flex", flexDirection: "column", height: 440 }}>
-          <div className="card-title">🤖 Trợ lý Đồng hành Cai thuốc (AI Coach)</div>
+          <div className="card-title">🤖 Trợ lý cai thuốc</div>
           
           <div style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column", gap: 8, padding: 8, background: "#f8fafc", borderRadius: 8 }}>
             {messages.map((m, idx) => (

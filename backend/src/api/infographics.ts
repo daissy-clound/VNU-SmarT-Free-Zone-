@@ -58,9 +58,10 @@ infographicsRouter.get("/", async (req, res) => {
     const items = await prisma.infographic.findMany({
       where: { is_active: true },
       orderBy: { created_at: "desc" },
+      // API công khai: chỉ trả vai trò người đăng, không trả tên cán bộ
       include: {
         created_by: {
-          select: { id: true, name: true, role: true },
+          select: { role: true },
         },
       },
     });

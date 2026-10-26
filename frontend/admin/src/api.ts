@@ -143,7 +143,12 @@ export const api = {
       body: JSON.stringify(body),
     }),
   resetSandbox: (token: string) =>
-    request("/sandbox/reset", token, { method: "POST" }),
+    request("/sandbox/reset", token, { method: "POST" }) as Promise<{ message: string; deleted_tickets: number }>,
+  createSandboxTicket: (token: string, zone_code: string) =>
+    request("/sandbox/ticket", token, {
+      method: "POST",
+      body: JSON.stringify({ zone_code, presence: true }),
+    }).then((res: { ticket: unknown }) => ticketSchema.parse(res.ticket)),
 };
 export function errorMessage(error: unknown) {
   if (error instanceof ApiError) return error.message;
