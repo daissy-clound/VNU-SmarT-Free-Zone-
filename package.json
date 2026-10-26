@@ -18,7 +18,7 @@
     "dev:admin": "npm run dev --workspace @sfz/admin",
     "dev:student": "npm run dev --workspace @sfz/student-app",
     "start": "tsx backend/src/server.ts",
-    "build:backend": "npx prisma generate --schema=backend/prisma/schema.prisma",
+    "build:backend": "npx prisma@5.22.0 generate --schema=backend/prisma/schema.prisma",
     "build": "npm run build --workspace @sfz/admin && npm run build --workspace @sfz/student-app",
     "build:admin": "npm run build --workspace @sfz/admin",
     "build:student": "npm run build --workspace @sfz/student-app",
@@ -33,13 +33,15 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.58.2",
+    "@prisma/client": "^5.22.0",
     "@types/node": "^24.0.0",
     "concurrently": "^9.2.0",
+    "prisma": "^5.22.0",
     "socket.io": "^4.8.1",
     "tsx": "^4.20.0",
     "typescript": "~5.9.3"
   },
   "engines": {
-    "node": ">=22.12.0"
+    "node": ">=20.18.0 <=22.x"
   }
 }
