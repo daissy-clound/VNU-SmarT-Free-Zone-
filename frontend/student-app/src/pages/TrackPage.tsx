@@ -160,7 +160,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
           </div>
 
           {/* Phản hồi từ Ban Quản lý */}
-          {detail.response_note && (
+          {(detail.feedback || (detail as any).response_note) && (
             <div
               style={{
                 background: "var(--primary-subtle)",
@@ -174,7 +174,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
                 Phản hồi từ Ban Quản lý / Phòng trực:
               </strong>
               <p style={{ fontSize: 13, color: "var(--primary-dark)", marginTop: 4, lineHeight: 1.5 }}>
-                {detail.response_note}
+                {detail.feedback || (detail as any).response_note}
               </p>
             </div>
           )}

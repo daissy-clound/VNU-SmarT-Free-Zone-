@@ -39,6 +39,7 @@ export interface TrackingDetail {
   type_label: string;
   arrived_at?: string | null;
   feedback: string | null;
+  response_note?: string | null;
 }
 
 /** Gửi quá nhiều lần trong thời gian ngắn: hiện thông báo nhẹ nhàng thay vì báo lỗi */
