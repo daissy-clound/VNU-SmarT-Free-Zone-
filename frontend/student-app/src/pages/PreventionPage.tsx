@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { platform } from "../platform";
 import {
+  SparklesIcon,
   ZoomInIcon,
   DownloadIcon,
   ShareIcon,
@@ -12,17 +13,6 @@ import {
   InfoIcon,
 } from "../components/Icons";
 
-const POSTER_URL = "/infographics/no-smoking-poster.png";
-
-function imageLoads(src: string) {
-  return new Promise<boolean>((resolve) => {
-    const img = new Image();
-    img.onload = () => resolve(img.naturalWidth > 1);
-    img.onerror = () => resolve(false);
-    img.src = src;
-  });
-}
-
 export function PreventionPage() {
   const [infographics, setInfographics] = useState<any[]>([]);
   const [activeCard, setActiveCard] = useState<number | null>(0);
@@ -30,10 +20,8 @@ export function PreventionPage() {
   const [copiedLink, setCopiedLink] = useState<boolean>(false);
 
   useEffect(() => {
-    // Chỉ hiện infographic có ảnh tải được
-    platform.getInfographics().then(async (items) => {
-      const ok = await Promise.all(items.map((info) => imageLoads(info.image_url)));
-      setInfographics(items.filter((_, i) => ok[i]));
+    platform.getInfographics().then((items) => {
+      setInfographics(items);
     });
   }, []);
 
@@ -60,47 +48,97 @@ export function PreventionPage() {
     {
       id: 1,
       tag: "NGHỊ QUYẾT 173/2024/QH15",
-      title: "Cấm tuyệt đối thuốc lá điện tử & thuốc lá nung nóng",
-      summary: "Từ 2025, Việt Nam cấm hoàn toàn sản xuất, kinh doanh, nhập khẩu, tàng trữ và sử dụng thuốc lá điện tử.",
+      title: "Chủ trương cấm thuốc lá điện tử & thuốc lá nung nóng",
+      summary: "Từ 2025, Việt Nam thực hiện chủ trương cấm sản xuất, kinh doanh, nhập khẩu, tàng trữ và sử dụng Pod, Vape.",
       details:
-        "Nghị quyết số 173/2024/QH15 của Quốc hội khẳng định bảo vệ sức khoẻ thế hệ trẻ trước hiểm hoạ ma tuý và hoá chất độc hại ngụy trang dưới dạng thuốc lá điện tử. Sinh viên tàng trữ hoặc hút trong khuôn viên trường học sẽ bị xử lý kỷ luật nghiêm khắc.",
+        "Nghị quyết số 173/2024/QH15 của Quốc hội khẳng định mục tiêu bảo vệ sức khoẻ thế hệ trẻ trước các hoá chất độc hại ngụy trang dưới dạng Pod, Vape. Sinh viên ĐHQGHN cùng chung tay duy trì nếp sống học đường văn minh và an toàn.",
     },
     {
       id: 2,
-      tag: "HIỂM HOẠ THẾ HỆ THỨ 3",
-      title: "Khói thuốc thụ động thế hệ 3",
+      tag: "KHÓI THUỐC THẾ HỆ THỨ 3",
+      title: "Khói thuốc thụ động thế hệ 3 (Thirdhand Smoke)",
       summary: "Khói thuốc không biến mất khi tàn thuốc tắt. Độc chất bám dai dẳng trên tường, rèm cửa, đệm KTX.",
       details:
-        "Hạt bụi siêu mịn PM0.3 và các hợp chất nitrosamine tồn lưu nhiều tháng sau khi hút, phản ứng với các chất oxy hoá trong không khí tạo thành chất gây ung thư mới. Người sống cùng phòng chịu ảnh hưởng nặng nề mà không hề hay biết.",
+        "Hạt bụi siêu mịn PM0.3 và các hợp chất độc hại tồn lưu nhiều tháng sau khi hút, tiếp tục phản ứng với không khí tạo thành chất gây hại hô hấp. Giữ không gian chung sạch khói là cách bảo vệ bạn bè cùng phòng tốt nhất.",
     },
     {
       id: 3,
-      tag: "CẢNH BÁO CỦA TỔ CHỨC Y TẾ THẾ GIỚI",
-      title: "Tổn thương phổi cấp do thuốc lá điện tử",
-      summary: "Vitamin E Acetate và kim loại nặng chì, niken trong tinh dầu gây xơ hoá phế nang phổi vĩnh viễn.",
+      tag: "CẢNH BÁO Y TẾ WHO",
+      title: "Tổn thương phổi do tinh dầu thuốc lá điện tử",
+      summary: "Hương liệu nhân tạo và kim loại nặng khi đun nóng gây tổn thương các túi khí phế nang trong phổi.",
       details:
-        "Theo Tổ chức Y tế Thế giới, tinh dầu thuốc lá điện tử chứa hơn 16.000 hương liệu hóa học chưa qua kiểm nghiệm hít qua đường thở. Khi bị nung nóng ở nhiệt độ cao, chúng phân hủy thành formaldehyde và acrolein gây bỏng niêm mạc phổi.",
+        "Theo Tổ chức Y tế Thế giới (WHO), tinh dầu chứa nhiều hoá chất tổng hợp chưa qua kiểm nghiệm hít sâu vào phổi. Khi hoá hơi ở nhiệt độ cao, chúng dễ gây viêm đường thở cấp tính và suy giảm thể tích phổi ở người trẻ.",
     },
     {
       id: 4,
       tag: "ĐIỀU 11 LUẬT PCTHTL",
       title: "Khuôn viên học đường không khói thuốc",
-      summary: "Khu vực trong nhà trường đại học là nơi cấm hút thuốc hoàn toàn. Vi phạm bị xử phạt theo luật định.",
+      summary: "Khu vực trong nhà trường đại học là nơi cấm hút thuốc hoàn toàn vì sức khoẻ chung.",
       details:
-        "Quy định áp dụng đối với tất cả cán bộ, giảng viên và sinh viên tại mọi vị trí: phòng học, giảng đường, hành lang, cầu thang thoát hiểm và nhà vệ sinh chung. ĐHQGHN kiên quyết xây dựng môi trường văn minh học đường.",
+        "Quy định áp dụng đối với tất cả cán bộ, giảng viên và sinh viên tại mọi vị trí: phòng học, giảng đường, hành lang, cầu thang và khu vệ sinh chung. ĐHQGHN kiên quyết xây dựng giảng đường trong lành, thân thiện.",
     },
   ];
 
   return (
     <div className="page-prevention">
+      {/* Chuỗi ngày tích cực */}
+      <div
+        style={{
+          background: "linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)",
+          border: "1px solid #bbf7d0",
+          borderRadius: "var(--radius-md)",
+          padding: "14px 16px",
+          display: "flex",
+          alignItems: "center",
+          gap: 14,
+          marginBottom: 14,
+        }}
+      >
+        <div
+          style={{
+            width: 48,
+            height: 48,
+            borderRadius: "var(--radius-sm)",
+            background: "var(--primary)",
+            color: "#ffffff",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            fontWeight: 800,
+            fontSize: 22,
+            flexShrink: 0,
+            boxShadow: "0 2px 8px rgba(11, 94, 66, 0.25)",
+          }}
+        >
+          18
+        </div>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
+            <SparklesIcon size={14} color="var(--primary)" />
+            <strong style={{ fontSize: 13, color: "var(--primary-dark)" }}>
+              18 ngày liên tiếp giữ sạch không gian
+            </strong>
+          </div>
+          <p style={{ fontSize: 11, color: "var(--primary-light)", marginTop: 2, lineHeight: 1.4 }}>
+            Toà UET1 & Nhà đa năng đang giữ chuỗi không gian không khói kỷ lục. Cảm ơn sự chung tay của bạn!
+          </p>
+        </div>
+      </div>
+
       {/* Poster Chiến Dịch Chính Thức */}
       <div className="poster-hero-card">
         <div className="card-title" style={{ padding: "14px 16px 0 16px" }}>
           <div className="card-title-left">
             <NewspaperIcon size={18} color="var(--primary)" />
-            <span>Áp phích chính thức</span>
+            <span>Ấn phẩm truyền thông chính thức</span>
           </div>
           <span className="badge-pill badge-emerald">Ban hành 2026</span>
+        </div>
+
+        <div style={{ padding: "10px 16px 0 16px" }}>
+          <p style={{ fontSize: 12, color: "var(--text-muted)", marginBottom: 10 }}>
+            Ấn phẩm áp phích tuyên truyền phòng chống thuốc lá và thuốc lá điện tử trong toàn thể sinh viên ĐHQGHN.
+          </p>
         </div>
 
         {/* Khung xem trước poster */}
@@ -160,49 +198,20 @@ export function PreventionPage() {
           </div>
           {copiedLink && (
             <div style={{ fontSize: 11, color: "var(--primary)", marginTop: 6, textAlign: "center", fontWeight: 600 }}>
-              Đã sao chép link
+              Đã sao chép link ảnh vào bộ nhớ tạm!
             </div>
           )}
         </div>
       </div>
-
-      {/* Infographic do Ban quản lý đăng (trừ áp phích đã hiện ở trên) */}
-      {infographics.filter((info) => info.image_url !== POSTER_URL).length > 0 && (
-        <div className="card">
-          <div className="card-title">
-            <div className="card-title-left">
-              <NewspaperIcon size={18} color="var(--primary)" />
-              <span>Infographic</span>
-            </div>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-            {infographics
-              .filter((info) => info.image_url !== POSTER_URL)
-              .map((info) => (
-                <div
-                  key={info.id}
-                  className="poster-preview-wrapper"
-                  onClick={() => setLightboxImage(info.image_url)}
-                  title="Chạm để xem toàn màn hình"
-                >
-                  <img src={info.image_url} alt={info.title} className="poster-preview-img" loading="lazy" />
-                  <div className="poster-zoom-hint">
-                    <ZoomInIcon size={14} color="#ffffff" />
-                    <span>{info.title}</span>
-                  </div>
-                </div>
-              ))}
-          </div>
-        </div>
-      )}
 
       {/* Thẻ Kiến thức Tương tác */}
       <div className="card">
         <div className="card-title">
           <div className="card-title-left">
             <LeafIcon size={18} color="var(--primary)" />
-            <span>Kiến thức cần biết</span>
+            <span>Kiến thức & Khung pháp lý cần biết</span>
           </div>
+          <span style={{ fontSize: 11, color: "var(--text-muted)" }}>4 chủ đề</span>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 10 }}>

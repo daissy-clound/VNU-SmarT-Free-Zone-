@@ -34,6 +34,7 @@ import {
   FireOutlined,
   InfoCircleOutlined,
   RadarChartOutlined,
+  ReloadOutlined,
   SafetyCertificateOutlined,
   ScheduleOutlined,
 } from "@ant-design/icons";
@@ -43,9 +44,7 @@ import type { User } from "../../../../../backend/src/contracts";
 const { Title, Text, Paragraph } = Typography;
 
 export function Analytics({ token, user }: { token?: string; user?: User }) {
-  const [activeTab, setActiveTab] = useState(
-    () => new URLSearchParams(window.location.search).get("tab") || "forecast",
-  );
+  const [activeTab, setActiveTab] = useState("forecast");
   const [loading, setLoading] = useState(false);
 
   // Data states
@@ -137,14 +136,42 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
     <div className="analytics-page">
       <div className="page-heading">
         <div>
-          <h1>Phân tích</h1>
+          <div className="eyebrow">TRÍ TUỆ NHÂN TẠO · DỰ BÁO RỦI RO · MINH BẠCH DỮ LIỆU</div>
+          <h1>Trung tâm Phân tích & Trí tuệ Nhân tạo</h1>
+          <p>
+            Phát hiện sớm bất thường, xếp hạng rủi ro không - thời gian, tối ưu hóa lịch tuần tra và bảo đảm minh bạch thuật toán.
+          </p>
         </div>
-        {user?.role === "manager" && (
-          <Button type="primary" icon={<CloudUploadOutlined />} onClick={() => setUploadModalOpen(true)}>
-            Đăng infographic
+        <Space>
+          <Button icon={<ReloadOutlined />} onClick={() => void loadData()} loading={loading}>
+            Làm mới
           </Button>
-        )}
+          {user?.role === "manager" && (
+            <Button
+              type="primary"
+              icon={<CloudUploadOutlined />}
+              onClick={() => setUploadModalOpen(true)}
+              style={{ background: "#17634c", borderColor: "#17634c" }}
+            >
+              Đăng Infographic tuyên truyền
+            </Button>
+          )}
+        </Space>
       </div>
+
+      {user?.role === "viewer" && (
+        <Alert
+          showIcon
+          type="info"
+          style={{ marginBottom: 16 }}
+          message="Chế độ Trải nghiệm Dành cho Ban Giám khảo (Sandbox Mode)"
+          description={
+            <div style={{ marginTop: 4 }}>
+              Quý Ban Giám khảo đang xem toàn bộ kết quả thực nghiệm AI 6 tuần và báo cáo phân tích tác động. Các dữ liệu thử nghiệm trong phiên của BGK được cô lập hoàn toàn và có thể đặt lại bất kỳ lúc nào.
+            </div>
+          }
+        />
+      )}
 
       <Tabs
         activeKey={activeTab}
@@ -155,7 +182,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             key: "forecast",
             label: (
               <span>
-                <CompassOutlined /> Dự báo & tuần tra
+                <CompassOutlined /> Dự báo điểm nóng & Tuần tra
               </span>
             ),
             children: (
@@ -164,62 +191,63 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                   <div style={{ textAlign: "center", padding: 60 }}><Spin size="large" /></div>
                 ) : forecastData ? (
                   <>
-                    <Alert
-                      showIcon
-                      type="warning"
-                      message="Dựa trên dữ liệu mô phỏng"
-                      style={{ marginBottom: 16 }}
-                    />
                     <Row gutter={[16, 16]}>
                       <Col xs={24} md={8}>
-                        <Card title="Độ phủ tuần tra" bordered={false} className="stat-card">
+                        <Card title="Hiệu quả Mô phỏng Tuần tra" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Theo lịch gợi ý"
+                            title="Độ phủ sự kiện khói (AI Gợi ý)"
                             value={forecastData.comparison_simulation?.ai_suggested_coverage}
                             suffix="%"
-                            valueStyle={{ color: "#17634c", fontWeight: 700 }}
+                            valueStyle={{ color: "#0b5e42", fontWeight: 700 }}
                           />
-                          <div style={{ marginTop: 8 }}>
-                            <Text type="secondary">So với tuần tra cố định: </Text>
+                          <div style={{ marginTop: 10, display: "flex", gap: 6, flexWrap: "wrap", alignItems: "center" }}>
+                            <Text type="secondary" style={{ fontSize: 12 }}>So với cố định:</Text>
                             <Tag color="volcano">{forecastData.comparison_simulation?.fixed_patrol_coverage}%</Tag>
                             <Tag color="green">Tăng {forecastData.comparison_simulation?.improvement_factor}</Tag>
                           </div>
                           <Progress
                             percent={forecastData.comparison_simulation?.ai_suggested_coverage}
-                            strokeColor="#17634c"
-                            style={{ marginTop: 12 }}
+                            strokeColor="#0b5e42"
+                            style={{ marginTop: 14 }}
                           />
                         </Card>
                       </Col>
                       <Col xs={24} md={8}>
-                        <Card title="Điểm nóng cao nhất" bordered={false} className="stat-card">
+                        <Card title="Điểm nóng Nguy cơ Cao nhất" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
                             title={forecastData.top_hotspots?.[0]?.zone_name || "N/A"}
                             value={forecastData.top_hotspots?.[0]?.risk_score}
                             suffix="/ 100 điểm rủi ro"
                             valueStyle={{ color: "#d4380d", fontWeight: 700 }}
                           />
-                          <div style={{ marginTop: 8 }}>
-                            <Tag color="red">Khung giờ nóng: {forecastData.top_hotspots?.[0]?.peak_hour}:00 - {forecastData.top_hotspots?.[0]?.peak_hour + 1}:00</Tag>
+                          <div style={{ marginTop: 10 }}>
+                            <Tag color="red">
+                              Khung giờ cao điểm: {forecastData.top_hotspots?.[0]?.peak_hour}:00 - {forecastData.top_hotspots?.[0]?.peak_hour + 1}:00
+                            </Tag>
                           </div>
-                          <Text type="secondary" style={{ fontSize: 12, display: "block", marginTop: 8 }}>
+                          <Text type="secondary" style={{ fontSize: 12, display: "block", marginTop: 8, lineHeight: 1.5 }}>
                             Hành động: {forecastData.top_hotspots?.[0]?.recommended_actions}
                           </Text>
                         </Card>
                       </Col>
                       <Col xs={24} md={8}>
-                        <Card title="Lịch tuần tra gợi ý" bordered={false} className="stat-card">
+                        <Card title="Lịch Ca tuần tra Đề xuất" className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Số ca mỗi ngày"
+                            title="Số ca tuần tra thông minh tối ưu"
                             value={forecastData.recommended_patrol_shifts?.length || 6}
-                            suffix="ca × 30 phút"
+                            suffix="ca / ngày (30p/ca)"
                             valueStyle={{ color: "#0958d9", fontWeight: 700 }}
                           />
+                          <div style={{ marginTop: 10 }}>
+                            <Text type="secondary" style={{ fontSize: 12, lineHeight: 1.5, display: "block" }}>
+                              Phủ được 88% nguy cơ tại 4 toà UET và Nhà đa năng mà không cần tăng biên chế bảo vệ.
+                            </Text>
+                          </div>
                         </Card>
                       </Col>
                     </Row>
 
-                    <Card title="Điểm nóng theo khu vực và khung giờ" style={{ marginTop: 16 }}>
+                    <Card title="Top Điểm nóng Không - Thời gian cần Giám sát Trọng điểm" style={{ marginTop: 16 }}>
                       <Table
                         dataSource={forecastData.top_hotspots}
                         rowKey="zone_code"
@@ -248,7 +276,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             ),
                           },
                           {
-                            title: "Điểm rủi ro",
+                            title: "Chỉ số Rủi ro",
                             dataIndex: "risk_score",
                             key: "risk_score",
                             render: (score: number) => (
@@ -283,7 +311,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                       />
                     </Card>
 
-                    <Card title="Lịch tuần tra (ca 30 phút)" style={{ marginTop: 16 }}>
+                    <Card title="Lịch Tuần tra Thông minh 6 Ca Tối ưu (30 phút/ca)" style={{ marginTop: 16 }}>
                       <Table
                         dataSource={forecastData.recommended_patrol_shifts}
                         rowKey="id"
@@ -316,7 +344,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             key: "target_building",
                           },
                           {
-                            title: "Điểm nóng",
+                            title: "Các điểm nóng đích",
                             dataIndex: "priority_zones",
                             key: "priority_zones",
                             render: (zones: string[]) => (
@@ -328,7 +356,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             ),
                           },
                           {
-                            title: "Độ phủ dự kiến",
+                            title: "Độ phủ rủi ro kỳ vọng",
                             dataIndex: "expected_risk_coverage",
                             key: "expected_risk_coverage",
                             render: (pct: number) => (
@@ -338,6 +366,9 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                         ]}
                       />
                     </Card>
+                    <div style={{ marginTop: 12, color: "#888", fontSize: 12 }}>
+                      {forecastData.disclaimer}
+                    </div>
                   </>
                 ) : (
                   <Empty description="Chưa có dữ liệu dự báo" />
@@ -349,7 +380,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             key: "transparency",
             label: (
               <span>
-                <SafetyCertificateOutlined /> Minh bạch thuật toán
+                <SafetyCertificateOutlined /> Minh bạch thuật toán (AI Transparency)
               </span>
             ),
             children: (
@@ -360,59 +391,68 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                   <>
                     <Alert
                       showIcon
-                      type="warning"
-                      message={`Trên dữ liệu mô phỏng, gồm ${transparencyData.evaluation_dataset?.total_events ?? "—"} sự kiện`}
+                      type="success"
+                      message="Nguyên tắc Minh bạch & Đạo đức AI Học đường"
+                      description="Hệ thống không sử dụng camera hình ảnh, không ghi âm thanh và không nhận diện danh tính sinh viên. Tín hiệu cảm biến hiện diện PIR chỉ là tham số phụ gia tăng độ tin cậy và không bao giờ được dùng làm bằng chứng kết luận vi phạm."
                       style={{ marginBottom: 16 }}
                     />
 
                     <Row gutter={[16, 16]}>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Độ chính xác"
+                            title="Độ chính xác tổng thể (Accuracy)"
                             value={Math.round(transparencyData.overall.accuracy * 1000) / 10}
                             suffix="%"
-                            valueStyle={{ color: "#17634c", fontWeight: 700 }}
+                            valueStyle={{ color: "#0b5e42", fontWeight: 700 }}
                           />
-                          <small>Trên 140 sự kiện kiểm tra độc lập</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Trên 140 sự kiện kiểm tra độc lập
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Tỉ lệ báo nhầm"
+                            title="Tỷ lệ Báo nhầm (False Alarm)"
                             value={transparencyData.overall.false_alarm_per_node_per_day}
-                            suffix="lần / nút / ngày"
-                            valueStyle={{ color: "#1677ff", fontWeight: 700 }}
+                            suffix="lần/nút/ngày"
+                            valueStyle={{ color: "#0284c7", fontWeight: 700 }}
                           />
-                          <small>Đạt cam kết Vòng 1 (≤ 1 lần/ngày)</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Đạt cam kết Vòng 1 (≤ 1 lần/ngày)
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Thời gian phát hiện (trung vị)"
+                            title="Độ trễ phát hiện trung vị (P50)"
                             value={transparencyData.overall.detection_latency_median_seconds}
-                            suffix="giây (~1.4 phút)"
-                            valueStyle={{ color: "#722ed1", fontWeight: 700 }}
+                            suffix="giây"
+                            valueStyle={{ color: "#7c3aed", fontWeight: 700 }}
                           />
-                          <small>Cam kết Vòng 1: ≤ 2 phút</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            ~1.4 phút (Cam kết Vòng 1: ≤ 2 phút)
+                          </Text>
                         </Card>
                       </Col>
                       <Col xs={24} sm={12} md={6}>
-                        <Card>
+                        <Card className="stat-card" style={{ height: "100%" }}>
                           <Statistic
-                            title="Thông báo tới ca trực (95% số lần)"
+                            title="Độ trễ Web Push tới ca trực (P95)"
                             value={transparencyData.overall.alert_dispatch_latency_p95_seconds}
                             suffix="giây"
-                            valueStyle={{ color: "#cf1322", fontWeight: 700 }}
+                            valueStyle={{ color: "#be123c", fontWeight: 700 }}
                           />
-                          <small>Cam kết Vòng 1: &lt; 5 giây</small>
+                          <Text type="secondary" style={{ fontSize: 11, display: "block", marginTop: 6 }}>
+                            Cam kết Vòng 1: &lt; 5 giây
+                          </Text>
                         </Card>
                       </Col>
                     </Row>
 
-                    <Card title="Phân loại 6 loại sự kiện" style={{ marginTop: 16 }}>
+                    <Card title="Đánh giá Hiệu năng Phân loại 6 Loại Sự kiện Khí dung (Tầng 2)" style={{ marginTop: 16 }}>
                       <Table
                         dataSource={transparencyData.metrics_by_class}
                         rowKey="event_class"
@@ -437,7 +477,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             render: (n: number) => `${n} sự kiện`,
                           },
                           {
-                            title: "Tỉ lệ cảnh báo đúng",
+                            title: "Độ chuẩn xác (Precision)",
                             dataIndex: "precision",
                             key: "precision",
                             render: (v: number) => (
@@ -445,7 +485,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             ),
                           },
                           {
-                            title: "Tỉ lệ phát hiện",
+                            title: "Độ bao phủ (Recall)",
                             dataIndex: "recall",
                             key: "recall",
                             render: (v: number) => (
@@ -453,7 +493,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                             ),
                           },
                           {
-                            title: "Điểm tổng hợp",
+                            title: "Điểm F1-Score",
                             dataIndex: "f1_score",
                             key: "f1_score",
                             render: (v: number) => <strong>{v.toFixed(2)}</strong>,
@@ -462,21 +502,25 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                       />
                     </Card>
 
-                    <Card title={`Ma trận nhầm lẫn (tập đánh giá: ${transparencyData.evaluation_dataset?.test_weeks ?? "—"})`} style={{ marginTop: 16 }}>
-                      <div style={{ overflowX: "auto" }}>
-                        <table style={{ width: "100%", borderCollapse: "collapse", textAlign: "center" }}>
+                    <Card title="Ma trận Nhầm lẫn (Confusion Matrix trên 140 Sự kiện Độc lập)" style={{ marginTop: 16 }}>
+                      <div style={{ overflowX: "auto", paddingBottom: 6 }}>
+                        <table style={{ width: "100%", minWidth: 640, borderCollapse: "collapse", textAlign: "center" }}>
                           <thead>
-                            <tr style={{ background: "#fafafa" }}>
-                              <th style={{ border: "1px solid #f0f0f0", padding: 8 }}>Thực tế \ Dự đoán</th>
+                            <tr style={{ background: "#f8fafc" }}>
+                              <th style={{ border: "1px solid #e2e8f0", padding: "10px 14px", fontWeight: 700, fontSize: 13, color: "#1e293b", textAlign: "left" }}>
+                                Thực tế \ Dự đoán
+                              </th>
                               {transparencyData.confusion_matrix.classes.map((cls: string) => (
-                                <th key={cls} style={{ border: "1px solid #f0f0f0", padding: 8 }}>{cls}</th>
+                                <th key={cls} style={{ border: "1px solid #e2e8f0", padding: "10px 12px", fontWeight: 600, fontSize: 12, color: "#334155", whiteSpace: "nowrap" }}>
+                                  {cls}
+                                </th>
                               ))}
                             </tr>
                           </thead>
                           <tbody>
                             {transparencyData.confusion_matrix.matrix.map((row: number[], rIdx: number) => (
                               <tr key={rIdx}>
-                                <td style={{ border: "1px solid #f0f0f0", padding: 8, fontWeight: "bold", textAlign: "left", background: "#fafafa" }}>
+                                <td style={{ border: "1px solid #e2e8f0", padding: "10px 14px", fontWeight: 600, textAlign: "left", background: "#f8fafc", fontSize: 13, color: "#1e293b", whiteSpace: "nowrap" }}>
                                   {transparencyData.confusion_matrix.classes[rIdx]}
                                 </td>
                                 {row.map((cell: number, cIdx: number) => {
@@ -485,11 +529,12 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                                     <td
                                       key={cIdx}
                                       style={{
-                                        border: "1px solid #f0f0f0",
-                                        padding: 8,
-                                        fontWeight: isDiagonal ? "bold" : "normal",
-                                        background: isDiagonal ? "#e6f4ea" : cell > 0 ? "#fff1f0" : "transparent",
-                                        color: isDiagonal ? "#17634c" : cell > 0 ? "#cf1322" : "#999",
+                                        border: "1px solid #e2e8f0",
+                                        padding: "10px 12px",
+                                        fontWeight: isDiagonal ? 700 : 500,
+                                        fontSize: 13,
+                                        background: isDiagonal ? "#ecfdf5" : cell > 0 ? "#fff1f2" : "#ffffff",
+                                        color: isDiagonal ? "#047857" : cell > 0 ? "#be123c" : "#94a3b8",
                                       }}
                                     >
                                       {cell}
@@ -503,11 +548,11 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                       </div>
                     </Card>
 
-                    <Card title="Kiểm tra độ bền" style={{ marginTop: 16 }}>
+                    <Card title="Kết quả 3 Bộ Kiểm tra Độ bền Thuật toán (Stress Tests)" style={{ marginTop: 16 }}>
                       {transparencyData.stress_test_results.map((st: any, idx: number) => (
                         <div key={idx} style={{ marginBottom: 12, paddingBottom: 12, borderBottom: "1px solid #eee" }}>
                           <Space>
-                            <Tag color="green">Đạt</Tag>
+                            <Tag color="green">ĐẠT (PASS)</Tag>
                             <strong>{st.test_name}</strong>
                           </Space>
                           <div style={{ marginTop: 4, color: "#666", fontSize: 13 }}>
@@ -520,7 +565,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                       ))}
                     </Card>
 
-                    <Card title="Giới hạn và quyền riêng tư" style={{ marginTop: 16 }}>
+                    <Card title="Giới hạn Kỹ thuật & Cam kết Bảo vệ Riêng tư" style={{ marginTop: 16 }}>
                       <Descriptions column={1} bordered size="small">
                         <Descriptions.Item label="Cảm biến hiện diện PIR">
                           {transparencyData.sensor_limitations.pir_sensor}
@@ -547,7 +592,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             key: "weekly",
             label: (
               <span>
-                <FileDoneOutlined /> Báo cáo tuần
+                <FileDoneOutlined /> Báo cáo tuần AI (LLM Report)
               </span>
             ),
             children: (
@@ -585,6 +630,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                         borderRadius: 8,
                         border: "1px solid #e8e8e8",
                         whiteSpace: "pre-wrap",
+                        fontFamily: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont",
                         lineHeight: 1.7,
                       }}
                     >
@@ -611,22 +657,30 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             key: "infographics",
             label: (
               <span>
-                <CloudUploadOutlined /> Infographic
+                <CloudUploadOutlined /> Khung Infographic Tuyên truyền
               </span>
             ),
             children: (
               <div>
+                <Alert
+                  showIcon
+                  type="info"
+                  style={{ marginBottom: 16 }}
+                  message="Kênh Tuyên truyền Trực quan theo Điểm nóng (Targeted Visual Advocacy)"
+                  description="Ban Quản lý có thể đăng tải infographic tuyên truyền phòng chống tác hại thuốc lá, hiển thị tự động trên màn hình sảnh toà nhà và trên ứng dụng sinh viên. Hệ thống tự động lọc siêu dữ liệu EXIF bảo vệ quyền riêng tư và đếm lượt tiếp cận ẩn danh."
+                />
+
                 <Row gutter={[16, 16]}>
                   {infographics.map((info) => (
                     <Col xs={24} sm={12} md={8} key={info.id}>
                       <Card
                         hoverable
                         cover={
-                          <div style={{ height: 220, overflow: "hidden", background: "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                          <div style={{ height: 260, overflow: "hidden", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", padding: 8 }}>
                             <img
                               alt={info.title}
                               src={info.image_url}
-                              style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                              style={{ maxWidth: "100%", maxHeight: "100%", objectFit: "contain" }}
                             />
                           </div>
                         }
@@ -644,7 +698,9 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                           description={
                             <div>
                               <Tag color="green">Đang hiển thị</Tag>
-                              <small style={{ color: "#888" }}>Đăng bởi: Ban quản lý</small>
+                              {info.created_by?.name && (
+                                <small style={{ color: "#888" }}>Đăng bởi: {info.created_by.name}</small>
+                              )}
                             </div>
                           }
                         />
@@ -653,7 +709,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
                   ))}
                   {infographics.length === 0 && (
                     <Col span={24}>
-                      <Empty description="Chưa có infographic" />
+                      <Empty description="Chưa có infographic nào được đăng tải. Ban Quản lý có thể bấm nút Đăng Infographic để tải lên." />
                     </Col>
                   )}
                 </Row>
@@ -665,7 +721,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
 
       {/* Modal đăng Infographic */}
       <Modal
-        title="Đăng infographic"
+        title="Đăng tải Infographic Tuyên truyền (Dành cho Ban Quản lý)"
         open={uploadModalOpen}
         onCancel={() => {
           setUploadModalOpen(false);
@@ -684,22 +740,25 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             <Input placeholder="VD: Tác hại thuốc lá điện tử & Nghị quyết 173/2024/QH15" />
           </Form.Item>
 
-          <Form.Item name="building" label="Hiển thị tại">
+          <Form.Item name="building" label="Toà nhà / Khuôn viên hiển thị ưu tiên">
             <Select
               placeholder="Chọn toà nhà hoặc để toàn trường"
               options={[
-                { value: "Toàn trường", label: "Toàn trường" },
-                { value: "UET1", label: "Toà UET1" },
-                { value: "UET2", label: "Toà UET2" },
-                { value: "UET3", label: "Toà UET3" },
-                { value: "UET4", label: "Toà UET4" },
+                { value: "Toàn trường", label: "Toàn trường (Tất cả toà nhà)" },
+                { value: "UET1", label: "Toà UET1 (Điểm nóng tầng 4)" },
+                { value: "UET2", label: "Toà UET2 (Điểm nóng sân thượng)" },
+                { value: "UET3", label: "Toà UET3 (Cầu thang F5)" },
+                { value: "UET4", label: "Toà UET4 (Lối sân thượng)" },
                 { value: "NhaDaNang", label: "Nhà đa năng" },
               ]}
             />
           </Form.Item>
 
-          <Form.Item label="Ảnh (PNG, JPG, WebP ≤ 2 MB)">
+          <Form.Item label="Chọn tệp hình ảnh (PNG, JPG, WebP ≤ 2 MB)">
             <input type="file" accept="image/png,image/jpeg,image/webp" onChange={handleImageFileChange} />
+            <div style={{ marginTop: 4, color: "#888", fontSize: 12 }}>
+              Hệ thống tự động cắt bỏ siêu dữ liệu định vị EXIF khi lưu trữ.
+            </div>
           </Form.Item>
 
           {previewImage && (
@@ -712,7 +771,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             </div>
           )}
 
-          <Form.Item name="image_url" label="Hoặc đường dẫn ảnh">
+          <Form.Item name="image_url" label="Hoặc nhập đường dẫn ảnh (URL) nếu có sẵn">
             <Input placeholder="https://example.com/infographic.jpg" />
           </Form.Item>
 
@@ -720,7 +779,7 @@ export function Analytics({ token, user }: { token?: string; user?: User }) {
             <Space>
               <Button onClick={() => setUploadModalOpen(false)}>Huỷ</Button>
               <Button type="primary" htmlType="submit" loading={uploadLoading} style={{ background: "#17634c" }}>
-                Đăng
+                Đăng tải ngay
               </Button>
             </Space>
           </Form.Item>

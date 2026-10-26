@@ -1,21 +1,124 @@
-/* Nút bấm, ô nhập không tự kế thừa font của trang */
-button,
-input,
-select,
-textarea {
-  font-family: inherit;
-}
 :root {
-  font-family: "Be Vietnam Pro", "Segoe UI", Roboto, -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-  color: #223c33;
-  background: #f3f6f4;
+  font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+  background: #f8fafc;
   font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 * {
   box-sizing: border-box;
 }
 body {
   margin: 0;
+  font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+/* Khắc phục triệt để lỗi lệch chữ trong khung viền (Tags, Buttons, Tabs, Cards) */
+body,
+button,
+input,
+select,
+textarea,
+.ant-typography,
+.ant-btn,
+.ant-tag,
+.ant-tabs,
+.ant-tabs-tab,
+.ant-card,
+.ant-card-head,
+.ant-card-head-title,
+.ant-table,
+.ant-table-cell,
+.ant-statistic,
+.ant-statistic-title,
+.ant-statistic-content,
+.ant-statistic-content-value,
+.ant-descriptions,
+.ant-descriptions-item-label,
+.ant-descriptions-item-content,
+.ant-form-item-label > label,
+.ant-alert,
+.ant-alert-message,
+.ant-alert-description,
+.ant-modal-title,
+.ant-dropdown-menu-item {
+  font-family: 'Be Vietnam Pro', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+.ant-tag {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1.35 !important;
+  padding: 3px 9px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
+}
+
+.ant-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1.45 !important;
+  gap: 6px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  box-sizing: border-box !important;
+  padding: 4px 14px !important;
+}
+
+.ant-tabs-tab {
+  padding: 10px 18px !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.ant-statistic-title {
+  margin-bottom: 6px !important;
+  line-height: 1.4 !important;
+  font-size: 13px !important;
+  color: #64748b !important;
+  font-weight: 500 !important;
+}
+
+.ant-statistic-content {
+  line-height: 1.25 !important;
+}
+
+.ant-statistic-content-value {
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+.ant-card {
+  border-radius: 12px !important;
+  border-color: #e2e8f0 !important;
+}
+
+.ant-card-head {
+  padding: 14px 20px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+}
+
+.ant-card-head-title {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: #0f172a !important;
+}
+
+.ant-table-thead > tr > th {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  background: #f8fafc !important;
+}
+
+.ant-table-cell {
+  padding: 12px 16px !important;
+  line-height: 1.5 !important;
 }
 a {
   color: #17634c;
@@ -90,14 +193,15 @@ p {
   flex-shrink: 0;
 }
 .sidebar-brand {
-  padding: 30px 18px 37px;
+  padding: 30px 22px 37px;
   font-size: 12px;
 }
-.sidebar-brand strong {
-  font-size: 15px;
-  white-space: nowrap;
+.sidebar-caption {
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  color: #90a098;
+  padding: 0 24px 16px;
 }
-
 .ant-menu {
   border-inline-end: 0 !important;
 }
@@ -112,7 +216,31 @@ p {
   background: #e9f2ed;
   font-weight: 600;
 }
-
+.sidebar-footer {
+  position: absolute;
+  bottom: 30px;
+  left: 24px;
+  right: 24px;
+  border-top: 1px solid #e5ece7;
+  padding-top: 22px;
+  font-size: 12px;
+  color: #73847b;
+}
+.campus-mark {
+  font-size: 12px;
+  border: 1px solid #cbd9d0;
+  padding: 5px 8px;
+  border-radius: 5px;
+  width: fit-content;
+  margin-bottom: 12px;
+  color: #17634c;
+}
+.sidebar-footer strong {
+  color: #314e40;
+}
+.sidebar-footer p {
+  margin-top: 8px;
+}
 .app-header {
   height: 84px;
   background: #fff;
@@ -223,13 +351,17 @@ p {
   color: #6086b6;
 }
 .stat-number {
-  font-size: 38px;
-  font-weight: 650;
-  letter-spacing: -1px;
-  line-height: 1.7;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin: 6px 0 8px 0;
+  color: #0f172a;
 }
 .stat-card .muted {
   font-size: 12px;
+  color: #64748b;
+  line-height: 1.45;
 }
 .overview-grid {
   display: grid;
@@ -261,7 +393,19 @@ p {
   color: #bc4a35;
   font-weight: 600;
 }
-
+.prevention-card {
+  background: #eaf2eb;
+  border-color: #dce9df;
+}
+.prevention-card h2 {
+  font-size: 22px;
+  color: #254d36;
+}
+.prevention-card p {
+  font-size: 12px;
+  color: #6b8170;
+  margin-top: 16px;
+}
 .infographic-placeholder {
   height: 160px;
   border: 1px dashed #9cbca7;
@@ -277,36 +421,50 @@ p {
 .infographic-placeholder .anticon {
   font-size: 36px;
 }
-.infographic-frame {
-  margin: 0;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid #dcebdc;
-  background: #f3f7ee;
-}
-.infographic-frame img {
-  display: block;
-  width: 100%;
-  max-height: 220px;
-  object-fit: contain;
-}
-.infographic-frame figcaption {
-  padding: 8px 12px;
-  font-size: 12px;
-  color: #3f5a45;
-}
-.infographic-frame figcaption span {
-  display: block;
-  margin-top: 2px;
-  color: #6b8170;
-}
 .infographic-placeholder strong {
   font-size: 13px;
 }
 .infographic-placeholder span {
   font-size: 12px;
 }
-
+.flow-card .ant-card-body {
+  padding: 22px;
+}
+.process-flow {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 12px;
+}
+.process-flow > div {
+  font-size: 12px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.process-flow span {
+  color: #749080;
+  font-size: 12px;
+  background: #edf4ef;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+}
+.flow-card p {
+  font-size: 12px;
+  margin: 20px 0 0;
+}
+.page-footer {
+  margin-top: 32px;
+  font-size: 12px;
+  color: #61736a;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
 .table-toolbar {
   display: flex;
   justify-content: space-between;
@@ -428,7 +586,14 @@ p {
   color: #b5cdbe;
   max-width: 380px;
 }
-
+.login-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 42px;
+  color: #b5cdbe;
+  font-size: 13px;
+}
 .login-story > small {
   color: #9bb6a4;
 }
@@ -806,8 +971,15 @@ button:focus-visible {
   .overview-grid {
     grid-template-columns: 1fr;
   }
-  
-  
+  .prevention-card .ant-card-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+  .prevention-card .infographic-placeholder {
+    grid-column: 2;
+    grid-row: 1/5;
+  }
   .stat-grid {
     gap: 12px;
   }
@@ -823,7 +995,10 @@ button:focus-visible {
   .map-grid > .ant-card:last-child .ant-empty {
     margin: 12px;
   }
-  
+  .process-flow {
+    flex-wrap: wrap;
+    gap: 18px;
+  }
 }
 @media (max-width: 800px) {
   .desktop-sidebar {
@@ -860,8 +1035,13 @@ button:focus-visible {
   .user-role {
     display: none;
   }
-  
-  
+  .page-footer {
+    flex-direction: column;
+  }
+  .sidebar-footer {
+    position: static;
+    margin: 40px 24px;
+  }
   .sidebar-brand {
     padding-top: 10px;
   }
@@ -904,14 +1084,18 @@ button:focus-visible {
   .header-location {
     font-size: 12px;
   }
-  
+  .prevention-card .ant-card-body {
+    display: block;
+  }
   .stat-number {
     font-size: 32px;
   }
   .stat-top {
     font-size: 12px;
   }
-  
+  .process-flow > div {
+    width: calc(50% - 12px);
+  }
   .shift-actions .ant-btn {
     min-height: 44px;
   }
@@ -1587,21 +1771,4 @@ button:focus-visible {
   .dispatch-checking li {
     grid-template-columns: 1fr auto;
   }
-}
-.sandbox-card {
-  margin-bottom: 16px;
-  border-color: #d3c4f0;
-}
-
-.sandbox-list {
-  list-style: none;
-  margin: 14px 0 0;
-  padding: 0;
-}
-.sandbox-list li {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 6px 0;
-  border-top: 1px solid #eef3ec;
 }

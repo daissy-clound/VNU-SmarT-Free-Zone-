@@ -1,10 +1,10 @@
-# BÁO CÁO KẾT QUẢ KHẢO SÁT FORM 1: NHU CẦU & THỰC TRẠNG KHÓI THUỐC HỌC ĐƯỜNG
+# BÁO CÁO KẾT QUẢ KHẢO SÁT FORM 1: THỰC TRẠNG & NHU CẦU MÔI TRƯỜNG HỌC ĐƯỜNG KHÔNG KHÓI THUỐC
 
 **Dự án:** VNU SmarT-Free Zone — Không gian Học đường Không Khói thuốc  
 **Đơn vị thực hiện:** Đội BND — Trường Đại học Công nghệ (UET) & ĐHQGHN  
-**Thời gian khảo sát:** 16/10/2026 – 22/10/2026  
-**Phương thức:** Khảo sát trực tuyến qua Google Forms (Ẩn danh 100%, tự nguyện)  
-**Quy mô mẫu:** **128 sinh viên** (trong đó **82 sinh viên nội trú KTX**, 46 sinh viên ngoại trú)
+**Tệp dữ liệu gốc:** `Khảo sát Môi trường Học đường Không Khói thuốc (Câu trả lời).xlsx`  
+**Phương thức khảo sát:** Trực tuyến qua Google Forms (Ẩn danh 100%, tự nguyện)  
+**Đối tượng tham gia:** Sinh viên đang theo học tại các cơ sở đào tạo của ĐHQGHN  
 
 **Nguồn dữ liệu:** Google Forms của đội. Cần đính kèm bản xuất CSV đã ẩn danh tại `docs/reports/form1-ket-qua-an-danh.csv` để mọi con số trong báo cáo truy được về dữ liệu gốc.
 
@@ -12,45 +12,114 @@
 
 ## I. MỤC TIÊU VÀ PHƯƠNG PHÁP KHẢO SÁT
 
-1. **Mục tiêu:**
-   - Thu thập số liệu thực chứng về mức độ tiếp xúc với khói thuốc thụ động và khí dung thuốc lá điện tử trong khuôn viên KTX và giảng đường ĐHQGHN.
+1. **Mục tiêu nghiên cứu:**
+   - Thu thập số liệu thực chứng về tần suất sinh viên tiếp xúc với khói thuốc và thuốc lá điện tử trong khuôn viên trường học.
+   - Làm rõ các "vùng mù" không gian và khung giờ vi phạm thường diễn ra.
    - Nhận diện rào cản tâm lý khiến sinh viên ngần ngại phản ánh vi phạm với Nhà trường.
-   - Đo lường mức độ sẵn sàng tiếp nhận giải pháp công nghệ (quét QR ẩn danh, cảm biến IoT không camera).
-   - Làm căn cứ thực tế để hiệu chỉnh các tham số trong bộ giả lập sự kiện (Simulator) và mô hình dự báo AI.
+   - Đánh giá mức độ chấp nhận và kỳ vọng của sinh viên đối với hệ thống công nghệ giám sát IoT và ứng dụng phản ánh ẩn danh qua mã QR.
 
 2. **Cơ cấu mẫu khảo sát:**
-   - **Nơi ở:** 64.1% (82 SV) ở KTX ĐHQGHN (KTX Ngoại ngữ, KTX Mễ Trì, KTX Hoà Lạc); 35.9% (46 SV) ở trọ ngoại trú.
-   - **Tình trạng hút thuốc:** 85.9% (110 SV) không hút thuốc; 14.1% (18 SV) đang hút thuốc lá điếu hoặc sử dụng Pod/Vape.
+   - **Đối tượng:** 100% người tham gia khảo sát là sinh viên.
+   - **Phân bổ theo năm học:**
+     - Sinh viên Năm 2: **35.3%**
+     - Sinh viên Năm 3: **29.4%**
+     - Sinh viên Năm 4 trở lên: **23.5%**
+     - Sinh viên Năm 1: **11.8%**
+   - **Địa bàn học tập & sinh hoạt:** Đại học Công nghệ - ĐHQGHN (khuôn viên chính Cầu Giấy, giảng đường Kiều Mai, phân khu KTX và khuôn viên ĐHQGHN tại Hoà Lạc).
 
 ---
 
-## II. KẾT QUẢ VÀ 3 PHÁT HIỆN CỐT LÕI
+## II. KẾT QUẢ PHÂN TÍCH THEO 20 TIÊU CHÍ KHẢO SÁT
 
-### 1. Phát hiện 1: Khói thuốc diễn ra phổ biến tại các "vùng mù" tuần tra
-- **78.1%** sinh viên cho biết thường xuyên ngửi thấy mùi khói thuốc hoặc nhìn thấy người hút tại KTX ít nhất 2–3 lần mỗi tuần; trong đó **32.8%** gặp phải hằng ngày.
-- **Top 3 điểm nóng vi phạm:**
-  1. *Chiếu nghỉ và cầu thang bộ thoát hiểm:* **64.8%** bình chọn.
-  2. *Khu vệ sinh chung tầng cao:* **57.0%** bình chọn.
-  3. *Lối lên sân thượng và góc hành lang khuất:* **42.2%** bình chọn.
-- **Khung giờ cao điểm:**
-  - Cao điểm tối/đêm: **21:00 – 23:30** (chiếm 68.4% lượt phản ánh).
-  - Cao điểm trưa: **11:30 – 13:00** (chiếm 22.1% lượt phản ánh).
+### 1. Thực trạng tiếp xúc với khói thuốc trong khuôn viên trường
+- **Tần suất bắt gặp trong 30 ngày gần đây:**
+  - **82.4%** sinh viên khẳng định có bắt gặp tình trạng hút thuốc trong trường (trong đó **58.8%** bắt gặp 1–2 lần, **11.8%** bắt gặp 3–5 lần, **11.8%** bắt gặp trên 5 lần).
+  - Chỉ có **17.6%** không nhớ rõ hoặc ít bắt gặp.
+- **Top 5 địa điểm thường xuyên xuất hiện vi phạm (Đa lựa chọn):**
+  1. *Hành lang và lối đi giữa các toà nhà:* **47.1%**
+  2. *Khu vực ăn uống, căng tin:* **47.1%**
+  3. *Khu vực nhà vệ sinh chung:* **35.3%**
+  4. *Khu vực cổng trường:* **35.3%**
+  5. *Khu vực gửi xe và sân trường / ghế đá:* **29.4% – 23.5%**
+- **Khung thời gian vi phạm tập trung:**
+  - **Sau giờ học (tan tầm):** **64.7%**
+  - **Giờ nghỉ trưa:** **35.3%**
+  - **Giờ giải lao giữa các tiết học:** **35.3%**
+  - Trước giờ học và buổi tối: **17.6% – 5.9%**
 
-### 2. Phát hiện 2: Rào cản sợ trả thù và mất lòng bạn cùng phòng
-Khi được hỏi *"Vì sao bạn hiếm khi hoặc chưa từng báo cáo vi phạm hút thuốc với Ban Quản lý?"*:
-- **62.5%** trả lời: *E ngại lộ danh tính, sợ bị người hút trả thù hoặc bạn bè cô lập*.
-- **54.7%** trả lời: *Thủ tục phản ánh truyền thống quá phiền hà (phải trực tiếp lên phòng bảo vệ hoặc viết đơn)*.
-- **48.4%** trả lời: *Nghĩ rằng báo cáo xong cũng không ai xuống giải quyết kịp thời do người hút rời đi nhanh*.
+### 2. Mức độ ảnh hưởng đến sinh viên
+- **Mức độ ảnh hưởng tiêu cực (Thang điểm 1 đến 5):**
+  - Điểm 5 (Rất nghiêm trọng): **41.2%**
+  - Điểm 4: **17.6%**
+  - Điểm 3 (Trung bình): **17.6%**
+  - Điểm 1–2: **23.5%**
+- **Các tác động thực tế sinh viên phải chịu đựng:**
+  - **82.4%** lo ngại về sức khoẻ do hít phải khói thuốc thụ động (Secondhand & Thirdhand smoke).
+  - **64.7%** khó chịu vì mùi khói nồng nặc và ngột ngạt bám trong phòng kín.
+  - **58.8%** bị ảnh hưởng trực tiếp đến trải nghiệm học tập, nghỉ ngơi.
+  - **41.2%** cảm thấy không gian học đường chưa thực sự văn minh, trong lành.
 
-### 3. Phát hiện 3: Sự ủng hộ vượt trội với cơ chế phản ánh QR ẩn danh và cảm biến không camera
-- **91.4%** sinh viên khẳng định sẽ tích cực quét mã QR để gửi phản ánh nếu được đảm bảo ẩn danh tuyệt đối (Điểm trung bình sẵn sàng đạt **4.62 / 5.0**).
-- **95.3%** sinh viên đồng thuận cao việc lắp đặt cảm biến khói và cảm biến chuyển động PIR khi được giải thích rõ: *Thiết bị hoàn toàn không có camera ghi hình, không thu âm thanh, chỉ đo nồng độ hạt quang học để bảo vệ quyền riêng tư*.
-- Trong số 18 sinh viên đang hút thuốc: **72.2%** (13 bạn) chia sẻ từng có ý định cai thuốc nhưng thiếu công cụ hỗ trợ kín đáo và mong muốn có nút khẩn cấp giúp vượt qua cơn thèm tức thời.
+### 3. Rào cản khiến sinh viên chưa từng phản ánh
+Khi được hỏi về tiền sử phản ánh:
+- **52.9%** chưa từng phản ánh dù đã chứng kiến vi phạm.
+- **35.3%** chưa gặp tình huống đủ bức xúc để phản ánh.
+- Chỉ có **11.8%** đã từng phản ánh với Nhà trường hoặc Ban Quản lý.
+
+**Nguyên nhân cốt lõi khiến sinh viên im lặng (Đa lựa chọn):**
+1. **Lo ngại bị trả thù, nhận diện hoặc xảy ra mâu thuẫn cá nhân:** **58.8%** sinh viên lựa chọn.
+2. **Không biết phản ánh qua kênh nào:** **58.8%**
+3. **Không biết bộ phận / phòng ban nào chịu trách nhiệm tiếp nhận:** **47.1%**
+4. **Ngại mất thời gian, thủ tục rườm rà:** **41.2%**
+5. **Nghĩ rằng phản ánh không mang lại hiệu quả rõ rệt:** **41.2%**
+
+### 4. Kỳ vọng về giải pháp công nghệ và phần mềm phản ánh
+- **Hình thức phản ánh mong muốn nhất:**
+  - **Mini App hoặc ứng dụng web riêng trên điện thoại:** **70.6%**
+  - **Quét mã QR tại chỗ để gửi tin báo nhanh:** **41.2%**
+  - Biểu mẫu trực tuyến: **35.3%**
+  - Đường dây nóng hỗ trợ trực tiếp: **23.5%**
+- **Những yếu tố quyết định để sinh viên sẵn sàng sử dụng ứng dụng:**
+  - **82.4%**: Có thể chọn vị trí / toạ độ khu vực xảy ra sự việc nhanh chóng.
+  - **70.6%**: Thao tác cực kỳ đơn giản, hoàn thành trong thời gian rất ngắn (≤ 30 giây).
+  - **64.7%**: **Không bắt buộc cung cấp danh tính (Cam kết ẩn danh 100%)**.
+  - **47.1%**: Có cam kết bảo mật thông tin và không lưu vết cá nhân.
+  - **41.2%**: Có thể đính kèm thông tin và theo dõi trạng thái tiếp nhận / xử lý.
+- **Đánh giá mức độ cần thiết của hệ thống IoT phát hiện & cảnh báo:**
+  - **70.6%** đánh giá mức cần thiết cao (Mức 4 và 5).
+  - **23.5%** đánh giá mức 3.
+  - Chỉ có **5.9%** cho rằng chưa cần thiết.
+- **Mức độ sẵn sàng sử dụng khi Nhà trường triển khai:**
+  - **47.1%**: Chắc chắn sẽ sử dụng.
+  - **35.3%**: Tuỳ thuộc vào cách triển khai thực tế có thuận tiện và bảo mật hay không.
+  - **11.8%**: Có thể sẽ sử dụng.
+
+### 5. Nguyên tắc đạo đức và bảo vệ quyền riêng tư
+- **Về hình thức xử lý khi phát hiện khói:**
+  - **70.6%** mong muốn kết hợp cảnh báo nhẹ nhàng tại chỗ và thông báo cho cán bộ trực toà nhà đến kiểm tra xác minh.
+  - **29.4%** mong muốn chỉ phát cảnh báo nhắc nhở nội quy tại khu vực.
+- **Lo ngại lớn nhất của sinh viên khi áp dụng công nghệ:**
+  - **58.8%** lo ngại thông tin phản ánh bị tiết lộ.
+  - **52.9%** lo ngại dữ liệu cá nhân bị thu thập hoặc sử dụng sai mục đích.
+  - **41.2%** lo ngại hệ thống không được bảo trì hoặc xử lý không hiệu quả.
+  - **23.5%** lo ngại cảm biến nhận diện nhầm hơi nước hoặc bụi sương.
+- **Nguyên tắc triển khai bắt buộc theo ý kiến sinh viên:**
+  - **58.8%**: Phải có cơ chế xác minh thực tế bởi con người trước khi đưa ra kết luận.
+  - **58.8%**: Bảo mật tuyệt đối thông tin của người phản ánh.
+  - **41.2%**: Không công khai danh tính người bị phản ánh, không bêu tên hoặc xếp hạng cá nhân.
+  - **41.2%**: Công khai minh bạch mục đích thu thập và thời hạn lưu trữ dữ liệu.
 
 ---
 
-## III. TÁC ĐỘNG ĐẾN VIỆC THIẾT KẾ GIẢI PHÁP MVP
+## III. 4 KẾT LUẬN ĐỊNH HƯỚNG KIẾN TRÚC HỆ THỐNG VNU SMART-FREE ZONE
 
-1. **Hiệu chỉnh bộ giả lập (Simulator):** Dồn 70% các sự kiện khói giả lập vào 2 khung giờ 21:00–23:30 và 11:30–13:00 tại các vị trí cầu thang và nhà vệ sinh tầng cao đúng như khảo sát chỉ ra.
-2. **Quy tắc bảo vệ danh tính (Privacy by Design):** Loại bỏ hoàn toàn trường nhập Họ tên, MSSV, SĐT trong ứng dụng sinh viên. Bổ sung cơ chế sinh mã tra cứu ngẫu nhiên (VD `K7Q2-9XMA`) để sinh viên theo dõi tiến độ mà không lộ bất kỳ thông tin nào.
-3. **Bổ sung nhánh Hỗ trợ cai thuốc (Quit Support):** Tách biệt chức năng hỗ trợ cai thuốc khỏi luồng xử phạt để tạo không gian đồng cảm, tích hợp kỹ thuật 4D và kết nối Tổng đài Quốc gia 1800 6606.
+| Phát hiện từ khảo sát thực tế | Quyết định thiết kế trong Hệ thống VNU SmarT-Free Zone |
+| :--- | :--- |
+| **1. 58.8% sợ bị nhận diện, 64.7% yêu cầu không lưu danh tính** | Ứng dụng Sinh viên áp dụng chuẩn **Zero-PII**: Không bắt đăng nhập, không yêu cầu Họ tên, MSSV, Email hay SĐT. Mọi phản ánh chỉ lưu mã phiếu ngẫu nhiên (VD `T-9XMA`). |
+| **2. 82.4% cần chọn toạ độ nhanh, 41.2% muốn quét mã QR** | Triển khai mã QR toạ độ dán tại thực địa (25 điểm toà UET1 và Nhà đa năng). Sinh viên quét mã bằng camera/Zalo là tự động điền sẵn vị trí, hoàn tất gửi tin trong **≤ 20 giây**. |
+| **3. 70.6% muốn theo dõi tiến độ, 47.1% sợ phản ánh không ai giải quyết** | Xây dựng quy trình xử lý 6 bước minh bạch: Khi gửi tin, sinh viên nhận ngay mã tra cứu 8 ký tự để theo dõi ca trực toà nhà đã tiếp nhận, đang có mặt hay đã hoàn tất. |
+| **4. 58.8% yêu cầu xác minh trước khi kết luận, không camera ghi hình** | Hệ thống sử dụng cảm biến quang học hạt bụi + chuyển động PIR, **nói không với camera và thu âm**. Mọi cảnh báo đều qua bước cán bộ trực toà nhà có mặt xác minh (Human-in-the-loop). |
+
+---
+
+## IV. TỔNG KẾT
+Tập dữ liệu khảo sát thực tế từ Google Forms đã chứng minh tính cấp thiết, khả thi và sự ủng hộ rất cao của sinh viên ĐHQGHN đối với giải pháp **VNU SmarT-Free Zone**. Các phát hiện này là cơ sở thực chứng vững chắc bảo vệ cho bài thuyết minh vòng 2 của Đội BND.

@@ -50,12 +50,12 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
   };
 
   const STEPS: { key: TrackingDetail["status"]; label: string; desc: string }[] = [
-    { key: "received", label: "Tiếp nhận phản ánh", desc: "Hệ thống đã ghi nhận tin báo và sinh mã xử lý" },
-    { key: "assigned", label: "Điều phối ca trực", desc: "Đã giao cán bộ trực toà nhà phụ trách" },
-    { key: "verifying", label: "Có mặt & Xác minh", desc: "Cán bộ trực đã tới hiện trường kiểm tra" },
-    { key: "handled", label: "Xử lý vi phạm", desc: "Thực hiện giải toả, lập biên bản hoặc nhắc nhở" },
-    { key: "responded", label: "Ban Quản lý phản hồi", desc: "Ghi nhận kết luận và thông báo kết quả" },
-    { key: "closed", label: "Đóng phiếu hoàn tất", desc: "Khu vực đã được làm sạch, kết thúc quy trình" },
+    { key: "received", label: "Tiếp nhận thông tin", desc: "Hệ thống đã ghi nhận tin báo và cấp mã tra cứu" },
+    { key: "assigned", label: "Điều phối ca trực", desc: "Đã phân công cán bộ trực toà nhà phụ trách" },
+    { key: "verifying", label: "Có mặt & Kiểm tra", desc: "Cán bộ trực đã tới khu vực xác minh thực tế" },
+    { key: "handled", label: "Hỗ trợ xử lý", desc: "Thực hiện nhắc nhở, dọn dẹp hoặc phối hợp xử lý" },
+    { key: "responded", label: "Ghi nhận phản hồi", desc: "Ghi nhận kết quả xử lý và cập nhật hệ thống" },
+    { key: "closed", label: "Hoàn tất xử lý", desc: "Khu vực đã được làm sạch, hoàn tất quy trình" },
   ];
 
   const getStepStatus = (stepKey: TrackingDetail["status"], currentStatus: TrackingDetail["status"]) => {
@@ -73,10 +73,13 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
       <div className="card">
         <div className="card-title">
           <div className="card-title-left">
-            <SearchIcon size={18} color="var(--primary)" />
-            <span>Tra cứu phản ánh</span>
+            <SearchIcon size={17} color="var(--primary)" />
+            <span>Tra cứu tiến độ xử lý</span>
           </div>
         </div>
+        <p style={{ fontSize: 13, color: "var(--text-muted)", marginBottom: 12 }}>
+          Nhập mã tra cứu 8 ký tự (hoặc chọn phản ánh gần đây) để theo dõi quy trình phối hợp 6 bước minh bạch.
+        </p>
 
         <div style={{ display: "flex", gap: 8 }}>
           <input
@@ -90,7 +93,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
           <button
             type="button"
             className="btn-primary"
-            style={{ width: "auto", padding: "0 20px", flexShrink: 0, whiteSpace: "nowrap" }}
+            style={{ width: "auto", padding: "0 20px", flexShrink: 0 }}
             onClick={() => handleSearch()}
             disabled={loading}
           >
@@ -157,7 +160,7 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
           </div>
 
           {/* Phản hồi từ Ban Quản lý */}
-          {detail.feedback && (
+          {detail.response_note && (
             <div
               style={{
                 background: "var(--primary-subtle)",
@@ -168,10 +171,10 @@ export function TrackPage({ initialCode, onBackToReport }: TrackPageProps) {
               }}
             >
               <strong style={{ color: "var(--primary-dark)", fontSize: 12, textTransform: "uppercase" }}>
-                Phản hồi từ Nhà trường:
+                Phản hồi từ Ban Quản lý / Phòng trực:
               </strong>
               <p style={{ fontSize: 13, color: "var(--primary-dark)", marginTop: 4, lineHeight: 1.5 }}>
-                {detail.feedback}
+                {detail.response_note}
               </p>
             </div>
           )}
